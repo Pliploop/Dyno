@@ -4,7 +4,7 @@ import numpy as np
 from tqdm import tqdm
 import os
 from torch.nn import functional as F
-from gdr.evaluation.fidelity_diversity.features import get_fixed_length_motion_features, get_variable_length_motion_features
+from dyno.evaluation.fidelity_diversity.features import get_fixed_length_motion_features, get_variable_length_motion_features
 import torch
 import boto3
 from rich.pretty import pprint

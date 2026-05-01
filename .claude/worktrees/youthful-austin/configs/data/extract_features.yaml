@@ -1,11 +1,11 @@
 
-_target_: gdr.dataloading.dataloaders.TextAudioDataModule
+_target_: dyno.dataloading.dataloaders.TextAudioDataModule
 
 # Data overrides - folder extraction (no specific task)
 datasets:
   folder:
-    _target_: gdr.dataloading.datasets.TextAudioDataset
-    get_annotations_function: gdr.dataloading.dataloaders.get_folder_annotations
+    _target_: dyno.dataloading.datasets.TextAudioDataset
+    get_annotations_function: dyno.dataloading.dataloaders.get_folder_annotations
     task_kwargs:
       data_path: /opt/ml/processing/input
     split: train

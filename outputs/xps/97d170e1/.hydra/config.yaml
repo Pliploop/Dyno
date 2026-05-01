@@ -29,12 +29,12 @@ callbacks:
     _target_: lightning.pytorch.callbacks.progress.RichProgressBar
     refresh_rate: 1
   generation:
-    _target_: gdr.callbacks.generation.GenerationCallback
+    _target_: dyno.callbacks.generation.GenerationCallback
     enable_on_validation: true
     enable_on_test: true
     every_n_epochs: 1
   teacher_retrieval:
-    _target_: gdr.callbacks.retrieval.TeacherRetrieval
+    _target_: dyno.callbacks.retrieval.TeacherRetrieval
     thresholds:
     - 1
     - 5
@@ -43,12 +43,12 @@ callbacks:
     enable_on_test: true
     every_n_epochs: 1
   teacher_score:
-    _target_: gdr.callbacks.retrieval.TeacherScore
+    _target_: dyno.callbacks.retrieval.TeacherScore
     enable_on_validation: true
     enable_on_test: true
     every_n_epochs: 1
   gen_retrieval:
-    _target_: gdr.callbacks.retrieval.GenRetrieval
+    _target_: dyno.callbacks.retrieval.GenRetrieval
     thresholds:
     - 1
     - 5
@@ -57,7 +57,7 @@ callbacks:
     enable_on_test: true
     every_n_epochs: 1
   gen_score:
-    _target_: gdr.callbacks.retrieval.GenScore
+    _target_: dyno.callbacks.retrieval.GenScore
     enable_on_validation: true
     enable_on_test: true
     every_n_epochs: 1
@@ -74,11 +74,11 @@ logger:
     tags: []
     job_type: ''
 data:
-  _target_: gdr.dataloading.dataloaders.TextAudioDataModule
+  _target_: dyno.dataloading.dataloaders.TextAudioDataModule
   datasets:
     musiccaps:
-      _target_: gdr.dataloading.datasets.TextAudioDataset
-      get_annotations_function: gdr.dataloading.dataloaders.get_musiccaps_annotations
+      _target_: dyno.dataloading.datasets.TextAudioDataset
+      get_annotations_function: dyno.dataloading.dataloaders.get_musiccaps_annotations
       task_kwargs:
         data_path: /data3/scratch/acw749/datasets/musiccaps/musiccaps_10s
         csv_path: /data3/scratch/acw749/datasets/musiccaps/musiccaps-public.csv
@@ -92,8 +92,8 @@ data:
       preextracted_features: true
       truncate_preextracted: 32
     musiccaps_val:
-      _target_: gdr.dataloading.datasets.TextAudioDataset
-      get_annotations_function: gdr.dataloading.dataloaders.get_musiccaps_annotations
+      _target_: dyno.dataloading.datasets.TextAudioDataset
+      get_annotations_function: dyno.dataloading.dataloaders.get_musiccaps_annotations
       task_kwargs:
         data_path: /data3/scratch/acw749/datasets/musiccaps/musiccaps_10s
         csv_path: /data3/scratch/acw749/datasets/musiccaps/musiccaps-public.csv
@@ -111,9 +111,9 @@ data:
   preextracted_features: true
   truncate_preextracted: 32
 model:
-  _target_: gdr.models.ldm.diffusion.LightningGDR
+  _target_: dyno.models.ldm.diffusion.LightningGDR
   audio_encoder:
-    _target_: gdr.models.ldm.text_encoders.CLAPAudioEncoder
+    _target_: dyno.models.ldm.text_encoders.CLAPAudioEncoder
     clap_kws:
       enable_fusion: false
       amodel: HTSAT-base
@@ -122,7 +122,7 @@ model:
     ckpt_path: null
     freeze: true
   text_encoder:
-    _target_: gdr.models.ldm.text_encoders.CLAPTextEncoder
+    _target_: dyno.models.ldm.text_encoders.CLAPTextEncoder
     clap_kws:
       enable_fusion: false
       amodel: HTSAT-base
@@ -136,7 +136,7 @@ model:
     subfolder: scheduler
     prediction_type: epsilon
   backbone:
-    _target_: gdr.models.ldm.transformer.TransformerBackbone
+    _target_: dyno.models.ldm.transformer.TransformerBackbone
     in_channels: 512
     out_channels: 512
     sample_size: 64
@@ -167,7 +167,7 @@ model:
     - 0.9
     - 0.999
   scheduler:
-    _target_: gdr.models.utils.schedulers.CosineDecayWithLinearWarmup
+    _target_: dyno.models.utils.schedulers.CosineDecayWithLinearWarmup
     _partial_: true
     warmup_steps: 1000
     max_steps: ${trainer.max_steps}

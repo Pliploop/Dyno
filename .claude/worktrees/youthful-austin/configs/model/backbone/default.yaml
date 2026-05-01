@@ -1,4 +1,4 @@
-_target_: gdr.models.ldm.transformer.TransformerBackbone
+_target_: dyno.models.ldm.transformer.TransformerBackbone
 in_channels: 512
 out_channels: 512
 sample_size: 64  # Sequence length

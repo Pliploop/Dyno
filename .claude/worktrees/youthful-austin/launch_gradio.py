@@ -15,7 +15,7 @@ from omegaconf import DictConfig, OmegaConf
 from sagemaker.processing import ProcessingInput, ProcessingOutput, Processor
 from omegaconf import ListConfig
 
-from gdr.utils.resolvers import register_resolvers
+from dyno.utils.resolvers import register_resolvers
 
 register_resolvers()
 

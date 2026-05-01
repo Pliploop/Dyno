@@ -1,4 +1,4 @@
-_target_: gdr.dataloading.dataloaders.TextAudioDataModule
+_target_: dyno.dataloading.dataloaders.TextAudioDataModule
 
 # UPMM dataset configuration for AWS/SageMaker
 
@@ -11,8 +11,8 @@ name: upmm-aws
 datasets:
   # training datasets
   # upmm2:
-  #   _target_: gdr.dataloading.datasets.TextAudioDataset
-  #   get_annotations_function: "gdr.dataloading.dataloaders.get_upmm_annotations"
+  #   _target_: dyno.dataloading.datasets.TextAudioDataset
+  #   get_annotations_function: "dyno.dataloading.dataloaders.get_upmm_annotations"
   #   task_kwargs:
   #     data_path: ${paths.data_dir}/${data.name}/upm2
   #     csv_path: s3://maml-aimcdt/datasets/GDR-Training/upmm2.csv
@@ -20,23 +20,23 @@ datasets:
   #   preextracted_features: ${data.preextracted_features}
   #   truncate_preextracted: ${data.truncate_preextracted}
   #   processors: # augmentation processors
-  #     - _target_: gdr.dataloading.datasets.ShuffleTagsProcessor
+  #     - _target_: dyno.dataloading.datasets.ShuffleTagsProcessor
   #       probability: 0.5
   #       replace_caption_p: 0.5
   #       split: 
   #         - "train"
-  #     - _target_: gdr.dataloading.datasets.RandomNSentencesProcessor
+  #     - _target_: dyno.dataloading.datasets.RandomNSentencesProcessor
   #       probability: 0.5
   #       split: 
   #         - "train"
-  #     - _target_: gdr.dataloading.datasets.ShuffleSentencesProcessor
+  #     - _target_: dyno.dataloading.datasets.ShuffleSentencesProcessor
   #       probability: 0.5
   #       split: 
   #         - "train"
 
   # upmm:
-  #   _target_: gdr.dataloading.datasets.TextAudioDataset
-  #   get_annotations_function: "gdr.dataloading.dataloaders.get_upmm_annotations"
+  #   _target_: dyno.dataloading.datasets.TextAudioDataset
+  #   get_annotations_function: "dyno.dataloading.dataloaders.get_upmm_annotations"
   #   task_kwargs:
   #     data_path: ${paths.data_dir}/${data.name}/upmm
   #     csv_path: s3://maml-aimcdt/datasets/GDR-Training/upmm_captions.csv
@@ -47,8 +47,8 @@ datasets:
   #   truncate_preextracted: ${data.truncate_preextracted}
 
   # maxcaps:
-  #   _target_: gdr.dataloading.datasets.TextAudioDataset
-  #   get_annotations_function: "gdr.dataloading.dataloaders.get_maxcaps_annotations"
+  #   _target_: dyno.dataloading.datasets.TextAudioDataset
+  #   get_annotations_function: "dyno.dataloading.dataloaders.get_maxcaps_annotations"
   #   task_kwargs:
   #     data_path: ${paths.data_dir}/${data.name}/maxcaps
   #     csv_path: s3://maml-aimcdt/datasets/GDR-Training/maxcaps.csv
@@ -56,23 +56,23 @@ datasets:
   #   preextracted_features: ${data.preextracted_features}
   #   truncate_preextracted: ${data.truncate_preextracted}
   #   processors:
-  #     - _target_: gdr.dataloading.datasets.ShuffleTagsProcessor
+  #     - _target_: dyno.dataloading.datasets.ShuffleTagsProcessor
   #       probability: 0.5
   #       replace_caption_p: 0.5
   #       split: 
   #         - "train"
-  #     - _target_: gdr.dataloading.datasets.RandomNSentencesProcessor
+  #     - _target_: dyno.dataloading.datasets.RandomNSentencesProcessor
   #       probability: 0.5
   #       split: 
   #         - "train"
-  #     - _target_: gdr.dataloading.datasets.ShuffleSentencesProcessor
+  #     - _target_: dyno.dataloading.datasets.ShuffleSentencesProcessor
   #       probability: 0.5
   #       split: 
   #         - "train"
 
   commercial:
-    _target_: gdr.dataloading.datasets.TextAudioDataset
-    get_annotations_function: "gdr.dataloading.dataloaders.get_commercial_large_annotations"
+    _target_: dyno.dataloading.datasets.TextAudioDataset
+    get_annotations_function: "dyno.dataloading.dataloaders.get_commercial_large_annotations"
     task_kwargs:
       data_path: ${paths.data_dir}/${data.name}/commercial-400k
       csv_path: s3://maml-aimcdt/datasets/GDR-Training/commercial.csv
@@ -80,16 +80,16 @@ datasets:
     preextracted_features: ${data.preextracted_features}
     truncate_preextracted: ${data.truncate_preextracted}
     processors:
-      - _target_: gdr.dataloading.datasets.ShuffleTagsProcessor
+      - _target_: dyno.dataloading.datasets.ShuffleTagsProcessor
         probability: 0.25
         replace_caption_p: 0.25
         split: 
           - "train"
-      - _target_: gdr.dataloading.datasets.RandomNSentencesProcessor
+      - _target_: dyno.dataloading.datasets.RandomNSentencesProcessor
         probability: 0.25
         split: 
           - "train"
-      # - _target_: gdr.dataloading.datasets.ShuffleSentencesProcessor
+      # - _target_: dyno.dataloading.datasets.ShuffleSentencesProcessor
       #   probability: 0.5
       #   split: 
       #     - "train"
@@ -97,8 +97,8 @@ datasets:
     
   # validation datasets
   song_describer_val:
-    _target_: gdr.dataloading.datasets.TextAudioDataset
-    get_annotations_function: "gdr.dataloading.dataloaders.get_song_describer_annotations"
+    _target_: dyno.dataloading.datasets.TextAudioDataset
+    get_annotations_function: "dyno.dataloading.dataloaders.get_song_describer_annotations"
     task_kwargs:
       data_path: ${paths.data_dir}/${data.name}/song_describer
       csv_path: s3://maml-aimcdt/datasets/GDR-Training/song_describer.csv
@@ -109,8 +109,8 @@ datasets:
     truncate_preextracted: ${data.truncate_preextracted}
 
   musiccaps_val:
-    _target_: gdr.dataloading.datasets.TextAudioDataset
-    get_annotations_function: "gdr.dataloading.dataloaders.get_musiccaps_annotations"
+    _target_: dyno.dataloading.datasets.TextAudioDataset
+    get_annotations_function: "dyno.dataloading.dataloaders.get_musiccaps_annotations"
     task_kwargs:
       data_path: ${paths.data_dir}/${data.name}/musiccaps
       csv_path: s3://maml-aimcdt/datasets/GDR-Training/musiccaps.csv
@@ -121,8 +121,8 @@ datasets:
     truncate_preextracted: ${data.truncate_preextracted}
 
   yt8m_val:
-    _target_: gdr.dataloading.datasets.TextAudioDataset
-    get_annotations_function: "gdr.dataloading.dataloaders.get_yt8m_annotations"
+    _target_: dyno.dataloading.datasets.TextAudioDataset
+    get_annotations_function: "dyno.dataloading.dataloaders.get_yt8m_annotations"
     task_kwargs:
       data_path: ${paths.data_dir}/${data.name}/yt8m
       csv_path: s3://maml-aimcdt/datasets/GDR-Training/yt8m.csv

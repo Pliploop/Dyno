@@ -34,9 +34,9 @@ _yaml_overrides: null  # List of keys to override from fetched config (e.g., ["m
 # These can be set as config dicts or via command line using Hydra's config composition
 # Examples:
 #   _guidance_engine:
-#     _target_: gdr.models.ldm.engines.CFGGuidanceEngine
+#     _target_: dyno.models.ldm.engines.CFGGuidanceEngine
 #   _edit_engine:
-#     _target_: gdr.models.ldm.engines.DDIMInversionEditEngine
+#     _target_: dyno.models.ldm.engines.DDIMInversionEditEngine
 # Or via command line: _guidance_engine=inference/engines/cfg_guidance
 _guidance_engine: null  # Override guidance engine config dict
 _edit_engine: null  # Override edit engine config dict (e.g., ddim_inversion or ddp_steer)

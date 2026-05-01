@@ -11,20 +11,20 @@ defaults:
 
 
 generation:
-  _target_: gdr.callbacks.generation.GenerationCallback
+  _target_: dyno.callbacks.generation.GenerationCallback
   enable_on_validation: true
   enable_on_test: true
   every_n_epochs: 1
   guidance_scale: 5.0
   num_inference_steps: 50
 teacher_retrieval:
-  _target_: gdr.callbacks.retrieval.TeacherRetrieval
+  _target_: dyno.callbacks.retrieval.TeacherRetrieval
   thresholds: [1, 5, 10]
   enable_on_validation: true
   enable_on_test: true
   every_n_epochs: 1
   text_encoder:
-    _target_: gdr.models.ldm.text_encoders.CLAPTextEncoder
+    _target_: dyno.models.ldm.text_encoders.CLAPTextEncoder
     clap_kws:
       enable_fusion: false
       amodel: HTSAT-base
@@ -34,12 +34,12 @@ teacher_retrieval:
     freeze: true
 
 teacher_score:
-  _target_: gdr.callbacks.retrieval.TeacherScore
+  _target_: dyno.callbacks.retrieval.TeacherScore
   enable_on_validation: true
   enable_on_test: true
   every_n_epochs: 1
   text_encoder:
-    _target_: gdr.models.ldm.text_encoders.CLAPTextEncoder
+    _target_: dyno.models.ldm.text_encoders.CLAPTextEncoder
     clap_kws:
       enable_fusion: false
       amodel: HTSAT-base
@@ -48,13 +48,13 @@ teacher_score:
     ckpt_path: null
     freeze: true
 gen_retrieval:
-  _target_: gdr.callbacks.retrieval.GenRetrieval
+  _target_: dyno.callbacks.retrieval.GenRetrieval
   thresholds: [1, 5, 10]
   enable_on_validation: true
   enable_on_test: true
   every_n_epochs: 1
 gen_score:
-  _target_: gdr.callbacks.retrieval.GenScore
+  _target_: dyno.callbacks.retrieval.GenScore
   enable_on_validation: true
   enable_on_test: true
   every_n_epochs: 1

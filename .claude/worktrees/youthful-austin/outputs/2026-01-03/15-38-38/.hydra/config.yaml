@@ -1,8 +1,8 @@
 data:
-  _target_: gdr.dataloading.dataloaders.TextAudioDataModule
+  _target_: dyno.dataloading.dataloaders.TextAudioDataModule
   datasets:
     folder:
-      get_annotations_function: gdr.dataloading.dataloaders.get_folder_annotations
+      get_annotations_function: dyno.dataloading.dataloaders.get_folder_annotations
       task_kwargs:
         data_path: /opt/ml/processing/input
       preextracted_features: false

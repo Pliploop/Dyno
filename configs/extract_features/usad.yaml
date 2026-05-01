@@ -1,0 +1,11 @@
+# @package _global_
+# USAD extraction: MIT-SLS/USAD-Large, 16 kHz, 10-second chunks → (N, T_frames, 1024)
+# With pool: false, each 10-second chunk produces ~500 frames at 50 Hz.
+# Saved as (N * ~500, 1024) per song.
+
+defaults:
+  - override /model: encoder/usad
+
+data:
+  target_sr: 16000
+  target_n_samples: 160000   # 10 s at 16 kHz

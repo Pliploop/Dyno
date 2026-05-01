@@ -1,40 +1,39 @@
 # @package _global_
 
-# specify here default configuration
-# order of defaults determines the order in which configs override each other
+# Feature extraction entry-point config.
+# Select encoder via +extract_features=<encoder> (see configs/extract_features/).
+# Example:
+#   python gdr/extract_dataset.py +extract_features=clap data.folder_path=/data/music
+#   python gdr/extract_dataset.py +extract_features=mert data.folder_path=/data/music
+
 defaults:
   - _self_
-  - data: extract_features
-  - trainer: default
-  - model: extract_features
+  - data: extract_features      # FolderAudioDataModule — override sr/chunk via extract_features/<encoder>
+  - model: encoder/clap         # default encoder; override with model=encoder/<name>
   - paths: default
   - hydra: default
   - dora: default
   - sagemaker: extract_feature
   - extras: default
-
-  # optional local config for machine/user specific settings
-  # it's optional since it doesn't need to exist and is excluded from version control
   - optional local: default
-
-  # debugging config (enable through command line, e.g. `python extract_dataset.py debug=default)
   - debug: null
 
-# task name, determines output directory path
 task_name: "extract_feature"
-
-# seed for random number generators in pytorch, numpy and python.random
 seed: 42
-
-# device for feature extraction
 device: cuda:0
 
-# extract-specific parameters (can be overridden in extract_features subconfigs)
 save_dir: /opt/ml/processing/output
 root_path: /opt/ml/processing/input
-extract_method: get_audio_embedding_from_data
+
+# Encoder calling convention — matches AudioEncoderBase interface
+extract_method: extract_features
 out_key: embedding_proj
-hop: 48000
+
+# hop = step between audio chunks (in target-sr samples).
+# Set to target_n_samples for non-overlapping extraction (the default).
+# Overridden per-encoder in configs/extract_features/<encoder>.yaml
+hop: null
+
 limit_n: null
 save: true
 sagemaker_dir: ${sagemaker.processing_output.destination}

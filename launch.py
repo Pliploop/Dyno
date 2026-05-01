@@ -5,7 +5,7 @@ from omegaconf import DictConfig, OmegaConf
 from sagemaker.inputs import TrainingInput
 from sagemaker.estimator import Estimator
 
-from gdr.utils.resolvers import register_resolvers
+from dyno.utils.resolvers import register_resolvers
 import boto3
 import logging
 

@@ -1,4 +1,4 @@
-_target_: gdr.dataloading.dataloaders.TextAudioDataModule
+_target_: dyno.dataloading.dataloaders.TextAudioDataModule
 
 # UPMM dataset configuration for AWS/SageMaker
 
@@ -11,8 +11,8 @@ name: upmm-aws
 datasets:
 
   upmm:
-    _target_: gdr.dataloading.datasets.TextAudioDataset
-    get_annotations_function: "gdr.dataloading.dataloaders.get_upmm_annotations"
+    _target_: dyno.dataloading.datasets.TextAudioDataset
+    get_annotations_function: "dyno.dataloading.dataloaders.get_upmm_annotations"
     task_kwargs:
       data_path: ${paths.data_dir}/${data.name}/upmm
       csv_path: s3://maml-aimcdt/datasets/GDR-Training/upmm_captions.csv
@@ -21,8 +21,8 @@ datasets:
     truncate_preextracted: ${data.truncate_preextracted}
 
   song_describer_val:
-    _target_: gdr.dataloading.datasets.TextAudioDataset
-    get_annotations_function: "gdr.dataloading.dataloaders.get_song_describer_annotations"
+    _target_: dyno.dataloading.datasets.TextAudioDataset
+    get_annotations_function: "dyno.dataloading.dataloaders.get_song_describer_annotations"
     task_kwargs:
       data_path: ${paths.data_dir}/${data.name}/song_describer
       csv_path: s3://maml-aimcdt/datasets/GDR-Training/song_describer.csv
@@ -33,8 +33,8 @@ datasets:
     truncate_preextracted: ${data.truncate_preextracted}
 
   musiccaps_val:
-    _target_: gdr.dataloading.datasets.TextAudioDataset
-    get_annotations_function: "gdr.dataloading.dataloaders.get_musiccaps_annotations"
+    _target_: dyno.dataloading.datasets.TextAudioDataset
+    get_annotations_function: "dyno.dataloading.dataloaders.get_musiccaps_annotations"
     task_kwargs:
       data_path: ${paths.data_dir}/${data.name}/musiccaps
       csv_path: s3://maml-aimcdt/datasets/GDR-Training/musiccaps.csv

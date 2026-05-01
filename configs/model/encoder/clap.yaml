@@ -1,0 +1,3 @@
+_target_: dyno.models.encoders.clap.CLAPEncoder
+model_name: laion/clap-htsat-fused
+freeze: true

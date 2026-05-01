@@ -1,4 +1,0 @@
-# CFG (Classifier-Free Guidance) Engine
-_target_: gdr.models.ldm.engines.CFGGuidanceEngine
-# Note: backbone will be set automatically from the model
-

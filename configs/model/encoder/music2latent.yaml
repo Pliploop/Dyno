@@ -1,0 +1,5 @@
+_target_: dyno.models.encoders.music2latent.Music2LatentEncoder
+sample_rate: 44100
+pool: false
+downsample_factor: 1
+freeze: true

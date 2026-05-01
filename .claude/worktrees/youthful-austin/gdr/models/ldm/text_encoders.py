@@ -4,8 +4,8 @@ import torch
 import os
 import logging
 
-from gdr.models.utils.base import BaseModule
-from gdr.models.clap.src.laion_clap.hook import CLAP_Module
+from dyno.models.utils.base import BaseModule
+from dyno.models.clap.src.laion_clap.hook import CLAP_Module
 
 class T5TextEncoder(BaseModule):
     

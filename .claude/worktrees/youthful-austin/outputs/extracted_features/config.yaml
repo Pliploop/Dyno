@@ -26,7 +26,7 @@ storage_options: null
 cache_files: false
 recompute_index: false
 data:
-  _target_: gdr.dataloading.dataloaders.TextAudioDataModule
+  _target_: dyno.dataloading.dataloaders.TextAudioDataModule
   datasets: {}
   batch_size: 2
   num_workers: 2
@@ -53,7 +53,7 @@ trainer:
   sync_batchnorm: false
 model:
   audio_encoder:
-    _target_: gdr.models.ldm.text_encoders.CLAPAudioEncoder
+    _target_: dyno.models.ldm.text_encoders.CLAPAudioEncoder
     clap_kws:
       enable_fusion: false
       amodel: HTSAT-base
@@ -62,7 +62,7 @@ model:
     ckpt_path: null
     freeze: true
   text_encoder:
-    _target_: gdr.models.ldm.text_encoders.CLAPTextEncoder
+    _target_: dyno.models.ldm.text_encoders.CLAPTextEncoder
     clap_kws:
       enable_fusion: false
       amodel: HTSAT-base
@@ -70,7 +70,7 @@ model:
     clap_ckpt: pretrained/music_audioset_epoch_15_esc_90.14.pt
     ckpt_path: null
     freeze: true
-  _target_: gdr.models.ldm.diffusion.LightningGDR
+  _target_: dyno.models.ldm.diffusion.LightningGDR
 dora:
   dir: ./logs/
   exclude:

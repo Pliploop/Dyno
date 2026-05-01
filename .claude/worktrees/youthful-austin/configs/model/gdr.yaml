@@ -3,4 +3,4 @@ defaults:
   - default
   - noise_scheduler: ddpm
   
-_target_: gdr.models.ldm.diffusion.LightningGDR
+_target_: dyno.models.ldm.diffusion.LightningGDR

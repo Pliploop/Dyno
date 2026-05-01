@@ -9,7 +9,7 @@ from sklearn.model_selection import train_test_split
 from torch.utils.data import DataLoader
 
 from .datasets import TextAudioDataset
-from gdr.utils.instantiators import instantiate
+from dyno.utils.instantiators import instantiate
 
 
 def instantiate_datasets(datasets_cfg):

@@ -4,7 +4,7 @@ from lightning.pytorch.core import LightningModule
 import torch
 import torch.distributed as dist
 
-from gdr.callbacks.utils import BaseCallback
+from dyno.callbacks.utils import BaseCallback
 import logging
 
 log = logging.getLogger(__name__)
@@ -217,7 +217,7 @@ class GenerationCallback(BaseCallback):
         in the module's dictionaries. This ensures all callbacks see the same gathered data.
         """
         # Import here to avoid circular dependency
-        from gdr.callbacks.retrieval import gather_tensor_if_distributed
+        from dyno.callbacks.retrieval import gather_tensor_if_distributed
         
         if mode == 'val':
             preds_dict = pl_module.val_preds

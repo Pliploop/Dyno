@@ -1,0 +1,3 @@
+_target_: dyno.models.encoders.muq.MuQEncoder
+model_name: OpenMuQ/MuQ-MuLan-large
+freeze: true

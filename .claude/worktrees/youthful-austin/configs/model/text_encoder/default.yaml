@@ -1,4 +1,4 @@
-_target_: gdr.models.ldm.text_encoders.CLAPTextEncoder
+_target_: dyno.models.ldm.text_encoders.CLAPTextEncoder
 clap_kws:
   enable_fusion: false
   amodel: HTSAT-base

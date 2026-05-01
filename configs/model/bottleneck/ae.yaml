@@ -1,0 +1,3 @@
+_target_: dyno.models.dyno.bottleneck.DynoAutoEncoder
+input_dim: 512
+latent_dim: 256

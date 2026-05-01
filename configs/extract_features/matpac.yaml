@@ -1,0 +1,10 @@
+# @package _global_
+# MatPac extraction: 16 kHz, 10-second chunks → (N, 3840) when pool: true
+# Override pool: false in encoder config for sequence output.
+
+defaults:
+  - override /model: encoder/matpac
+
+data:
+  target_sr: 16000
+  target_n_samples: 160000   # 10 s at 16 kHz

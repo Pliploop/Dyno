@@ -1,0 +1,11 @@
+# @package _global_
+# Music2Latent extraction: 44.1 kHz, 10-second chunks → (N, T_frames, 64)
+# Output frame rate ~10-12 Hz; each 10-second chunk → ~100-120 frames.
+# Saved as (N * ~110, 64) per song.
+
+defaults:
+  - override /model: encoder/music2latent
+
+data:
+  target_sr: 44100
+  target_n_samples: 441000   # 10 s at 44.1 kHz

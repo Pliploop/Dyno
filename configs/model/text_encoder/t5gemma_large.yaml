@@ -1,6 +1,0 @@
-_target_: gdr.models.ldm.text_encoders.HuggingFaceTextEncoder
-model_name: google/gemma-3-1b-it  # 1B encoder, 1B decoder
-ckpt_path: null
-freeze: true
-max_length: 128  # T5Gemma supports up to 128K context, but using 512 as default
-trust_remote_code: true

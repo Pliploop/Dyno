@@ -2,11 +2,11 @@
 
 
 import json
-from gdr.evaluation.fidelity_diversity.features import get_fixed_length_motion_features, get_variable_length_motion_features
-from gdr.evaluation.fidelity_diversity.diversity import vendi_score, mics, mivs, density_coverage_precision_recall
-from gdr.evaluation.fidelity_diversity.fidelity import frechet_distance
+from dyno.evaluation.fidelity_diversity.features import get_fixed_length_motion_features, get_variable_length_motion_features
+from dyno.evaluation.fidelity_diversity.diversity import vendi_score, mics, mivs, density_coverage_precision_recall
+from dyno.evaluation.fidelity_diversity.fidelity import frechet_distance
 from dataset_statistics import OnlineStats
-from gdr.dataloading.dataloaders import *
+from dyno.dataloading.dataloaders import *
 
 import pickle
 import wandb
@@ -16,7 +16,7 @@ import os
 import json
 from rich.pretty import pprint
 
-from gdr.evaluation.utils import load_model_and_dataset_eval
+from dyno.evaluation.utils import load_model_and_dataset_eval
 
 
 
@@ -131,7 +131,7 @@ def log_results(data_dict, experiment_config=None, experiment_name=None, task=No
 
 
 def eval_dataset(model, dataset,  stats_path, limit_n=None, disable_progress=True, num_samples_per_prompt=1, **kwargs):
-    from gdr.evaluation.fidelity_diversity.fidelity import pred_dataset
+    from dyno.evaluation.fidelity_diversity.fidelity import pred_dataset
     
     gen_static_stats = OnlineStats('sequence_gen')
     gen_fixed_length_motion_stats = OnlineStats('fixed_length_motion_gen')

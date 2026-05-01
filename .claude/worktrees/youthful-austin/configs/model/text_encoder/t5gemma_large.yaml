@@ -1,4 +1,4 @@
-_target_: gdr.models.ldm.text_encoders.HuggingFaceTextEncoder
+_target_: dyno.models.ldm.text_encoders.HuggingFaceTextEncoder
 model_name: google/gemma-3-1b-it  # 1B encoder, 1B decoder
 ckpt_path: null
 freeze: true

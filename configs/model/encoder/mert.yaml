@@ -1,0 +1,6 @@
+_target_: dyno.models.encoders.mert.MERTEncoder
+model_name: m-a-p/MERT-v1-330M
+layer_index: -1
+pool: false
+downsample_factor: 1
+freeze: true

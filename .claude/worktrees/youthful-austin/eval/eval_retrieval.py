@@ -2,8 +2,8 @@
 
 
 import json
-from gdr.evaluation.retrieval.gen_retrieval import *
-from gdr.dataloading.dataloaders import *
+from dyno.evaluation.retrieval.gen_retrieval import *
+from dyno.dataloading.dataloaders import *
 
 import pickle
 import wandb
@@ -12,7 +12,7 @@ import os
 import json
 import boto3
 
-from gdr.evaluation.utils import load_model_and_dataset_eval
+from dyno.evaluation.utils import load_model_and_dataset_eval
 from rich.pretty import pprint
 
 

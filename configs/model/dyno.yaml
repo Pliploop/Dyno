@@ -1,0 +1,37 @@
+defaults:
+  - aggregator: default
+  - bottleneck: default     # switch to "ae" for DynoAutoEncoder (no KL penalty)
+  - predictor: default
+
+_target_: dyno.models.dyno.dyno.LightningDyno
+
+ckpt_path: null
+freeze: false
+
+# Beta-VAE weight on the KL term — ignored (returns 0) with bottleneck: ae
+beta: 1.0
+
+# Which frame to use as the predictor conditioning token
+#   "first" → x[:, 0, :]     — required when output_mode=velocity
+#   "mean"  → x.mean(dim=1)  — average-content anchor; only valid with output_mode=embeddings
+content_token: first
+
+# What the predictor outputs
+#   "velocity"   — T-1 frame-difference vectors; integrated from first frame; requires content_token=first
+#   "embeddings" — T full embedding predictions; conditioned on content_token (first or mean)
+output_mode: velocity
+
+optimizer:
+  _target_: torch.optim.AdamW
+  _partial_: true
+  lr: 0.0001
+  weight_decay: 0.0001
+  betas: [0.9, 0.999]
+
+scheduler:
+  _target_: dyno.models.utils.schedulers.CosineDecayWithLinearWarmup
+  _partial_: true
+  warmup_steps: 10000
+  max_steps: ${trainer.max_steps}
+  base_lr: 0.0001
+  final_lr: 0.00001

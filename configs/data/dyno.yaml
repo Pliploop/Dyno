@@ -1,0 +1,14 @@
+_target_: dyno.dataloading.dataloaders.AudioDataModule
+
+train_csv: ???
+val_csv: ???
+test_csv: null
+
+path_col: npy_path
+n_frames: 60
+batch_size: 32
+num_workers: 4
+limit_n: null
+
+target_sr: 48000
+target_n_samples: 96000

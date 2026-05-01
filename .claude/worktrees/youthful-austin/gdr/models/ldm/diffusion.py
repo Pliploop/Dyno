@@ -5,7 +5,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-from gdr.utils.subject_processing import *
+from dyno.utils.subject_processing import *
 import lightning as L
 from lightning import LightningModule
 
@@ -14,7 +14,7 @@ from diffusers import FlowMatchEulerDiscreteScheduler
 from .unet import UNet
 from pytorch_lightning.cli import OptimizerCallable
 from torch import optim
-from gdr.models.utils.schedulers import *
+from dyno.models.utils.schedulers import *
 import numpy as np
 import yaml
 import scipy
@@ -22,10 +22,10 @@ import copy
 
 import torch
 
-from gdr.models.utils.base import BaseModule
+from dyno.models.utils.base import BaseModule
 
 from torchaudio.functional import frechet_distance
-from gdr.utils.instantiators import instantiate
+from dyno.utils.instantiators import instantiate
 from .engines import (
     BaseGuidanceEngine,
     BaseEditEngine,

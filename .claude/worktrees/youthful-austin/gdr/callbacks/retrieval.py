@@ -5,7 +5,7 @@ import torch
 import torch.nn.functional as F
 import logging
 
-from gdr.callbacks.utils import BaseCallback
+from dyno.callbacks.utils import BaseCallback
 
 log = logging.getLogger(__name__)
 

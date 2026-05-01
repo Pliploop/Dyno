@@ -6,7 +6,7 @@ defaults:
   - _self_
   - data: default
   - model: default
-  - callbacks: default
+  - callbacks: dyno
   - logger: wandb # set logger here or use command line (e.g. `python train.py logger=tensorboard`)
   - trainer: default
   - paths: default
@@ -30,6 +30,11 @@ defaults:
 
 # task name, determines output directory path
 task_name: "train"
+
+# Human-readable experiment name derived from active config choices.
+# Used as the W&B run name and as the Dora display name (xp.delta).
+# Composed from: data config / bottleneck class / output mode / learning rate
+name: "${hydra:runtime.choices.data}/${cls_name:${model.bottleneck._target_}}/${model.output_mode}/lr=${model.optimizer.lr}"
 
 # tags to help you identify your experiments
 # you can overwrite this in experiment configs

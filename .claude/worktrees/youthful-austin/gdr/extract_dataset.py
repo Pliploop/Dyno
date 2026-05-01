@@ -36,7 +36,7 @@ rootutils.setup_root(__file__, indicator=".project-root", pythonpath=True)
 # more info: https://github.com/ashleve/rootutils
 # ------------------------------------------------------------------------------------ #
 
-from gdr.utils import (
+from dyno.utils import (
     RankedLogger,
     extras,
     register_resolvers,

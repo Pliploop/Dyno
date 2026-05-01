@@ -1,0 +1,5 @@
+_target_: dyno.models.encoders.matpac.MatPacEncoder
+checkpoint_path: ???
+pool: true
+downsample_factor: 1
+freeze: true

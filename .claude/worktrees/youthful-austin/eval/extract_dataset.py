@@ -1,6 +1,6 @@
-from gdr.dataloading.dataloaders import TextAudioDataModule
-from gdr.models.ldm.diffusion import LightningDiffGar
-from gdr.dataloading.dataloaders import TextAudioDataModule
+from dyno.dataloading.dataloaders import TextAudioDataModule
+from dyno.models.ldm.diffusion import LightningDiffGar
+from dyno.dataloading.dataloaders import TextAudioDataModule
 from pytorch_lightning.cli import SaveConfigCallback, LightningCLI
 import os
 from jsonargparse import lazy_instance

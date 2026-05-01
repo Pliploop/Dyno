@@ -1,13 +1,13 @@
 # Data configuration for inference with maxcaps as test dataset
-_target_: gdr.dataloading.dataloaders.TextAudioDataModule
+_target_: dyno.dataloading.dataloaders.TextAudioDataModule
 name: gradio
 
 # Only maxcaps dataset as test
 datasets:
   
   maxcaps:
-    _target_: gdr.dataloading.datasets.TextAudioDataset
-    get_annotations_function: "gdr.dataloading.dataloaders.get_maxcaps_annotations"
+    _target_: dyno.dataloading.datasets.TextAudioDataset
+    get_annotations_function: "dyno.dataloading.dataloaders.get_maxcaps_annotations"
     task_kwargs:
       data_path: ${paths.data_dir}/maxcaps
       csv_path: s3://maml-aimcdt/datasets/GDR-Training/maxcaps.csv
@@ -17,8 +17,8 @@ datasets:
 
   # validation datasets
   song_describer_val:
-    _target_: gdr.dataloading.datasets.TextAudioDataset
-    get_annotations_function: "gdr.dataloading.dataloaders.get_song_describer_annotations"
+    _target_: dyno.dataloading.datasets.TextAudioDataset
+    get_annotations_function: "dyno.dataloading.dataloaders.get_song_describer_annotations"
     task_kwargs:
       data_path: ${paths.data_dir}/song_describer
       csv_path: s3://maml-aimcdt/datasets/GDR-Training/song_describer.csv
@@ -29,8 +29,8 @@ datasets:
     truncate_preextracted: ${data.truncate_preextracted}
 
   musiccaps_val:
-    _target_: gdr.dataloading.datasets.TextAudioDataset
-    get_annotations_function: "gdr.dataloading.dataloaders.get_musiccaps_annotations"
+    _target_: dyno.dataloading.datasets.TextAudioDataset
+    get_annotations_function: "dyno.dataloading.dataloaders.get_musiccaps_annotations"
     task_kwargs:
       data_path: ${paths.data_dir}/musiccaps
       csv_path: s3://maml-aimcdt/datasets/GDR-Training/musiccaps.csv
@@ -41,8 +41,8 @@ datasets:
     truncate_preextracted: ${data.truncate_preextracted}
 
   yt8m_val:
-    _target_: gdr.dataloading.datasets.TextAudioDataset
-    get_annotations_function: "gdr.dataloading.dataloaders.get_yt8m_annotations"
+    _target_: dyno.dataloading.datasets.TextAudioDataset
+    get_annotations_function: "dyno.dataloading.dataloaders.get_yt8m_annotations"
     task_kwargs:
       data_path: ${paths.data_dir}/yt8m
       csv_path: s3://maml-aimcdt/datasets/GDR-Training/yt8m.csv

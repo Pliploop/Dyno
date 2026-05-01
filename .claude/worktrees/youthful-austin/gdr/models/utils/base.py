@@ -53,7 +53,7 @@ class BaseModule(nn.Module):
     
 
     def configure_optimizers(self):
-        from gdr.utils.instantiators import instantiate
+        from dyno.utils.instantiators import instantiate
         
         if not hasattr(self, 'optimizer'):
             self.optimizer = None

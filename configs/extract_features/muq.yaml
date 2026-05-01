@@ -1,0 +1,9 @@
+# @package _global_
+# MuQ extraction: OpenMuQ/MuQ-MuLan-large, 24 kHz, 10-second chunks → (N, 768)
+
+defaults:
+  - override /model: encoder/muq
+
+data:
+  target_sr: 24000
+  target_n_samples: 240000   # 10 s at 24 kHz

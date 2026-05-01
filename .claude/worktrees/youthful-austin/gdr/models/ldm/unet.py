@@ -12,7 +12,7 @@ from a_unet.apex import (
 )
 import torch
 
-from gdr.models.utils.base import BaseModule
+from dyno.models.utils.base import BaseModule
 
 from torch import nn
 

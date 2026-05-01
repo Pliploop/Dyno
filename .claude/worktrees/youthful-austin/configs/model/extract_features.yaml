@@ -5,4 +5,4 @@ defaults:
   - text_encoder: default
 
 
-_target_: gdr.models.ldm.diffusion.LightningGDR
+_target_: dyno.models.ldm.diffusion.LightningGDR

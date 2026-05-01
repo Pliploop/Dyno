@@ -16,7 +16,7 @@ from diffusers.models.normalization import AdaLayerNormContinuous
 from diffusers.utils import USE_PEFT_BACKEND, is_torch_npu_available, scale_lora_layers, unscale_lora_layers
 from diffusers.models.attention_dispatch import dispatch_attention_fn
 
-from gdr.models.utils.base import BaseModule
+from dyno.models.utils.base import BaseModule
 
 import logging
 

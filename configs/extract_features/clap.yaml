@@ -1,0 +1,9 @@
+# @package _global_
+# CLAP extraction: laion/clap-htsat-fused, 48 kHz, 10-second chunks → (N, 512)
+
+defaults:
+  - override /model: encoder/clap
+
+data:
+  target_sr: 48000
+  target_n_samples: 480000   # 10 s at 48 kHz

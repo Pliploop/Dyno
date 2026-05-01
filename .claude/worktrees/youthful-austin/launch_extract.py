@@ -4,7 +4,7 @@ import hydra
 from omegaconf import DictConfig, OmegaConf
 from sagemaker.processing import ProcessingInput, ProcessingOutput, Processor
 
-from gdr.utils.resolvers import register_resolvers
+from dyno.utils.resolvers import register_resolvers
 import boto3
 from tqdm import tqdm
 

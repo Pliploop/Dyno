@@ -1,24 +1,8 @@
+_target_: dyno.dataloading.dataloaders.FolderAudioDataModule
 
-_target_: gdr.dataloading.dataloaders.TextAudioDataModule
-
-# Data overrides - folder extraction (no specific task)
-datasets:
-  folder:
-    _target_: gdr.dataloading.datasets.TextAudioDataset
-    get_annotations_function: gdr.dataloading.dataloaders.get_folder_annotations
-    task_kwargs:
-      data_path: /opt/ml/processing/input
-    split: train
-    preextracted_features: false
-    return_text: false
-    target_sr: 24000
-    target_n_samples: 120000 # 5 seconds
-    hop: 24000
-  
+folder_path: /opt/ml/processing/input
+target_sr: 24000
+target_n_samples: 120000   # 5 seconds at 24kHz
 batch_size: 8
 num_workers: 8
-preextracted_features: false
-truncate_preextracted: 64
-return_text: false
-
-    
+limit_n: null
