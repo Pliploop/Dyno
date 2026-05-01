@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(conda run:*)",
+      "Bash(aws s3:*)",
+      "Bash(sed 's/\\\\.[^.]*$//')",
+      "Bash(gh repo *)",
+      "Bash(curl -s \"https://api.github.com/repos/Pliploop/Diff-GAR\")",
+      "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\(d.get\\('visibility','unknown'\\), d.get\\('private','unknown'\\)\\)\")",
+      "Read(//Users/Juj/.config/gh/**)",
+      "Read(//Users/Juj/**)",
+      "Bash(rsync -av --exclude='.git' --exclude='__pycache__' --exclude='*.pyc' /Users/Juj/Diff-GAR/ /Users/Juj/Dyno/)"
+    ]
+  }
+}

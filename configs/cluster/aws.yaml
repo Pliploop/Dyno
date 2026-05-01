@@ -1,0 +1,30 @@
+# @package _global_
+
+# to execute this experiment run:
+# python train.py cluster=gaia
+
+defaults:
+  - override /paths: default
+  - override /trainer: gpu
+
+# on the cluster we do not use rich
+callbacks:
+  progress_bar:
+    _target_: lightning.pytorch.callbacks.TQDMProgressBar
+
+# automatically set the number of workers to the number of CPUs reserved by Bob Slurm
+data:
+  # num_workers: ${oc.decode:${oc.env:SLURM_CPUS_PER_TASK,0}}
+  num_workers: 32
+  local_dir: false
+
+trainer:
+  accelerator: gpu
+  # devices: ${oc.decode:${oc.env:SLURM_NTASKS_PER_NODE,1}}
+  # plugins:
+  #   _target_: src.utils.mpi.MPISlurmEnvironment
+  precision: bf16-mixed
+  strategy: ddp_find_unused_parameters_true  # TODO: ddp should be fine and faster
+  devices: auto
+  num_nodes: 1
+  sync_batchnorm: True

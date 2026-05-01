@@ -1,0 +1,2987 @@
+{
+    "848": {
+        "original_caption": "Country-like song with a man singing. Simple upbeat drums are added after lingen intro. Hopeful mood",
+        "subject": {
+            "replace": {
+                "man singing": ["solo vocal performance", "baritone singer", "male voice with guitar"],
+                "drums": ["steady percussion", "rhythmic beats", "light percussion"],
+                "lingen intro": ["quiet instrumental opening", "introductory guitar strumming", "minimalistic soundscape"],
+                "hopeful mood": ["optimistic tone", "cheerful feeling", "positive energy"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "country-like": ["roots-inspired", "Americana-infused", "folk-infused"],
+                "simple": ["uncomplicated", "straightforward", "minimal"],
+                "upbeat": ["light-hearted", "energetic", "catchy"],
+                "hopeful": ["bright", "optimistic", "light-hearted"]
+            }
+        },
+        "additive": {
+            "caption": "Country-like song with a man singing. Simple upbeat drums are added after lingen intro. Hopeful mood",
+            "additions": [
+                "The instrumental section features a melodic guitar solo",
+                "Harmonic background vocals accompany the chorus",
+                "The rhythm section includes a snare drum with rimshots"
+            ]
+        },
+        "negative": {
+            "caption": "Country-like song with a man singing. Simple upbeat drums are added after lingen intro. Hopeful mood",
+            "negatives": []
+        }
+    },
+    "670": {
+        "original_caption": "Energetic electronic track based on 8-bit synths and sampled female vocals.",
+        "subject": {
+            "replace": {
+                "8-bit synths": ["orchestral strings", "distorted electric guitar riffs", "piano chords"],
+                "sampled female vocals": ["live male vocals", "spoken word samples", "choir harmonies"],
+                "electronic track": ["hybrid orchestral-electronic piece", "live band performance", "acoustic fusion"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "energetic": ["melodic and uplifting", "atmospheric and immersive", "playful and syncopated"],
+                "based on": ["enhanced by", "contrasted with", "interwoven with"],
+                "sampled": ["raw and unedited", "layered and rich", "looped and fragmented"]
+            }
+        },
+        "additive": {
+            "caption": "Energetic electronic track based on 8-bit synths and sampled female vocals.",
+            "additions": [
+                "There is a dramatic tempo shift midway through the track",
+                "The song incorporates traditional percussion instruments",
+                "An extended synthesizer solo builds towards the climax",
+                "Environmental sounds like rain and wind are subtly blended in",
+                "A brief vocal monologue precedes the final chorus"
+            ]
+        },
+        "negative": {
+            "caption": "Energetic electronic track based on 8-bit synths and sampled female vocals.",
+            "negatives": []
+        }
+    },
+
+
+    "590": {
+        "original_caption": "An electronic ambient track, with a dark tone. The song progresses building the sections on top of each other. A hollow percussion drum beat builds on top of a dark and soft harp, towards the end a violin lead comes in. The song itself is pretty anonymous.",
+        "subject": {
+            "replace": {
+                "electronic ambient track": ["cinematic score", "experimental soundscape", "downtempo lounge mix"],
+                "hollow percussion drum beat": ["layered hand claps", "syncopated bass thumps", "clicking wood blocks"],
+                "dark and soft harp": ["distant piano arpeggios", "ambient guitar echoes", "glass marimba notes"],
+                "violin lead": ["synth pad swell", "flute improvisation", "distorted electric cello riff"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "dark tone": ["mysterious and meditative atmosphere", "ethereal and dreamlike vibe", "ominous and suspenseful mood"],
+                "progresses building": ["unfolds with evolving layers", "develops with contrasting textures", "advances with subtle crescendos"],
+                "anonymous": ["hypnotic and minimal", "abstract and thought-provoking", "immersive but subdued"]
+            }
+        },
+        "additive": {
+            "caption": "An electronic ambient track, with a dark tone. The song progresses building the sections on top of each other. A hollow percussion drum beat builds on top of a dark and soft harp, towards the end a violin lead comes in.",
+            "additions": [
+                "Low droning synths provide an undercurrent throughout the track",
+                "Field recordings of nature sounds are woven into the background",
+                "A sudden silence creates tension before the final section",
+                "The track ends with a long, reverberating fadeout",
+                "Subtle vocal harmonies enter at key points"
+            ]
+        },
+        "negative": {
+            "caption": "An electronic ambient track, with a dark tone. The song progresses building the sections on top of each other. A hollow percussion drum beat builds on top of a dark and soft harp, towards the end a violin lead comes in. The song itself is pretty anonymous.",
+            "negatives": []
+        }
+    },
+    "843": {
+        "original_caption": "A neo-classical piece that's like ballroom dancing music, but with some interesting percussion added in. Theme and variation structure with varying instrumentation.",
+        "subject": {
+            "replace": {
+                "neo-classical piece": ["orchestral dance suite", "chamber music arrangement", "modern waltz composition"],
+                "ballroom dancing music": ["courtly dance sequence", "festive ceremonial music", "intimate parlor dance tune"],
+                "interesting percussion": ["layered hand percussion", "soft timpani rolls", "syncopated woodblock accents"],
+                "varying instrumentation": ["shifting ensemble combinations", "orchestral rearrangements", "alternating solo and full group sections"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "interesting percussion": ["unexpected rhythmic twists", "delicate and intricate beats", "bold rhythmic flourishes"],
+                "theme and variation structure": ["cyclical motif exploration", "progressive melodic transformation", "repeating phrase development"],
+                "ballroom dancing music": ["elegant and graceful melodies", "dynamic but formal rhythms", "rhythms suited for coordinated steps"]
+            }
+        },
+        "additive": {
+            "caption": "A neo-classical piece that's like ballroom dancing music, but with some interesting percussion added in. Theme and variation structure with varying instrumentation.",
+            "additions": [
+                "A grand crescendo leads into the final variation",
+                "Solo violin passages intersperse the main sections",
+                "Background ambient noise is subtly incorporated",
+                "There is a recurring harp glissando motif",
+                "A sudden tempo shift occurs midway through the piece"
+            ]
+        },
+        "negative": {
+            "caption": "A neo-classical piece that's like ballroom dancing music, but with some interesting percussion added in. Theme and variation structure with varying instrumentation.",
+            "negatives": []
+        }
+    },
+
+    "639": {
+        "original_caption": "An instrumental hopefully positive track where the foreground melody features a classic guitar.",
+        "subject": {
+            "replace": {
+                "classic guitar": ["electric piano", "flute", "synth lead", "violin"],
+                "foreground melody": ["ambient pads", "driving bassline", "harmonic arpeggios", "percussive rhythm"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "hopefully positive": ["bright and uplifting with warm, resonant tones"],
+                "features a classic guitar": ["centers around a dynamic blend of acoustic and electronic elements"]
+            }
+        },
+        "additive": {
+            "caption": "An instrumental hopefully positive track where the foreground melody features a classic guitar.",
+            "additions": [
+                "The track includes subtle background strings that add depth",
+                "A gentle percussion loop adds rhythmic texture",
+                "The track builds towards a climactic bridge with layered harmonies",
+                "There are distant, atmospheric sound effects present in the background",
+                "A short piano riff is introduced halfway through the track"
+            ]
+        },
+        "negative": {
+            "caption": "An instrumental hopefully positive track where the foreground melody features a classic guitar.",
+            "negatives": []
+        }
+    },
+    "835": {
+        "original_caption": "An upbeat pop instrumental track starting with synthesized piano sound, later with guitar added in, and then a saxophone-like melody line.",
+        "subject": {
+            "replace": {
+                "synthesized piano sound": ["arpeggiated synth chords", "plucked synth strings", "electric organ"],
+                "guitar": ["bass guitar", "ukulele", "electronic drum groove"],
+                "saxophone-like melody line": ["vocal sample lead", "brass ensemble riff", "synth lead solo"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "upbeat pop instrumental track": ["a nostalgic, lo-fi-inspired tune with an evolving arrangement"],
+                "starting with synthesized piano sound": ["beginning with minimal percussive textures and atmospheric pads"],
+                "later with guitar added in": ["transitioning to a section dominated by punchy drum beats and synth bass layers"]
+            }
+        },
+        "additive": {
+            "caption": "An upbeat pop instrumental track starting with synthesized piano sound, later with guitar added in, and then a saxophone-like melody line.",
+            "additions": [
+                "A rhythmic clap pattern is introduced during the bridge",
+                "The melody shifts to a call-and-response style between instruments",
+                "A distorted electric guitar solo appears near the climax",
+                "Ambient vocal effects add a dreamlike quality to the background",
+                "The outro features a gradual tempo slowdown with fading percussion"
+            ]
+        },
+        "negative": {
+            "caption": "An upbeat pop instrumental track starting with synthesized piano sound, later with guitar added in, and then a saxophone-like melody line.",
+            "negatives": []
+        }
+    },
+    "668": {
+        "original_caption": "Bittersweet pop song with a 60s doo wop vibe featuring male vocals.",
+        "subject": {
+            "replace": {
+                "60s doo wop vibe": ["modern indie synth vibe", "folk-inspired arrangement", "jazz ballad atmosphere"],
+                "male vocals": ["harmonized female vocals", "spoken-word verses", "instrumental chorus with vocal samples"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "Bittersweet pop song": ["Melancholic yet hopeful track blending multiple genres"],
+                "60s doo wop vibe": ["a lush, retro sound with layered harmonies and reverb-heavy production"],
+                "featuring male vocals": ["highlighted by alternating vocal lines and choral interludes"]
+            }
+        },
+        "additive": {
+            "caption": "Bittersweet pop song with a 60s doo wop vibe featuring male vocals.",
+            "additions": [
+                "A subtle tambourine rhythm underscores the chorus",
+                "The bridge introduces a haunting string section",
+                "Handclaps and finger snaps emphasize the upbeat sections",
+                "The song concludes with an acapella harmony",
+                "A mellow saxophone solo complements the final verse"
+            ]
+        },
+        "negative": {
+            "caption": "Bittersweet pop song with a 60s doo wop vibe featuring male vocals.",
+            "negatives": []
+        }
+    },
+    "10": {
+        "original_caption": "starts with guitar ostinato over a descending cyclic minor harmonic progression, inducing some melancholic tension, after which the B section consists of a lyrical heavy rock / metal guitar solo",
+        "subject": {
+            "replace": {
+                "guitar ostinato": ["piano motif", "bass riff", "synth arpeggio"],
+                "descending cyclic minor harmonic progression": ["ascending major scale runs", "chromatic chord progression", "modal interchange sequence"],
+                "heavy rock / metal guitar solo": ["orchestral string arrangement", "synthwave-inspired lead solo", "bluesy slide guitar improvisation"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "inducing some melancholic tension": ["creating a sense of suspense and gradual build-up"],
+                "lyrical heavy rock / metal guitar solo": ["an intricate and fast-paced instrumental crescendo"],
+                "descending cyclic minor harmonic progression": ["a dynamic progression blending dissonance and resolution"]
+            }
+        },
+        "additive": {
+            "caption": "starts with guitar ostinato over a descending cyclic minor harmonic progression, inducing some melancholic tension, after which the B section consists of a lyrical heavy rock / metal guitar solo",
+            "additions": [
+                "Percussion builds gradually with a mix of tom fills and cymbal crashes",
+                "A choir-like backing vocal effect adds texture in the B section",
+                "Electronic effects subtly enhance the transitions between sections",
+                "The track features a sudden key change before the solo begins",
+                "Ambient synth pads add a sense of depth during the intro"
+            ]
+        },
+        "negative": {
+            "caption": "starts with guitar ostinato over a descending cyclic minor harmonic progression, inducing some melancholic tension, after which the B section consists of a lyrical heavy rock / metal guitar solo",
+            "negatives": []
+        }
+    },
+    "62": {
+        "original_caption": "A track with exotic drums and a distorted vocal sample repeating, later a more traditional beat kicks in.",
+        "subject": {
+            "replace": {
+                "exotic drums": ["tribal percussion", "electronic drum loops", "handpan rhythms"],
+                "distorted vocal sample": ["chopped synth vocal lead", "vocal chant", "pitch-shifted vocal fragment"],
+                "traditional beat": ["trap beat", "funk groove", "industrial rhythm section"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "exotic drums": ["complex percussive layers with organic textures"],
+                "distorted vocal sample repeating": ["heavily processed and looped vocal phrase"],
+                "traditional beat kicks in": ["a steady rhythm transitions with heavy bass and snare hits"]
+            }
+        },
+        "additive": {
+            "caption": "A track with exotic drums and a distorted vocal sample repeating, later a more traditional beat kicks in.",
+            "additions": [
+                "Synth pads swell in the background as the beat evolves",
+                "A bass drop transitions the track into a new section",
+                "The vocal sample is manipulated with delay effects",
+                "Ambient field recordings add texture during the intro",
+                "A melodic lead instrument joins in during the final build-up"
+            ]
+        },
+        "negative": {
+            "caption": "A track with exotic drums and a distorted vocal sample repeating, later a more traditional beat kicks in.",
+            "negatives": []
+        }
+    },
+    "202": {
+        "original_caption": "A very chill song, that starts with acoustic guitar, and has drums and vocals, but they are not in English. It has pop and rock vibe to it",
+        "subject": {
+            "replace": {
+                "acoustic guitar": ["soft piano chords", "plucked harp", "synth arpeggios"],
+                "drums and vocals": ["hand percussion with a flute lead", "a layered electronic beat and humming vocals", "spoken word interludes over sparse percussion"],
+                "not in English": ["instrumental with no vocals", "features multiple vocal styles in different languages", "a blend of vocal samples and choir harmonies"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "very chill song": ["a dreamy, atmospheric composition with a calming ambiance"],
+                "starts with acoustic guitar": ["opens with ambient textures and a delicate melody"],
+                "pop and rock vibe": ["a fusion of downtempo electronica and world music elements"]
+            }
+        },
+        "additive": {
+            "caption": "A very chill song, that starts with acoustic guitar, and has drums and vocals, but they are not in English. It has pop and rock vibe to it",
+            "additions": [
+                "There are ambient nature sounds layered underneath the main track",
+                "A string section gradually builds up in the background",
+                "The bridge introduces a short electric guitar riff",
+                "Subtle electronic effects enhance the transitions between sections",
+                "The track fades out with a repeating vocal harmony"
+            ]
+        },
+        "negative": {
+            "caption": "A very chill song, that starts with acoustic guitar, and has drums and vocals, but they are not in English. It has pop and rock vibe to it",
+            "negatives": []
+        }
+    },
+    
+    "266": {
+        "original_caption": "It is an instrumental piano song, with a moody relaxing and gentle tone",
+        "subject": {
+            "replace": {
+                "instrumental piano song": ["ambient track driven by layered synth pads", "acoustic guitar instrumental", "string quartet performance"],
+                "piano": ["marimba", "electric keyboard with effects", "flute and harp combination"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "moody relaxing and gentle tone": ["evoking a deep, introspective atmosphere with subtle dynamic shifts"],
+                "instrumental piano song": ["a textured, minimalist piece blending organic and synthetic elements"]
+            }
+        },
+        "additive": {
+            "caption": "It is an instrumental piano song, with a moody relaxing and gentle tone",
+            "additions": [
+                "A subtle, pulsating bass adds depth throughout the track",
+                "An ethereal vocal sample drifts in and out during the chorus",
+                "The piece transitions into a more upbeat section with rhythmic hand percussion",
+                "The song features a recurring motif played by a secondary instrument",
+                "The outro includes soft chimes fading into silence"
+            ]
+        },
+        "negative": {
+            "caption": "It is an instrumental piano song, with a moody relaxing and gentle tone",
+            "negatives": []
+        }
+    },
+    "382": {
+        "original_caption": "High energy instrumental song with lots of percussion and organ.",
+        "subject": {
+            "replace": {
+                "instrumental song": ["psychedelic jam with vocal textures", "cinematic score driven by electronic elements", "percussive-driven fusion groove"],
+                "percussion": ["layered synth rhythms and bass hits", "industrial noise textures", "orchestral timpani and bells"],
+                "organ": ["sitar melodies", "wailing electric violin", "synthesized choir harmonies"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "High energy": ["hypnotic and rhythmically complex with unexpected crescendos"],
+                "lots of percussion and organ": ["shifting layers of polyrhythms and avant-garde melodic fragments"]
+            }
+        },
+        "additive": {
+            "caption": "High energy instrumental song with lots of percussion and organ.",
+            "additions": [
+                "A glitch effect distorts sections of the percussion",
+                "A rapid call-and-response section between instruments adds intensity",
+                "The song introduces a chaotic breakdown near the climax",
+                "Synth drones subtly build tension throughout the track",
+                "Percussive elements pan dynamically across the stereo field"
+            ]
+        },
+        "negative": {
+            "caption": "High energy instrumental song with lots of percussion and organ.",
+            "negatives": []
+        }
+    },
+    "698": {
+        "original_caption": "Ambient electronic piece of music with organic sounds perfect for a science fiction video game.",
+        "subject": {
+            "replace": {
+                "electronic piece of music": ["orchestral hybrid track", "experimental soundscape", "minimal techno arrangement"],
+                "organic sounds": ["industrial noise samples", "processed field recordings", "synth-generated vocal pads"],
+                "science fiction video game": ["mystery thriller film", "psychedelic art installation", "space exploration documentary"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "Ambient electronic piece of music": ["an evolving, drone-like composition with immersive sonic textures"],
+                "organic sounds": ["synthetic pulses and warped auditory effects"],
+                "perfect for a science fiction video game": ["ideal for creating tension and atmosphere in abstract storytelling"]
+            }
+        },
+        "additive": {
+            "caption": "Ambient electronic piece of music with organic sounds perfect for a science fiction video game.",
+            "additions": [
+                "The piece incorporates echoing footsteps as a rhythmic element",
+                "A low-frequency bass drone builds slowly throughout the track",
+                "Fragments of radio transmissions can be heard in the background",
+                "The music shifts in tempo and intensity with dynamic crescendos",
+                "Occasional dissonant chimes create moments of suspense"
+            ]
+        },
+        "negative": {
+            "caption": "Ambient electronic piece of music with organic sounds perfect for a science fiction video game.",
+            "negatives": []
+        }
+    },
+    "983": {
+        "original_caption": "rock song sung by male voice, with electric guitar accompaniment.",
+        "subject": {
+            "replace": {
+                "rock song": ["blues-inspired jam", "progressive metal piece", "punk anthem"],
+                "male voice": ["duet with alternating vocalists", "spoken-word narration", "female lead vocals"],
+                "electric guitar accompaniment": ["acoustic fingerpicking", "heavy synthesizer riffs", "brass section harmony"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "rock song": ["a high-energy track with complex rhythmic patterns and genre-blending elements"],
+                "electric guitar accompaniment": ["characterized by intricate instrumental interplay and evolving sonic textures"],
+                "sung by male voice": ["highlighted by a mix of shouted refrains and ethereal harmonies"]
+            }
+        },
+        "additive": {
+            "caption": "rock song sung by male voice, with electric guitar accompaniment.",
+            "additions": [
+                "A powerful drum solo transitions between sections of the song",
+                "The track includes a breakdown with layered ambient effects",
+                "Backing vocals provide harmonized support in the chorus",
+                "The outro features a sustained guitar feedback loop",
+                "A brief keyboard solo adds contrast in the bridge section"
+            ]
+        },
+        "negative": {
+            "caption": "rock song sung by male voice, with electric guitar accompaniment.",
+            "negatives": []
+        }
+    },
+    
+    "845": {
+        "original_caption": "Grand, ambitious movie music with powerful, march-like drum beats, as well as brass melody.",
+        "subject": {
+            "replace": {
+                "movie music": ["video game battle theme", "royal ceremony soundtrack", "apocalyptic sci-fi score"],
+                "march-like drum beats": ["syncopated tribal rhythms", "steady electronic pulse", "chaotic war drums"],
+                "brass melody": ["harp arpeggios", "dissonant synth pads", "ethereal vocal chants"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "Grand, ambitious": ["dark and suspenseful", "playful and whimsical", "minimalist and atmospheric"],
+                "powerful, march-like drum beats": ["understated percussion with subtle accents", "sporadic, off-kilter rhythms", "mechanical and repetitive drum patterns"],
+                "brass melody": ["haunting flute motif", "gentle acoustic guitar line", "layered sound effects resembling machinery"]
+            }
+        },
+        "additive": {
+            "caption": "Grand, ambitious movie music with powerful, march-like drum beats, as well as brass melody.",
+            "additions": [
+                "The music is interspersed with dramatic pauses for added tension",
+                "A series of bell chimes creates a mystical atmosphere",
+                "The track features a sudden shift to a slow, melancholic section",
+                "Ambient background textures enhance the sense of scale",
+                "An electronic glitch effect briefly interrupts the composition"
+            ]
+        },
+        "negative": {
+            "caption": "Grand, ambitious movie music with powerful, march-like drum beats, as well as brass melody.",
+            "negatives": []
+        }
+    },
+    
+    "1089": {
+        "original_caption": "Acoustic guitar and a kind of storytelling male voice underpin this spirited folk song.",
+        "subject": {
+            "replace": {
+                "Acoustic guitar": ["banjo and hand percussion", "electric piano", "harp and strings"],
+                "storytelling male voice": ["spoken poetry interludes", "group harmonies", "synthesized vocal layers"],
+                "folk song": ["blues ballad", "indie acoustic track", "progressive rock composition"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "spirited": ["melancholic and introspective", "hypnotic and trance-like", "joyful and danceable"],
+                "storytelling male voice": ["abstract, layered vocal samples", "haunting falsetto melodies", "minimal vocal presence with ambient echoes"],
+                "Acoustic guitar": ["fast, percussive string rhythms", "slow, droning background chords", "arpeggiated synth notes"]
+            }
+        },
+        "additive": {
+            "caption": "Acoustic guitar and a kind of storytelling male voice underpin this spirited folk song.",
+            "additions": [
+                "The bridge introduces a rapid clapping pattern",
+                "A violin joins in for a brief solo near the climax",
+                "Background vocal harmonies enhance the chorus",
+                "The outro features a gradual fade-out of layered strings",
+                "Subtle environmental sound effects add depth to the verses"
+            ]
+        },
+        "negative": {
+            "caption": "Acoustic guitar and a kind of storytelling male voice underpin this spirited folk song.",
+            "negatives": []
+        }
+    },
+    
+    "773": {
+        "original_caption": "Lounge music for a summer evening on the beach.",
+        "subject": {
+            "replace": {
+                "Lounge music": ["chillwave track", "ambient jazz piece", "bossa nova tune"],
+                "summer evening on the beach": ["city rooftop party", "quiet lakeside retreat", "sunset cruise"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "Lounge music": ["relaxed electronic grooves", "smooth, rhythmic chill-out beats"],
+                "summer evening on the beach": ["hazy afternoon in a tropical garden", "warm, late-night ocean atmosphere"]
+            }
+        },
+        "additive": {
+            "caption": "Lounge music for a summer evening on the beach.",
+            "additions": [
+                "Soft saxophone lines flow through the background",
+                "A gentle conga rhythm keeps the track moving",
+                "Ambient waves and seagulls add a natural soundscape",
+                "A mellow guitar riff enhances the laid-back vibe",
+                "Echoing vocal samples provide subtle atmosphere"
+            ]
+        },
+        "negative": {
+            "caption": "Lounge music for a summer evening on the beach.",
+            "negatives": []
+        }
+    },
+    "241": {
+        "original_caption": "A ukulele instrumental track sounding like children's song, with a persistent clap percussion and some different riffs on the same theme played in sequence by a glockenspiel, a synth and a slide guitar.",
+        "subject": {
+            "replace": {
+                "ukulele": ["acoustic guitar", "banjo", "kalimba"],
+                "children's song": ["folk lullaby", "playful carnival tune", "whimsical dance piece"],
+                "clap percussion": ["shaker rhythm", "hand drum beats", "snap effects"],
+                "glockenspiel": ["marimba", "bells", "toy piano"],
+                "synth": ["electric piano", "harmonica", "string section"],
+                "slide guitar": ["flute melody", "violin glissando", "vocal hum"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "sounding like children's song": ["with a lighthearted, playful vibe", "evoking a nostalgic, carefree mood", "reminiscent of a circus performance"],
+                "persistent clap percussion": ["steady hand drum rhythm", "syncopated finger snaps"],
+                "different riffs on the same theme": ["variations in melody and harmony", "alternating instrumental solos"]
+            }
+        },
+        "additive": {
+            "caption": "A ukulele instrumental track sounding like children's song, with a persistent clap percussion and some different riffs on the same theme played in sequence by a glockenspiel, a synth and a slide guitar.",
+            "additions": [
+                "A choir of children sings along in the background",
+                "An occasional whistle adds a playful touch",
+                "The tempo slightly accelerates near the end",
+                "A brief drum break interrupts the main rhythm",
+                "Ambient crowd noise simulates a playful outdoor scene"
+            ]
+        },
+        "negative": {
+            "caption": "A ukulele instrumental track sounding like children's song, with a persistent clap percussion and some different riffs on the same theme played in sequence by a glockenspiel, a synth and a slide guitar.",
+            "negatives": []
+        }
+    },
+    "152": {
+        "original_caption": "90s hip hop with a moody synth which gives a very ominous but danceable vibe to it.",
+        "subject": {
+            "replace": {
+                "90s hip hop": ["lo-fi beat with jazz samples", "modern trap with heavy bass", "funk-inspired breakbeat"],
+                "moody synth": ["dark piano chords", "distorted guitar riffs", "ethereal vocal pads"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "moody synth": ["gritty and detuned synth lead", "haunting orchestral strings", "subtle atmospheric drones"],
+                "ominous but danceable vibe": ["tense and cinematic energy", "groovy yet melancholic tone", "hypnotic and futuristic feel"]
+            }
+        },
+        "additive": {
+            "caption": "90s hip hop with a moody synth which gives a very ominous but danceable vibe to it.",
+            "additions": [
+                "The beat features a scratching DJ loop",
+                "A deep sub-bass line emphasizes the rhythm",
+                "Synth arpeggios appear during the chorus",
+                "The breakdown section includes distant siren effects",
+                "Percussive hi-hats add a sense of urgency"
+            ]
+        },
+        "negative": {
+            "caption": "90s hip hop with a moody synth which gives a very ominous but danceable vibe to it.",
+            "negatives": []
+        }
+    },
+    "395": {
+        "original_caption": "This song sounds quite floaty, a bit funky, guitar, nasal sound at the start of the song, it's quite soft feeling. wavering/oscillating background sounds, but funky simple beat at the front, overall quite easy and enjoyable.",
+        "subject": {
+            "replace": {
+                "guitar": ["synth lead", "electric piano chords", "bass groove"],
+                "nasal sound at the start": ["filtered vocal sample", "distorted horn stab", "synth glitch effect"],
+                "funky simple beat": ["offbeat electronic rhythm", "laid-back reggae groove", "sparse percussive clicks"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "floaty": ["dreamlike and atmospheric", "spacey and distant", "light and drifting"],
+                "funky": ["groove-heavy", "playful and rhythmic", "offbeat and syncopated"],
+                "soft feeling": ["mellow and laid-back", "warm and smooth", "subdued and relaxing"]
+            }
+        },
+        "additive": {
+            "caption": "This song sounds quite floaty, a bit funky, guitar, nasal sound at the start of the song, it's quite soft feeling. wavering/oscillating background sounds, but funky simple beat at the front, overall quite easy and enjoyable.",
+            "additions": [
+                "A subtle reverb effect enhances the atmosphere",
+                "Ambient pads fade in and out between sections",
+                "A melodic bassline becomes more prominent in the chorus",
+                "Occasional handclaps accentuate the beat",
+                "A light chime melody plays in the background"
+            ]
+        },
+        "negative": {
+            "caption": "This song sounds quite floaty, a bit funky, guitar, nasal sound at the start of the song, it's quite soft feeling. wavering/oscillating background sounds, but funky simple beat at the front, overall quite easy and enjoyable.",
+            "negatives": []
+        }
+    },
+    "29": {
+        "original_caption": "This is a pretty simple track that sounds like it was produced completely on the computer. It's somewhat energetic, could be hip hop but has no lyrics.",
+        "subject": {
+            "replace": {
+                "track": ["beat", "instrumental composition", "electronic loop"],
+                "hip hop": ["lo-fi chillhop", "EDM", "trap beat"],
+                "no lyrics": ["vocal chops", "spoken samples", "auto-tuned refrains"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "pretty simple track": ["minimalist but dynamic arrangement", "basic yet layered production"],
+                "produced completely on the computer": ["constructed with digital synths and samples", "built from sequenced loops and MIDI patterns"],
+                "somewhat energetic": ["rhythmically intense", "mid-tempo with subtle groove"]
+            }
+        },
+        "additive": {
+            "caption": "This is a pretty simple track that sounds like it was produced completely on the computer. It's somewhat energetic, could be hip hop but has no lyrics.",
+            "additions": [
+                "A distorted bassline adds depth to the mix",
+                "The hi-hat pattern shifts in the second half",
+                "Synth stabs punctuate the rhythm",
+                "A drum break introduces a change in momentum",
+                "The track fades out with a repeating melody"
+            ]
+        },
+        "negative": {
+            "caption": "This is a pretty simple track that sounds like it was produced completely on the computer. It's somewhat energetic, could be hip hop but has no lyrics.",
+            "negatives": []
+        }
+    },
+    "147": {
+        "original_caption": "An instrumental song that uses a lot of human sounds like coughing, screaming.",
+        "subject": {
+            "replace": {
+                "instrumental song": ["experimental sound piece", "ambient noise composition", "spoken-word-driven track"],
+                "human sounds like coughing, screaming": ["whispering, laughing", "chanting, gasping", "footsteps, clapping"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "instrumental song": ["atmospheric and texture-focused piece", "avant-garde performance"],
+                "uses a lot of human sounds": ["integrates unconventional vocal elements", "features distorted or processed human audio"],
+                "coughing, screaming": ["muted vocal murmurs", "reverb-heavy breathing sounds"]
+            }
+        },
+        "additive": {
+            "caption": "An instrumental song that uses a lot of human sounds like coughing, screaming.",
+            "additions": [
+                "Background echoes add a haunting effect",
+                "The sounds are layered over sparse percussion",
+                "A deep drone persists throughout the track",
+                "There are occasional reversed vocal samples",
+                "The track builds in intensity with repeated vocal phrases"
+            ]
+        },
+        "negative": {
+            "caption": "An instrumental song that uses a lot of human sounds like coughing, screaming.",
+            "negatives": []
+        }
+    },
+    "334": {
+        "original_caption": "Driving, energetic and positive rock song (male voice) perfect for sport or action.",
+        "subject": {
+            "replace": {
+                "rock song": ["synthwave anthem", "funk-infused jam", "orchestral battle score"],
+                "male voice": ["group chant", "female rapper", "instrumental with vocal samples"],
+                "sport or action": ["sci-fi thriller", "dance competition", "adventure montage"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "Driving, energetic and positive": ["dark and intense with relentless pacing", "uplifting yet reflective", "gritty and aggressive"],
+                "perfect for sport or action": ["ideal for high-stakes drama", "suited to a fast-paced urban chase", "complementary to a heroic finale"]
+            }
+        },
+        "additive": {
+            "caption": "Driving, energetic and positive rock song (male voice) perfect for sport or action.",
+            "additions": [
+                "A soaring guitar solo takes center stage midway",
+                "Heavy drum fills emphasize key transitions",
+                "The bridge section slows down for a moment of tension",
+                "Subtle electronic effects enhance the chorus",
+                "The outro fades out with layered vocal harmonies"
+            ]
+        },
+        "negative": {
+            "caption": "Driving, energetic and positive rock song (male voice) perfect for sport or action.",
+            "negatives": []
+        }
+    },
+    "821": {
+        "original_caption": "Hopeful Emotional Pop Ballad with Piano violin and minimal drums Repeating melody that builds into an electro house beat",
+        "subject": {
+            "replace": {
+                "Pop Ballad": ["cinematic anthem", "synth-driven dreamscape", "orchestral-inspired hybrid track"],
+                "Piano violin and minimal drums": ["ambient synths and choral voices", "guitar arpeggios and handclaps", "harp and electronic pulses"],
+                "electro house beat": ["trap rhythm section", "downtempo groove", "breakbeat pattern"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "Hopeful Emotional": ["dark and suspenseful", "uplifting and triumphant", "nostalgic and reflective"],
+                "Repeating melody that builds": ["fragmented motifs with shifting dynamics", "interwoven harmonies that evolve gradually"],
+                "minimal drums": ["dense percussive textures", "syncopated, complex rhythms"]
+            }
+        },
+        "additive": {
+            "caption": "Hopeful Emotional Pop Ballad with Piano violin and minimal drums Repeating melody that builds into an electro house beat",
+            "additions": [
+                "A vocal choir enters during the climax",
+                "A deep bassline reinforces the buildup",
+                "Ambient sound effects provide additional atmosphere",
+                "A key modulation shifts the track's emotional tone",
+                "The melody is echoed by subtle synth layers"
+            ]
+        },
+        "negative": {
+            "caption": "Hopeful Emotional Pop Ballad with Piano violin and minimal drums Repeating melody that builds into an electro house beat",
+            "negatives": []
+        }
+    },
+    "1037": {
+        "original_caption": "Spacial projection with calm undertones plus slightly funky",
+        "subject": {
+            "replace": {
+                "Spacial projection": ["ambient cosmic soundscape", "atmospheric drone sequence", "synth-driven dream atmosphere"],
+                "calm undertones": ["tense and suspenseful layers", "bright and airy textures", "subdued harmonic swells"],
+                "slightly funky": ["rhythmically irregular", "groove-heavy and playful", "syncopated with jazzy influences"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "Spacial projection": ["a surreal, expansive environment", "an evolving, interstellar vibe"],
+                "calm undertones": ["dissonant, echoing undertones", "melancholic, subtle harmonics"],
+                "slightly funky": ["off-kilter with quirky rhythms", "smooth and soulful"]
+            }
+        },
+        "additive": {
+            "caption": "Spacial projection with calm undertones plus slightly funky",
+            "additions": [
+                "A distant, distorted vocal sample emerges midway",
+                "Intermittent chimes add a shimmering effect",
+                "The rhythm section becomes more prominent in the second half",
+                "A deep sub-bass subtly anchors the track",
+                "Ambient pads swell and fade between sections"
+            ]
+        },
+        "negative": {
+            "caption": "Spacial projection with calm undertones plus slightly funky",
+            "negatives": []
+        }
+    },
+    "189": {
+        "original_caption": "This is quite a basic trance-pop piece, with a buzzy-sounding synth and low-key, amateurish vocals.",
+        "subject": {
+            "replace": {
+                "trance-pop piece": ["retro synthwave track", "ambient electronic groove", "dancehall-inspired beat"],
+                "buzzy-sounding synth": ["gritty, distorted bassline", "bright, arpeggiated keys", "pulsing, filtered pads"],
+                "low-key, amateurish vocals": ["robotic, vocoder-processed vocals", "layered vocal harmonies", "spoken-word samples"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "basic trance-pop piece": ["minimalist electronic composition", "upbeat synth-driven anthem"],
+                "buzzy-sounding synth": ["rich, evolving synth textures", "hazy, atmospheric leads"],
+                "low-key, amateurish vocals": ["whispered, lo-fi vocal effects", "heavily processed and ethereal vocal lines"]
+            }
+        },
+        "additive": {
+            "caption": "This is quite a basic trance-pop piece, with a buzzy-sounding synth and low-key, amateurish vocals.",
+            "additions": [
+                "A breakdown section introduces a softer melodic motif",
+                "Percussive elements intensify during the chorus",
+                "A reverb-drenched piano echoes in the background",
+                "The beat is punctuated by dynamic cymbal crashes",
+                "Ambient noise subtly rises and falls with the rhythm"
+            ]
+        },
+        "negative": {
+            "caption": "This is quite a basic trance-pop piece, with a buzzy-sounding synth and low-key, amateurish vocals.",
+            "negatives": []
+        }
+    },
+    "541": {
+        "original_caption": "In this song, a tropic back-beat and a lush piano chord is then accompanied with a salient organ to give way into a joyful melody and a beat.",
+        "subject": {
+            "replace": {
+                "tropic back-beat": ["reggae-inspired rhythm", "syncopated hand percussion", "slow electronic groove"],
+                "lush piano chord": ["bright synth pad", "plucked guitar harmony", "warm vibraphone chords"],
+                "salient organ": ["synth lead", "flute solo", "harmonic brass section"],
+                "joyful melody and a beat": ["uplifting choral arrangement", "hypnotic bass-driven hook", "melancholic yet rhythmic refrain"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "tropic back-beat": ["steady, island-inspired groove", "laid-back and percussive rhythm"],
+                "lush piano chord": ["rich, evolving synth harmony", "delicate and resonant acoustic chord"],
+                "salient organ": ["softly textured lead instrument", "prominent reverb-soaked melody line"],
+                "joyful melody and a beat": ["dreamy and flowing refrain", "energetic and syncopated hook"]
+            }
+        },
+        "additive": {
+            "caption": "In this song, a tropic back-beat and a lush piano chord is then accompanied with a salient organ to give way into a joyful melody and a beat.",
+            "additions": [
+                "A subtle bass line underpins the rhythm",
+                "The bridge introduces a dynamic string section",
+                "Clapping sounds enhance the buildup to the chorus",
+                "Ambient synths create depth in the background",
+                "A brief percussion solo adds variation near the climax"
+            ]
+        },
+        "negative": {
+            "caption": "In this song, a tropic back-beat and a lush piano chord is then accompanied with a salient organ to give way into a joyful melody and a beat.",
+            "negatives": []
+        }
+    },
+    "150": {
+        "original_caption": "sounds quite groovy, dark atmosphere but no violent, just minimalist.",
+        "subject": {
+            "replace": {
+                "dark atmosphere": ["eerie and tense vibe", "ambient and reflective mood", "mysterious, expansive soundscape"],
+                "minimalist": ["dense and layered", "polyrhythmic and intricate", "dynamic and evolving structure"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "groovy": ["syncopated and rhythmic", "steady with a pulsing drive", "hypnotic and repetitive"],
+                "dark atmosphere": ["melancholic yet airy", "tense and futuristic"],
+                "minimalist": ["spacious and sparse", "gradually building with subtle elements"]
+            }
+        },
+        "additive": {
+            "caption": "sounds quite groovy, dark atmosphere but no violent, just minimalist.",
+            "additions": [
+                "Occasional vocal samples provide texture",
+                "A deep sub-bass supports the rhythm",
+                "Synth pads slowly evolve in the background",
+                "Percussive clicks and snaps accentuate the beat",
+                "A filtered piano motif enters during the bridge"
+            ]
+        },
+        "negative": {
+            "caption": "sounds quite groovy, dark atmosphere but no violent, just minimalist.",
+            "negatives": []
+        }
+    },
+    "824": {
+        "original_caption": "Classical piano ballad with soft male vocal about love and loss sad and hopeful romantic song",
+        "subject": {
+            "replace": {
+                "Classical piano ballad": ["orchestral string arrangement", "acoustic folk tune", "electronic ambient piece"],
+                "soft male vocal": ["duet with gentle harmonies", "spoken-word narration", "whispered vocal layers"],
+                "love and loss": ["personal growth and change", "nature and reflection", "memories and nostalgia"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "Classical piano ballad": ["melodic and atmospheric composition", "slow, introspective piece"],
+                "soft male vocal": ["delicate, falsetto-driven singing", "emotive, deep vocal timbre"],
+                "sad and hopeful romantic song": ["melancholic yet uplifting piece", "wistful and tender emotional journey"]
+            }
+        },
+        "additive": {
+            "caption": "Classical piano ballad with soft male vocal about love and loss sad and hopeful romantic song",
+            "additions": [
+                "A subtle string section builds throughout the song",
+                "Background choral vocals enhance the final chorus",
+                "The piano melody is mirrored by a soft flute line",
+                "A gentle crescendo leads into the final refrain",
+                "Ambient sound effects add depth to the atmosphere"
+            ]
+        },
+        "negative": {
+            "caption": "Classical piano ballad with soft male vocal about love and loss sad and hopeful romantic song",
+            "negatives": []
+        }
+    },
+    "218": {
+        "original_caption": "Pop, latin American song with enjoyable and danceful vibe. Male voice. The instruments used in particular are the sand hammer and the accordion.",
+        "subject": {
+            "replace": {
+                "Pop, latin American song": ["reggaeton-inspired track", "cumbia dance anthem", "fusion of electronic and tropical rhythms"],
+                "male voice": ["female lead vocal", "group chant", "instrumental section with vocal samples"],
+                "sand hammer": ["bongo drums", "maracas", "cajón"],
+                "accordion": ["guitar arpeggios", "brass horns", "synth melody"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "enjoyable and danceful vibe": ["energetic and rhythmic flow", "laid-back but groove-heavy atmosphere"],
+                "Pop, latin American song": ["tropical, rhythm-driven track", "upbeat genre-blending composition"]
+            }
+        },
+        "additive": {
+            "caption": "Pop, latin American song with enjoyable and danceful vibe. Male voice. The instruments used in particular are the sand hammer and the accordion.",
+            "additions": [
+                "A syncopated bassline enhances the groove",
+                "A brief percussion breakdown energizes the midsection",
+                "The chorus features call-and-response vocals",
+                "Synth stabs punctuate the beat during transitions",
+                "A handclap pattern adds to the rhythmic texture"
+            ]
+        },
+        "negative": {
+            "caption": "Pop, latin American song with enjoyable and danceful vibe. Male voice. The instruments used in particular are the sand hammer and the accordion.",
+            "negatives": []
+        }
+    },
+    "973": {
+        "original_caption": "This song reminds me of manicure sessions at the beach",
+        "subject": {
+            "replace": {
+                "manicure sessions": ["sunset yoga classes", "cocktail lounge gatherings", "relaxing spa treatments"],
+                "beach": ["tropical rainforest", "luxury resort poolside", "open-air rooftop terrace"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "reminds me of manicure sessions at the beach": ["evokes a peaceful, sunlit escape", "brings to mind vibrant social events by the water"]
+            }
+        },
+        "additive": {
+            "caption": "This song reminds me of manicure sessions at the beach",
+            "additions": [
+                "The track has a slow, relaxing tempo",
+                "Ambient wave sounds can be heard faintly in the background",
+                "A soft bossa nova rhythm underpins the melody",
+                "Light steel drum accents give a tropical feel",
+                "A gentle breeze-like synth effect enhances the atmosphere"
+            ]
+        },
+        "negative": {
+            "caption": "This song reminds me of manicure sessions at the beach",
+            "negatives": []
+        }
+    },
+    "24": {
+        "original_caption": "a danceable electronic track in the genre of dance",
+        "subject": {
+            "replace": {
+                "electronic track": ["experimental techno piece", "funk-infused house anthem", "percussive world beat"],
+                "genre of dance": ["psychedelic trance", "electro-jazz fusion", "ambient club mix"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "danceable electronic track": ["hypnotic, bass-heavy composition", "rhythmic and pulse-driven audio journey"],
+                "in the genre of dance": ["blending tribal and techno elements", "bordering between ambient and rhythmic club sounds"]
+            }
+        },
+        "additive": {
+            "caption": "a danceable electronic track in the genre of dance",
+            "additions": [
+                "The track features sudden tempo shifts",
+                "A deep, wobbling bassline drives the rhythm",
+                "Chopped vocal samples add energy to the mix",
+                "High-pitched synth leads create a dynamic contrast",
+                "A breakdown introduces atmospheric textures before the drop"
+            ]
+        },
+        "negative": {
+            "caption": "a danceable electronic track in the genre of dance",
+            "negatives": []
+        }
+    },
+    "182": {
+        "original_caption": "It starts with a piano melody, then soft vocals are introduced and finally the drums kick in. The song is very slow and mellow.",
+        "subject": {
+            "replace": {
+                "piano melody": ["distorted guitar riff", "synth arpeggios", "ambient string textures"],
+                "soft vocals": ["spoken-word narration", "layered choir harmonies", "processed vocal samples"],
+                "drums": ["bass pulses", "clapping rhythms", "electronic glitches"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "starts with a piano melody": ["opens with a glitchy noise collage", "begins with a minimal bassline"],
+                "very slow and mellow": ["tense and evolving with sudden bursts", "mid-tempo and rhythmically driven"]
+            }
+        },
+        "additive": {
+            "caption": "It starts with a piano melody, then soft vocals are introduced and finally the drums kick in. The song is very slow and mellow.",
+            "additions": [
+                "A brief instrumental break features reversed audio effects",
+                "The buildup is accompanied by rising synth pads",
+                "An echoing bell motif plays throughout the chorus",
+                "Ambient field recordings add atmosphere to the intro",
+                "The outro fades with a looping vocal harmony"
+            ]
+        },
+        "negative": {
+            "caption": "It starts with a piano melody, then soft vocals are introduced and finally the drums kick in. The song is very slow and mellow.",
+            "negatives": []
+        }
+    },
+    "780": {
+        "original_caption": "Acoustic guitar and vocal only song using open chords with a sad feeling",
+        "subject": {
+            "replace": {
+                "Acoustic guitar": ["synth pad drones", "piano arpeggios", "plucked harp"],
+                "vocal only song": ["instrumental ambient track", "spoken word piece with background effects", "multi-layered choral arrangement"],
+                "open chords": ["dissonant harmonics", "repeating minimalist patterns", "progressive jazz-inspired voicings"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "Acoustic guitar and vocal only song": ["Textured instrumental track with evolving layers", "Dreamlike soundscape built on subtle motifs"],
+                "sad feeling": ["haunting and surreal atmosphere", "mysterious and introspective vibe"]
+            }
+        },
+        "additive": {
+            "caption": "Acoustic guitar and vocal only song using open chords with a sad feeling",
+            "additions": [
+                "A faint echo effect emphasizes the vocal lines",
+                "Ambient noise swells during key transitions",
+                "The middle section introduces a brief harmonic shift",
+                "Soft percussion adds subtle texture near the end",
+                "A distant string arrangement fades in gradually"
+            ]
+        },
+        "negative": {
+            "caption": "Acoustic guitar and vocal only song using open chords with a sad feeling",
+            "negatives": []
+        }
+    },
+    "632": {
+        "original_caption": "A musical call to be in the here and now with this deeply spiritual piece.",
+        "subject": {
+            "replace": {
+                "musical call": ["ambient sonic meditation", "uplifting orchestral movement", "introspective sound journey"],
+                "deeply spiritual piece": ["emotionally resonant track", "ritualistic rhythmic composition", "dreamlike, immersive soundscape"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "musical call to be in the here and now": ["composition evoking mindfulness and reflection", "soundscape designed for transcendental experience"],
+                "deeply spiritual piece": ["expansive and emotionally charged arrangement", "layered, meditative creation with hypnotic undertones"]
+            }
+        },
+        "additive": {
+            "caption": "A musical call to be in the here and now with this deeply spiritual piece.",
+            "additions": [
+                "A drone-like bass note sustains throughout the track",
+                "Chiming bells punctuate moments of transition",
+                "A gentle vocal chant is subtly layered in the background",
+                "Slow, evolving harmonics create a sense of space",
+                "Field recordings of nature sounds provide depth"
+            ]
+        },
+        "negative": {
+            "caption": "A musical call to be in the here and now with this deeply spiritual piece.",
+            "negatives": []
+        }
+    },
+    "204": {
+        "original_caption": "An electronic that would loosely come under the electro-pop genre it is a song with vocals, a wobbly bass line, synths, white noises, and drums.",
+        "subject": {
+            "replace": {
+                "electro-pop genre": ["industrial dance music", "experimental glitch track", "retro-inspired synthwave"],
+                "vocals": ["instrumental pads", "chopped vocal samples", "spoken interludes"],
+                "wobbly bass line": ["subtle arpeggios", "punchy staccato bass hits", "melodic bass riffs"],
+                "synths": ["live brass stabs", "distorted guitar", "string ensemble swells"],
+                "white noises": ["field recordings", "ambient reverb effects", "percussive clicks and snaps"],
+                "drums": ["syncopated hand claps", "complex polyrhythms", "minimal electronic pulses"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "loosely come under the electro-pop genre": ["blending styles of downtempo and dance", "closely tied to atmospheric electronica"],
+                "wobbly bass line": ["tight, punchy bass patterns", "subdued, flowing bass textures"],
+                "white noises": ["sporadic glitch effects", "sharp, high-pitched accents"]
+            }
+        },
+        "additive": {
+            "caption": "An electronic that would loosely come under the electro-pop genre it is a song with vocals, a wobbly bass line, synths, white noises, and drums.",
+            "additions": [
+                "An unexpected key change adds variety in the middle",
+                "A vocal harmony enriches the chorus",
+                "Ambient textures fade in and out throughout the track",
+                "A percussion break emphasizes rhythmic shifts",
+                "The outro features a gradual deceleration in tempo"
+            ]
+        },
+        "negative": {
+            "caption": "An electronic that would loosely come under the electro-pop genre it is a song with vocals, a wobbly bass line, synths, white noises, and drums.",
+            "negatives": []
+        }
+    },
+    "910": {
+        "original_caption": "Electronic song, so loopable, with cycle structures and a strong set base.",
+        "subject": {
+            "replace": {
+                "Electronic song": ["ambient techno piece", "tribal-inspired rhythm track", "synth-driven experimental soundscape"],
+                "cycle structures": ["repeating polyrhythms", "layered harmonic loops", "asymmetrical rhythmic patterns"],
+                "strong set base": ["drone-like low frequencies", "syncopated bass groove", "intermittent sub-bass pulses"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "so loopable": ["structured for extended progression", "featuring evolving repetitive motifs"],
+                "cycle structures": ["nonlinear rhythmic patterns", "interlocking melodic layers"],
+                "strong set base": ["foundation of shifting low-end textures", "sparse yet dynamic bassline"]
+            }
+        },
+        "additive": {
+            "caption": "Electronic song, so loopable, with cycle structures and a strong set base.",
+            "additions": [
+                "Occasional vocal fragments create contrast",
+                "High-frequency synth accents punctuate transitions",
+                "The bassline evolves with subtle harmonic shifts",
+                "Percussion layers gradually build throughout the track",
+                "A distant reverb effect enhances spatial depth"
+            ]
+        },
+        "negative": {
+            "caption": "Electronic song, so loopable, with cycle structures and a strong set base.",
+            "negatives": []
+        }
+    },
+    "876": {
+        "original_caption": "Classical instrumental piano that gives a range of emotions from soothing to tension",
+        "subject": {
+            "replace": {
+                "Classical instrumental piano": ["ambient synth-driven composition", "acoustic guitar solo", "string quartet arrangement"],
+                "piano": ["harp", "vibraphone", "electronic pad"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "gives a range of emotions from soothing to tension": ["shifts between peaceful and chaotic dynamics", "balances melancholy and uplifting moments"],
+                "Classical instrumental piano": ["minimal, atmospheric piece", "experimental, evolving sound journey"]
+            }
+        },
+        "additive": {
+            "caption": "Classical instrumental piano that gives a range of emotions from soothing to tension",
+            "additions": [
+                "A subtle drone underlies the melodic progression",
+                "The dynamics build toward a dramatic peak",
+                "Short, dissonant notes add unexpected tension",
+                "Reverb effects expand the spatial feel of the track",
+                "Intermittent string harmonics provide added texture"
+            ]
+        },
+        "negative": {
+            "caption": "Classical instrumental piano that gives a range of emotions from soothing to tension",
+            "negatives": []
+        }
+    },
+    "806": {
+        "original_caption": "Rap song with a slow tempo and explicit lyrics",
+        "subject": {
+            "replace": {
+                "Rap song": ["spoken word performance", "trap-inspired beat", "hip-hop instrumental"],
+                "slow tempo": ["upbeat, fast-paced rhythm", "mid-tempo groove", "irregular, offbeat pacing"],
+                "explicit lyrics": ["abstract poetic verses", "narrative storytelling", "vocal samples with no lyrics"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "slow tempo": ["laid-back but syncopated", "steady, hypnotic pulse"],
+                "explicit lyrics": ["introspective and cryptic lines", "raw but metaphorical expression"]
+            }
+        },
+        "additive": {
+            "caption": "Rap song with a slow tempo and explicit lyrics",
+            "additions": [
+                "A haunting synth pad underscores the track",
+                "Percussive elements create a dynamic buildup",
+                "A distorted bassline enhances the chorus",
+                "The outro features layered vocal echoes",
+                "Ambient sound effects add tension to the verses"
+            ]
+        },
+        "negative": {
+            "caption": "Rap song with a slow tempo and explicit lyrics",
+            "negatives": []
+        }
+    },
+    "687": {
+        "original_caption": "This song that features a piano, cello and oboe starts calmly and then arrives to a crescendo to give a triumphant atmosphere.",
+        "subject": {
+            "replace": {
+                "piano, cello and oboe": ["synth pads, electric guitar, and marimba", "handpan, saxophone, and electronic bass", "percussive claps, vocal loops, and brass ensemble"],
+                "song": ["orchestral suite", "ambient soundscape", "progressive rock piece"],
+                "crescendo": ["sudden tempo shift", "minimal drop in intensity", "layered buildup of rhythms"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "starts calmly": ["begins with an eerie tension", "opens with sporadic, percussive elements"],
+                "triumphant atmosphere": ["dreamlike and surreal ambiance", "raw and emotional intensity"]
+            }
+        },
+        "additive": {
+            "caption": "This song that features a piano, cello and oboe starts calmly and then arrives to a crescendo to give a triumphant atmosphere.",
+            "additions": [
+                "A brief pause adds suspense before the climax",
+                "A resonating gong sound marks a key transition",
+                "High strings build tension throughout the middle section",
+                "Background vocal harmonies emerge near the peak",
+                "Electronic glitch effects punctuate the ending"
+            ]
+        },
+        "negative": {
+            "caption": "This song that features a piano, cello and oboe starts calmly and then arrives to a crescendo to give a triumphant atmosphere.",
+            "negatives": []
+        }
+    },
+    "842": {
+        "original_caption": "New-era soundtrack starting with fast, minimalist beats, with strings added later. Suitable for heroic, sci-fi theme.",
+        "subject": {
+            "replace": {
+                "New-era soundtrack": ["retro-futuristic electronic composition", "epic cinematic hybrid score", "experimental jazz fusion piece"],
+                "fast, minimalist beats": ["dense, syncopated rhythms", "offbeat tribal percussion", "slow, pulsating bass-driven loops"],
+                "strings": ["synth brass swells", "ethereal choral voices", "distorted electric guitar harmonics"],
+                "heroic, sci-fi theme": ["mysterious thriller atmosphere", "fantasy adventure sequence", "dystopian cyberpunk narrative"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "New-era soundtrack": ["modern, genre-blurring score", "dark, otherworldly arrangement"],
+                "fast, minimalist beats": ["uneven and textured rhythmic layers", "steady, hypnotic pulses"],
+                "heroic, sci-fi theme": ["introspective and suspenseful mood", "energetic and action-driven narrative tone"]
+            }
+        },
+        "additive": {
+            "caption": "New-era soundtrack starting with fast, minimalist beats, with strings added later. Suitable for heroic, sci-fi theme.",
+            "additions": [
+                "The track incorporates sudden bursts of electronic noise",
+                "A deep sub-bass underpins the rhythm",
+                "Layered synth arpeggios enhance the tension",
+                "A brief orchestral pause adds dramatic effect",
+                "Percussive echoes give a sense of vast space"
+            ]
+        },
+        "negative": {
+            "caption": "New-era soundtrack starting with fast, minimalist beats, with strings added later. Suitable for heroic, sci-fi theme.",
+            "negatives": []
+        }
+    },
+    "434": {
+        "original_caption": "Eurodance pop track, with a simple rough synth chord progression and a straightforward drum beat punctuated by a female voice sample.",
+        "subject": {
+            "replace": {
+                "Eurodance pop track": ["industrial electronic anthem", "reggaeton-inspired club hit", "experimental house mix"],
+                "synth chord progression": ["arpeggiated bass line", "plucked guitar sample", "orchestral brass stabs"],
+                "straightforward drum beat": ["syncopated percussive pattern", "breakbeat rhythm", "offbeat handclap groove"],
+                "female voice sample": ["robotic vocal fragment", "group chanting", "distorted spoken word clip"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "simple rough synth chord progression": ["layered, evolving harmonics", "distorted and glitchy textures"],
+                "straightforward drum beat": ["complex polyrhythms", "minimal, pulse-driven beats"],
+                "punctuated by a female voice sample": ["accented by ethereal vocal layers", "enhanced with glitchy vocal loops"]
+            }
+        },
+        "additive": {
+            "caption": "Eurodance pop track, with a simple rough synth chord progression and a straightforward drum beat punctuated by a female voice sample.",
+            "additions": [
+                "A sudden drop builds anticipation before the chorus",
+                "A filtered synth sweep creates tension",
+                "The track features a dynamic tempo shift mid-song",
+                "Ambient sound effects add depth during transitions",
+                "A brief instrumental solo adds contrast in the bridge"
+            ]
+        },
+        "negative": {
+            "caption": "Eurodance pop track, with a simple rough synth chord progression and a straightforward drum beat punctuated by a female voice sample.",
+            "negatives": []
+        }
+    },
+    "764": {
+        "original_caption": "Organs and bells are building up tension progressively as we feel more and more endangered and trapped in a sinister place like a vampire castle.",
+        "subject": {
+            "replace": {
+                "Organs and bells": ["dissonant strings and low brass", "synth drones and eerie chimes", "distorted guitars and percussion echoes"],
+                "vampire castle": ["abandoned industrial complex", "haunted labyrinth", "alien spaceship interior"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "building up tension progressively": ["creating erratic bursts of suspense", "shifting between calm and chaotic moments"],
+                "endangered and trapped": ["isolated and disoriented", "overwhelmed by an unseen threat"],
+                "sinister place": ["surreal and otherworldly environment", "gloomy and decaying setting"]
+            }
+        },
+        "additive": {
+            "caption": "Organs and bells are building up tension progressively as we feel more and more endangered and trapped in a sinister place like a vampire castle.",
+            "additions": [
+                "A deep, rumbling sound pulses in the background",
+                "Footstep-like echoes intermittently break the silence",
+                "Whispered voices appear faintly in the distance",
+                "A sudden, high-pitched screech accentuates the climax",
+                "The pace accelerates as the tension peaks"
+            ]
+        },
+        "negative": {
+            "caption": "Organs and bells are building up tension progressively as we feel more and more endangered and trapped in a sinister place like a vampire castle.",
+            "negatives": []
+        }
+    },
+    "708": {
+        "original_caption": "A power-pop song with a lot of idiosyncracies like flutes, a kid's choir, and guitar solo played backwards.",
+        "subject": {
+            "replace": {
+                "power-pop song": ["psychedelic rock track", "experimental folk composition", "synthwave anthem"],
+                "flutes": ["sitar", "synth pads", "accordion"],
+                "kid's choir": ["robotic vocal samples", "chanting monks", "spoken word interlude"],
+                "guitar solo played backwards": ["distorted violin improvisation", "melodic synth arpeggio", "percussion loop with pitch shifts"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "power-pop song": ["genre-blending, high-energy piece", "quirky and unpredictable composition"],
+                "a lot of idiosyncracies": ["an array of unconventional sounds", "unexpected instrumental twists"],
+                "played backwards": ["heavily modulated", "layered with glitch effects"]
+            }
+        },
+        "additive": {
+            "caption": "A power-pop song with a lot of idiosyncracies like flutes, a kid's choir, and guitar solo played backwards.",
+            "additions": [
+                "A sudden tempo change disrupts the structure",
+                "Percussive effects are layered throughout the chorus",
+                "A harp glissando leads into a key transition",
+                "Ambient noise fills the background during the outro",
+                "A recurring whistling motif adds a playful touch"
+            ]
+        },
+        "negative": {
+            "caption": "A power-pop song with a lot of idiosyncracies like flutes, a kid's choir, and guitar solo played backwards.",
+            "negatives": []
+        }
+    },
+    "26": {
+        "original_caption": "A pop song with a lazily sang male vocal and catchy guitar strumming",
+        "subject": {
+            "replace": {
+                "pop song": ["indie folk ballad", "lo-fi acoustic jam", "retro synth-pop track"],
+                "male vocal": ["spoken word verses", "layered vocal harmonies", "processed robotic vocals"],
+                "guitar strumming": ["piano chords", "banjo plucking", "arpeggiated synth lead"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "lazily sang male vocal": ["dreamy and laid-back delivery", "detached and melancholic tone"],
+                "catchy guitar strumming": ["syncopated rhythmic plucking", "slow, hypnotic chord progression"]
+            }
+        },
+        "additive": {
+            "caption": "A pop song with a lazily sang male vocal and catchy guitar strumming",
+            "additions": [
+                "A tambourine adds subtle percussion throughout",
+                "The chorus introduces a light string section",
+                "Background crowd noise enhances the ambiance",
+                "A brief guitar solo appears after the second verse",
+                "Layered reverb effects give the vocals more depth"
+            ]
+        },
+        "negative": {
+            "caption": "A pop song with a lazily sang male vocal and catchy guitar strumming",
+            "negatives": []
+        }
+    },
+    "603": {
+        "original_caption": "Genre seems like a hip hop music and reminds me a place in New Orleans where they rap in the hood.",
+        "subject": {
+            "replace": {
+                "hip hop music": ["trap beat with jazz influences", "funk-inspired street anthem", "experimental spoken-word track"],
+                "New Orleans": ["Brooklyn block party", "West Coast underground scene", "a gritty urban poetry event"],
+                "rap in the hood": ["freestyle cypher", "live street performance", "spoken poetry session"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "Genre seems like a hip hop music": ["Blending elements of rap and soul", "Drawing heavily from jazz and street rhythms"],
+                "reminds me a place in New Orleans": ["evokes the atmosphere of an open mic session", "feels like a live performance in a vibrant urban setting"]
+            }
+        },
+        "additive": {
+            "caption": "Genre seems like a hip hop music and reminds me a place in New Orleans where they rap in the hood.",
+            "additions": [
+                "The track incorporates live brass sections",
+                "Background chatter adds an authentic street vibe",
+                "The bassline follows a syncopated, jazzy groove",
+                "A vocal call-and-response adds dynamic interaction",
+                "The beat features heavy kick and snare emphasis"
+            ]
+        },
+        "negative": {
+            "caption": "Genre seems like a hip hop music and reminds me a place in New Orleans where they rap in the hood.",
+            "negatives": []
+        }
+    },
+    "500": {
+        "original_caption": "This is a lively electronic dance song that would fit into my club or gym/workout playlists, and I think it fits into the genre of trophouse (tropical house).",
+        "subject": {
+            "replace": {
+                "electronic dance song": ["percussive-driven house anthem", "ambient trance composition", "funk-inspired electronic jam"],
+                "trophouse (tropical house)": ["deep house", "future bass", "progressive dancehall fusion"],
+                "club or gym/workout playlists": ["sunset beach festival", "fashion show runway set", "late-night rooftop party mix"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "lively electronic dance song": ["slow-burning and atmospheric beat", "pulsating, groove-centric rhythm track"],
+                "fits into the genre of trophouse (tropical house)": ["blurs boundaries between chillwave and dancehall", "leans into a hybrid of electro-funk and downtempo"]
+            }
+        },
+        "additive": {
+            "caption": "This is a lively electronic dance song that would fit into my club or gym/workout playlists, and I think it fits into the genre of trophouse (tropical house).",
+            "additions": [
+                "A heavy bass drop intensifies the chorus",
+                "Layered marimba rhythms create a dynamic groove",
+                "A vocal sample loops through key sections",
+                "The breakdown includes ambient pads and subtle percussion",
+                "A melodic hook builds gradually towards the climax"
+            ]
+        },
+        "negative": {
+            "caption": "This is a lively electronic dance song that would fit into my club or gym/workout playlists, and I think it fits into the genre of trophouse (tropical house).",
+            "negatives": []
+        }
+    },
+    "991": {
+        "original_caption": "Haunting expansive sound as if you are in space",
+        "subject": {
+            "replace": {
+                "sound as if you are in space": ["echoes from a vast underwater world", "a dreamlike forest at dusk", "an industrial wasteland at dawn"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "Haunting expansive": ["tense and claustrophobic", "serene but unsettling", "fragmented and surreal"],
+                "as if you are in space": ["as if you are lost in a deep cave", "as though floating through a forgotten dream"]
+            }
+        },
+        "additive": {
+            "caption": "Haunting expansive sound as if you are in space",
+            "additions": [
+                "A low rumble persists in the background",
+                "Faint mechanical clicks are scattered throughout",
+                "A distant choir softly hums in intervals",
+                "High-pitched tones fade in and out, adding tension",
+                "The track features an evolving drone"
+            ]
+        },
+        "negative": {
+            "caption": "Haunting expansive sound as if you are in space",
+            "negatives": []
+        }
+    },
+    "242": {
+        "original_caption": "This track features a prominent african style drum beat that later layers on with other atmospheric beats",
+        "subject": {
+            "replace": {
+                "african style drum beat": ["tribal chant-driven rhythm", "percussive electronic loop", "handpan and tabla groove"],
+                "atmospheric beats": ["glitchy rhythmic textures", "reverb-heavy industrial hits", "ambient electronic pulses"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "prominent african style drum beat": ["central, trance-inducing rhythm", "earthy, syncopated percussion"],
+                "layers on with other atmospheric beats": ["merges into dense, shifting rhythms", "transitions into fragmented, abstract sound patterns"]
+            }
+        },
+        "additive": {
+            "caption": "This track features a prominent african style drum beat that later layers on with other atmospheric beats",
+            "additions": [
+                "A melodic marimba line weaves through the rhythm",
+                "Distant, echoing vocals add a haunting element",
+                "The tempo subtly accelerates toward the climax",
+                "Percussive claps punctuate the transitions",
+                "Ambient wind effects enhance the track's depth"
+            ]
+        },
+        "negative": {
+            "caption": "This track features a prominent african style drum beat that later layers on with other atmospheric beats",
+            "negatives": []
+        }
+    },
+    "174": {
+        "original_caption": "Mystical sounding composition of electronic instruments and sound effects, brass and background vocals.",
+        "subject": {
+            "replace": {
+                "electronic instruments": ["organic percussion elements", "acoustic guitar loops", "synthesized drones"],
+                "sound effects": ["ambient noise layers", "distorted field recordings", "mechanical clicks"],
+                "brass": ["string ensemble", "ethereal flute melody", "choral harmonics"],
+                "background vocals": ["spoken word fragments", "vocal whispers", "chanting layers"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "Mystical sounding composition": ["dark and ethereal arrangement", "otherworldly and surreal track"],
+                "electronic instruments and sound effects": ["blended acoustic and synthesized textures", "minimal percussion with sparse harmonic accents"],
+                "brass and background vocals": ["haunting strings and faint vocal echoes", "evolving synth pads and harmonic overtones"]
+            }
+        },
+        "additive": {
+            "caption": "Mystical sounding composition of electronic instruments and sound effects, brass and background vocals.",
+            "additions": [
+                "A deep, resonating bass underpins the track",
+                "Reversed audio effects create a disorienting feel",
+                "Sudden silences enhance the tension",
+                "A recurring melodic motif gives cohesion",
+                "The dynamics shift dramatically during key sections"
+            ]
+        },
+        "negative": {
+            "caption": "Mystical sounding composition of electronic instruments and sound effects, brass and background vocals.",
+            "negatives": []
+        }
+    },
+    "284": {
+        "original_caption": "A snarky, rock male vocalist has a chorused guitar accompaniment; the alt-rock voice gives a powerful delivery and is later harmonized, followed by a full-band performance of the chorus.",
+        "subject": {
+            "replace": {
+                "rock male vocalist": ["spoken-word narrator", "female punk lead singer", "duet with contrasting vocal tones"],
+                "chorused guitar accompaniment": ["synth-driven bassline", "distorted piano riff", "acoustic string arrangement"],
+                "full-band performance of the chorus": ["sparse electronic drop", "group chant climax", "drum-and-bass buildup"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "snarky, rock male vocalist": ["melancholic and brooding vocal tone", "explosive and high-energy vocal"],
+                "powerful delivery": ["detached and hypnotic expression", "gritty, raspy projection"],
+                "chorused guitar accompaniment": ["reverb-soaked, echoing riffs", "staccato plucking with distortion"]
+            }
+        },
+        "additive": {
+            "caption": "A snarky, rock male vocalist has a chorused guitar accompaniment; the alt-rock voice gives a powerful delivery and is later harmonized, followed by a full-band performance of the chorus.",
+            "additions": [
+                "A brief instrumental break showcases a guitar solo",
+                "The drums shift to a half-time groove during the bridge",
+                "Synth pads subtly build atmosphere in the background",
+                "The outro features fading vocal harmonies",
+                "The bassline intensifies during the final chorus"
+            ]
+        },
+        "negative": {
+            "caption": "A snarky, rock male vocalist has a chorused guitar accompaniment; the alt-rock voice gives a powerful delivery and is later harmonized, followed by a full-band performance of the chorus.",
+            "negatives": []
+        }
+    },
+    "340": {
+        "original_caption": "A typical punk rock song of the 2000s, sung by a male voice with a positive and energetic attitude.",
+        "subject": {
+            "replace": {
+                "punk rock song": ["garage rock anthem", "grunge-inspired track", "alternative pop-punk hit"],
+                "male voice": ["female lead vocal", "group shouts and chants", "distorted vocal samples"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "typical punk rock song of the 2000s": ["high-energy track with nostalgic punk elements", "raw, fast-paced rock jam with DIY aesthetics"],
+                "positive and energetic attitude": ["rebellious and intense delivery", "laid-back but defiant mood"]
+            }
+        },
+        "additive": {
+            "caption": "A typical punk rock song of the 2000s, sung by a male voice with a positive and energetic attitude.",
+            "additions": [
+                "A rapid drum fill leads into the chorus",
+                "Distorted power chords drive the rhythm",
+                "A brief bass solo adds a dynamic shift",
+                "The bridge features call-and-response vocals",
+                "The outro fades with sustained guitar feedback"
+            ]
+        },
+        "negative": {
+            "caption": "A typical punk rock song of the 2000s, sung by a male voice with a positive and energetic attitude.",
+            "negatives": []
+        }
+    },
+    "183": {
+        "original_caption": "This is an electronic track with classic snare-roll build up, four-on-the-floor drums and syncopated synth melodies",
+        "subject": {
+            "replace": {
+                "electronic track": ["ambient techno piece", "industrial dance mix", "experimental glitch composition"],
+                "snare-roll build up": ["bass drop transition", "rising arpeggiated chord progression", "percussive breakdown"],
+                "four-on-the-floor drums": ["offbeat tribal rhythm", "syncopated breakbeat", "minimal pulsating bass thumps"],
+                "syncopated synth melodies": ["melodic bass stabs", "repetitive, distorted chime motifs", "glitchy vocal samples"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "classic snare-roll build up": ["intense percussion crescendo", "sporadic rhythmic accents"],
+                "four-on-the-floor drums": ["irregular but hypnotic beat", "dynamic polyrhythmic structure"],
+                "syncopated synth melodies": ["fractured harmonic loops", "drone-like, evolving textures"]
+            }
+        },
+        "additive": {
+            "caption": "This is an electronic track with classic snare-roll build up, four-on-the-floor drums and syncopated synth melodies",
+            "additions": [
+                "A deep, reverberating bassline drives the low end",
+                "High-pitched synth effects punctuate the transitions",
+                "A distorted vocal snippet loops throughout the chorus",
+                "Ambient pads build tension during the breakdown",
+                "Percussive clicks provide additional texture"
+            ]
+        },
+        "negative": {
+            "caption": "This is an electronic track with classic snare-roll build up, four-on-the-floor drums and syncopated synth melodies",
+            "negatives": []
+        }
+    },
+    "616": {
+        "original_caption": "An instrumental song that evokes some kind of a rush to go and declare your love.",
+        "subject": {
+            "replace": {
+                "instrumental song": ["orchestral arrangement", "synth-heavy track", "folk-inspired ballad"],
+                "declare your love": ["pursue a long-lost dream", "escape into a distant adventure", "face an emotional revelation"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "evokes some kind of a rush": ["creates an urgent, pulsing momentum", "elicits a dreamy, euphoric sense of longing"]
+            }
+        },
+        "additive": {
+            "caption": "An instrumental song that evokes some kind of a rush to go and declare your love.",
+            "additions": [
+                "A soaring violin melody enhances the emotional intensity",
+                "Percussive rhythms build in the second half of the track",
+                "Layered synth arpeggios provide an uplifting atmosphere",
+                "A key change emphasizes the climax of the piece",
+                "Ambient choral voices add depth and resonance"
+            ]
+        },
+        "negative": {
+            "caption": "An instrumental song that evokes some kind of a rush to go and declare your love.",
+            "negatives": []
+        }
+    },
+    "598": {
+        "original_caption": "Genre seems like a classical music played with piano and reminds me of a huge church in Europe where they play during daytime",
+        "subject": {
+            "replace": {
+                "classical music played with piano": ["minimalist ambient composition", "baroque-inspired string piece", "modern choral arrangement"],
+                "huge church in Europe": ["ancient temple ruins", "large open-air amphitheater", "mystical forest clearing"],
+                "daytime": ["sunset hour", "midnight service", "early dawn performance"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "classical music played with piano": ["ethereal and meditative soundscape", "structured yet improvisational composition"],
+                "reminds me of a huge church in Europe": ["evokes the vastness of a sacred, resonant hall", "feels like a performance in a secluded, reverberant space"]
+            }
+        },
+        "additive": {
+            "caption": "Genre seems like a classical music played with piano and reminds me of a huge church in Europe where they play during daytime",
+            "additions": [
+                "The piece incorporates subtle organ harmonies",
+                "Reverb enhances the sense of spatial depth",
+                "A delicate string section enters midway through",
+                "The tempo slows down near the climax",
+                "Soft choral voices provide a layered background"
+            ]
+        },
+        "negative": {
+            "caption": "Genre seems like a classical music played with piano and reminds me of a huge church in Europe where they play during daytime",
+            "negatives": []
+        }
+    },
+    "869": {
+        "original_caption": "A great reggae song that is more focused in the giggly samples used for percussion and the child choir that doubles up the main melodic line from the singer. It is more playful, yet melancholic but soothing. It reminds me of a sunny day, on a mediterranean beach, drinking beer and having a very thoughtful conversation with a couple of friends",
+        "subject": {
+            "replace": {
+                "reggae song": ["fusion of tropical house and soul", "folk-inspired acoustic jam", "lo-fi chill groove"],
+                "giggly samples used for percussion": ["clinking glass sounds", "shuffled footstep rhythms", "woodblock and clap layers"],
+                "child choir": ["harmonized synth pads", "whistling melody", "soft humming background vocals"],
+                "mediterranean beach": ["lush mountain retreat", "bustling street market", "quiet lakeside dock"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "playful, yet melancholic but soothing": ["wistful with a dreamy charm", "uplifting but introspective"],
+                "reminds me of a sunny day, on a mediterranean beach": ["evokes a nostalgic evening stroll by the water", "feels like a vibrant afternoon festival"]
+            }
+        },
+        "additive": {
+            "caption": "A great reggae song that is more focused in the giggly samples used for percussion and the child choir that doubles up the main melodic line from the singer. It is more playful, yet melancholic but soothing. It reminds me of a sunny day, on a mediterranean beach, drinking beer and having a very thoughtful conversation with a couple of friends",
+            "additions": [
+                "A subtle bassline grooves in the background",
+                "Birdsong recordings add a natural ambiance",
+                "The bridge introduces a gentle saxophone solo",
+                "A short instrumental break emphasizes rhythm shifts",
+                "The outro features fading layered vocal harmonies"
+            ]
+        },
+        "negative": {
+            "caption": "A great reggae song that is more focused in the giggly samples used for percussion and the child choir that doubles up the main melodic line from the singer. It is more playful, yet melancholic but soothing. It reminds me of a sunny day, on a mediterranean beach, drinking beer and having a very thoughtful conversation with a couple of friends",
+            "negatives": []
+        }
+    },
+    "1008": {
+        "original_caption": "An electronic piece with an optimistic and epic motif. Some sounds are reminiscent of underwater worlds or rain forests as portrayed in movies.",
+        "subject": {
+            "replace": {
+                "electronic piece": ["orchestral hybrid score", "experimental sound collage", "ambient drone composition"],
+                "underwater worlds or rain forests": ["alien landscapes", "futuristic megacities", "desolate lunar terrains"],
+                "movies": ["video game soundtracks", "immersive art installations", "sci-fi audiobooks"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "optimistic and epic motif": ["dark and brooding theme", "mysterious and expansive vibe"],
+                "reminiscent of underwater worlds or rain forests": ["evokes surreal dreamscapes", "suggests vast, unexplored frontiers"]
+            }
+        },
+        "additive": {
+            "caption": "An electronic piece with an optimistic and epic motif. Some sounds are reminiscent of underwater worlds or rain forests as portrayed in movies.",
+            "additions": [
+                "A pulsating bassline drives the rhythm",
+                "High-pitched chime accents enhance transitions",
+                "Synth swells create a rising tension effect",
+                "Percussion subtly builds in the background",
+                "Layered vocal samples add an ethereal quality"
+            ]
+        },
+        "negative": {
+            "caption": "An electronic piece with an optimistic and epic motif. Some sounds are reminiscent of underwater worlds or rain forests as portrayed in movies.",
+            "negatives": []
+        }
+    },
+    "85": {
+        "original_caption": "This is a fast paced, lively track from the singer-songwriter genre featuring acoustic guitars and male vocals singing in French.",
+        "subject": {
+            "replace": {
+                "singer-songwriter genre": ["indie folk scene", "alternative rock style", "lo-fi acoustic production"],
+                "acoustic guitars": ["piano-driven chords", "electric mandolin riffs", "synth textures"],
+                "male vocals singing in French": ["female vocals singing in Spanish", "group harmonies with no lyrics", "spoken-word verses in Italian"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "fast paced, lively track": ["laid-back, introspective composition", "rhythmic and syncopated arrangement"],
+                "featuring acoustic guitars": ["centered on minimal string harmonies", "driven by pulsing electronic elements"]
+            }
+        },
+        "additive": {
+            "caption": "This is a fast paced, lively track from the singer-songwriter genre featuring acoustic guitars and male vocals singing in French.",
+            "additions": [
+                "A tambourine adds rhythm in the background",
+                "The bridge section introduces a brief harmonica solo",
+                "Reverb-laden claps enhance the chorus",
+                "Layered vocal harmonies build during the climax",
+                "A soft bassline anchors the track's momentum"
+            ]
+        },
+        "negative": {
+            "caption": "This is a fast paced, lively track from the singer-songwriter genre featuring acoustic guitars and male vocals singing in French.",
+            "negatives": []
+        }
+    },
+    "162": {
+        "original_caption": "Alternative rock song with electric guitars, drums and vocals and a laid back feel.",
+        "subject": {
+            "replace": {
+                "Alternative rock song": ["dream-pop anthem", "gritty garage band track", "synth-driven post-punk piece"],
+                "electric guitars": ["piano riffs", "synth loops", "orchestral string section"],
+                "drums": ["hand percussion", "ambient rhythmic textures", "electronic drum samples"],
+                "vocals": ["spoken word passages", "vocal samples", "instrumental layers"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "laid back feel": ["tense and atmospheric", "uplifting with a driving rhythm", "melancholic and introspective"]
+            }
+        },
+        "additive": {
+            "caption": "Alternative rock song with electric guitars, drums and vocals and a laid back feel.",
+            "additions": [
+                "The chorus includes soaring harmonized vocals",
+                "A distorted bassline adds depth to the verses",
+                "The bridge features an instrumental breakdown",
+                "Echo effects give the guitars a spacious feel",
+                "The outro fades with layered ambient sounds"
+            ]
+        },
+        "negative": {
+            "caption": "Alternative rock song with electric guitars, drums and vocals and a laid back feel.",
+            "negatives": []
+        }
+    },
+    "558": {
+        "original_caption": "Intellectual rock song in French with a whispered, half-spoken male voice that sounds like it's coming through a radio.",
+        "subject": {
+            "replace": {
+                "rock song": ["art-pop composition", "experimental jazz piece", "ambient electronic track"],
+                "French": ["Italian", "Japanese", "Spanish"],
+                "whispered, half-spoken male voice": ["ethereal female vocal harmonies", "robotic, vocoder-processed narration", "distorted vocal samples"],
+                "sounds like it's coming through a radio": ["filtered as if underwater", "reverberating like in a cathedral", "echoing in a vast empty space"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "Intellectual rock song": ["abstract and minimalist performance", "surreal and genre-blending piece"],
+                "whispered, half-spoken male voice": ["haunting, falsetto-like murmurs", "deep, resonant vocal delivery"]
+            }
+        },
+        "additive": {
+            "caption": "Intellectual rock song in French with a whispered, half-spoken male voice that sounds like it's coming through a radio.",
+            "additions": [
+                "A subtle string section adds depth in the background",
+                "Ambient synth pads provide a haunting atmosphere",
+                "Intermittent static noise punctuates the vocals",
+                "A sudden key change intensifies the bridge",
+                "Percussion fades in gradually as the track progresses"
+            ]
+        },
+        "negative": {
+            "caption": "Intellectual rock song in French with a whispered, half-spoken male voice that sounds like it's coming through a radio.",
+            "negatives": []
+        }
+    },
+    "963": {
+        "original_caption": "House music with a thought provoking message in the beginning that eventually builds up and can be used to create the sense of a social revolution",
+        "subject": {
+            "replace": {
+                "House music": ["techno anthem", "percussive afrobeat groove", "electronic spoken-word composition"],
+                "thought provoking message": ["cryptic vocal samples", "poetic reflections on identity", "radio broadcast excerpts"],
+                "social revolution": ["cultural awakening", "introspective journey", "collective call for unity"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "thought provoking message": ["enigmatic and layered narrative", "philosophical yet abstract dialogue"],
+                "builds up": ["gradually transforms into a chaotic climax", "slowly morphs with unpredictable shifts"],
+                "sense of a social revolution": ["feeling of urgent defiance", "atmosphere of collective empowerment"]
+            }
+        },
+        "additive": {
+            "caption": "House music with a thought provoking message in the beginning that eventually builds up and can be used to create the sense of a social revolution",
+            "additions": [
+                "A marching beat emerges in the second half",
+                "The buildup includes rising synth pads and vocal echoes",
+                "A sudden pause creates a dramatic moment of reflection",
+                "Percussive layers become denser over time",
+                "A distorted bassline underscores the track's message"
+            ]
+        },
+        "negative": {
+            "caption": "House music with a thought provoking message in the beginning that eventually builds up and can be used to create the sense of a social revolution",
+            "negatives": []
+        }
+    },
+    "380": {
+        "original_caption": "This electronic track combines synths with guitar, builds up slowly and then bangs it with a electric guitar solo.",
+        "subject": {
+            "replace": {
+                "electronic track": ["folk-inspired ambient mix", "psychedelic rock piece", "lo-fi experimental soundscape"],
+                "synths with guitar": ["piano with hand percussion", "vocal samples and brass", "orchestral strings and distorted bass"],
+                "electric guitar solo": ["saxophone improvisation", "percussive drum breakdown", "choral vocal climax"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "combines synths with guitar": ["merges atmospheric drones with strings", "blends organic textures with industrial sounds"],
+                "builds up slowly": ["shifts unpredictably through fragmented sections", "starts with chaotic bursts before stabilizing"],
+                "bangs it with a electric guitar solo": ["culminates in layered harmonic dissonance", "closes with a hypnotic rhythmic crescendo"]
+            }
+        },
+        "additive": {
+            "caption": "This electronic track combines synths with guitar, builds up slowly and then bangs it with a electric guitar solo.",
+            "additions": [
+                "A choir enters during the final section",
+                "Ambient noise layers create a surreal atmosphere",
+                "The tempo fluctuates for dramatic effect",
+                "The bridge introduces a glitchy vocal loop",
+                "A sudden silence heightens the impact of the climax"
+            ]
+        },
+        "negative": {
+            "caption": "This electronic track combines synths with guitar, builds up slowly and then bangs it with a electric guitar solo.",
+            "negatives": []
+        }
+    },
+    "688": {
+        "original_caption": "This song features a heavy drum beat, synth bass and piano and has some synthesized back vocals through the end.",
+        "subject": {
+            "replace": {
+                "heavy drum beat": ["minimalist percussion loops", "offbeat clapping rhythms", "layered tribal drums"],
+                "synth bass": ["plucked string harmonics", "distorted electric guitar riffs", "ambient low-frequency drones"],
+                "piano": ["marimba patterns", "harp glissandos", "harmonized brass stabs"],
+                "synthesized back vocals": ["spoken word echoes", "field recording snippets", "filtered choral swells"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "heavy drum beat": ["subtle and syncopated percussion", "erratic and fragmented rhythms"],
+                "synth bass and piano": ["blended analog textures and glitch effects", "airy pads layered with sharp string hits"],
+                "synthesized back vocals": ["distant, ghost-like vocal modulations", "melodic humming interlaced with static"]
+            }
+        },
+        "additive": {
+            "caption": "This song features a heavy drum beat, synth bass and piano and has some synthesized back vocals through the end.",
+            "additions": [
+                "A rising synth arpeggio intensifies toward the climax",
+                "Reversed audio samples provide a disorienting effect",
+                "The track includes a key modulation in the final section",
+                "A deep reverb effect adds space to the percussion",
+                "Ambient noise layers create a textured background"
+            ]
+        },
+        "negative": {
+            "caption": "This song features a heavy drum beat, synth bass and piano and has some synthesized back vocals through the end.",
+            "negatives": []
+        }
+    },
+    "374": {
+        "original_caption": "This energetic rock song starts with a drumstick countdown and has a catchy guitar riff and male vocalist.",
+        "subject": {
+            "replace": {
+                "rock song": ["electronic dance track", "bluesy folk anthem", "synthwave jam"],
+                "drumstick countdown": ["synth tone intro", "ambient noise buildup", "spoken cue"],
+                "guitar riff": ["bass groove", "piano arpeggio", "brass hook"],
+                "male vocalist": ["female harmonized vocals", "spoken word segment", "instrumental lead melody"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "energetic rock song": ["brooding and atmospheric composition", "funk-infused, laid-back groove"],
+                "catchy guitar riff": ["hypnotic, repeating synth motif", "sporadic bursts of distorted sounds"]
+            }
+        },
+        "additive": {
+            "caption": "This energetic rock song starts with a drumstick countdown and has a catchy guitar riff and male vocalist.",
+            "additions": [
+                "A sudden tempo change occurs halfway through",
+                "The chorus includes layered vocal harmonies",
+                "A distorted guitar solo builds intensity",
+                "High-pitched cymbal crashes accentuate the climax",
+                "An ambient outro provides a contrasting soft finish"
+            ]
+        },
+        "negative": {
+            "caption": "This energetic rock song starts with a drumstick countdown and has a catchy guitar riff and male vocalist.",
+            "negatives": []
+        }
+    },
+    
+    "21": {
+        "original_caption": "Rock-pop song recorded with a DAW or composed with MIDI due to its quite not natural sounds.",
+        "subject": {
+            "replace": {
+                "Rock-pop song": ["synthwave track", "electronic ambient composition", "indie dance anthem"],
+                "DAW or composed with MIDI": ["lo-fi tape loop recording", "live improvisational performance", "heavily processed field recording"],
+                "not natural sounds": ["artificial, glitchy textures", "mechanical percussive elements", "warped and fragmented audio effects"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "recorded with a DAW": ["layered with synthetic patterns", "constructed using algorithmic sequences"],
+                "not natural sounds": ["sharp and distorted audio artifacts", "unnerving and robotic sonic qualities"]
+            }
+        },
+        "additive": {
+            "caption": "Rock-pop song recorded with a DAW or composed with MIDI due to its quite not natural sounds.",
+            "additions": [
+                "A looping synth arpeggio drives the rhythm",
+                "Reversed audio effects punctuate transitions",
+                "Vocal samples are heavily modulated throughout",
+                "A resonant bassline underscores the melody",
+                "Glitch effects distort key moments in the track"
+            ]
+        },
+        "negative": {
+            "caption": "Rock-pop song recorded with a DAW or composed with MIDI due to its quite not natural sounds.",
+            "negatives": []
+        }
+    },
+    "683": {
+        "original_caption": "This song starts with a piano that can be heard from far but then gets exciting with guitar and a fast-paced male vocal.",
+        "subject": {
+            "replace": {
+                "piano": ["synth pad", "acoustic drum pattern", "ambient chime"],
+                "guitar": ["brass section", "violin staccato lines", "synth lead"],
+                "male vocal": ["group vocal chants", "spoken word monologue", "female harmonized vocals"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "starts with a piano that can be heard from far": ["opens with a distant echoing synth melody", "begins softly with subtle background noise"],
+                "gets exciting with guitar and a fast-paced male vocal": ["builds into a dense rhythmic section with layered harmonies", "shifts into a frenetic string arrangement and dynamic vocals"]
+            }
+        },
+        "additive": {
+            "caption": "This song starts with a piano that can be heard from far but then gets exciting with guitar and a fast-paced male vocal.",
+            "additions": [
+                "The bridge introduces a key change",
+                "Percussive handclaps add rhythmic variation",
+                "An electronic bassline accentuates the chorus",
+                "Reverb effects create a sense of expanding space",
+                "The track ends with a gradual fade-out of layered instruments"
+            ]
+        },
+        "negative": {
+            "caption": "This song starts with a piano that can be heard from far but then gets exciting with guitar and a fast-paced male vocal.",
+            "negatives": []
+        }
+    },
+    "960": {
+        "original_caption": "Instrumental with a positive vibe mostly on electric guitar that switches between distortion and clean tone",
+        "subject": {
+            "replace": {
+                "electric guitar": ["synth arpeggios", "acoustic piano", "violin melody"],
+                "distortion and clean tone": ["reverberated and compressed effects", "phased and flanged modulations", "staccato and legato variations"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "positive vibe": ["mellow and introspective mood", "tense but uplifting progression"],
+                "switches between distortion and clean tone": ["alternates between airy pads and sharp stabs", "moves between ambient swells and rhythmic bursts"]
+            }
+        },
+        "additive": {
+            "caption": "Instrumental with a positive vibe mostly on electric guitar that switches between distortion and clean tone",
+            "additions": [
+                "A rhythmic bassline reinforces the groove",
+                "Percussive accents punctuate key transitions",
+                "Ambient pads add a sense of atmosphere",
+                "A brief solo section introduces dynamic contrast",
+                "The outro features a fading arpeggio sequence"
+            ]
+        },
+        "negative": {
+            "caption": "Instrumental with a positive vibe mostly on electric guitar that switches between distortion and clean tone",
+            "negatives": []
+        }
+    },
+    "621": {
+        "original_caption": "Pop love song that would accompany perfectly a morning run.",
+        "subject": {
+            "replace": {
+                "Pop love song": ["upbeat synthwave anthem", "folk acoustic track", "lo-fi chillhop beat"],
+                "morning run": ["late-night drive", "relaxing coffee break", "sunset beach walk"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "Pop love song": ["high-energy, dance-inspired composition", "calm, reflective ballad"],
+                "would accompany perfectly a morning run": ["evokes a sense of movement and motivation", "fits a peaceful, introspective moment"]
+            }
+        },
+        "additive": {
+            "caption": "Pop love song that would accompany perfectly a morning run.",
+            "additions": [
+                "A catchy hook repeats throughout the chorus",
+                "Layered harmonies build in the second verse",
+                "A pulsing bassline keeps the rhythm steady",
+                "The bridge introduces a key modulation",
+                "Ambient sound effects provide depth to the intro"
+            ]
+        },
+        "negative": {
+            "caption": "Pop love song that would accompany perfectly a morning run.",
+            "negatives": []
+        }
+    },
+    "227": {
+        "original_caption": "Folk song, countryside music. It is relax, peaceful. Male voice.",
+        "subject": {
+            "replace": {
+                "Folk song, countryside music": ["ambient acoustic ballad", "blues-inspired guitar track", "world fusion piece"],
+                "Male voice": ["female vocalist with soft timbre", "group vocal harmonies", "instrumental with melodic lead"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "relax, peaceful": ["haunting and reflective", "uplifting and rhythmic", "nostalgic with a wistful tone"]
+            }
+        },
+        "additive": {
+            "caption": "Folk song, countryside music. It is relax, peaceful. Male voice.",
+            "additions": [
+                "The track includes subtle harmonica accents",
+                "A string section enriches the chorus",
+                "Gentle hand percussion adds a steady rhythm",
+                "Ambient nature sounds provide a background atmosphere",
+                "The outro features a soft guitar arpeggio"
+            ]
+        },
+        "negative": {
+            "caption": "Folk song, countryside music. It is relax, peaceful. Male voice.",
+            "negatives": []
+        }
+    },
+    "8": {
+        "original_caption": "This song is an acoustic singer-songwriter track with female vocals, bluesy harmonies, and trite lyrics; it sounds like something you’d hear at a coffee shop open mic.",
+        "subject": {
+            "replace": {
+                "acoustic singer-songwriter track": ["lo-fi indie pop composition", "minimalist folk-inspired instrumental", "jazzy vocal ballad"],
+                "female vocals": ["male lead vocals", "duet with alternating voices", "spoken-word interludes"],
+                "bluesy harmonies": ["ethereal vocal layering", "syncopated jazz chord progressions", "melodic synth counterpoints"],
+                "coffee shop open mic": ["intimate house concert", "downtown street performance", "art gallery ambient music"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "trite lyrics": ["poetically abstract verses", "emotionally raw storytelling"],
+                "bluesy harmonies": ["haunting and atmospheric vocal arrangements", "bright and upbeat melodic refrains"]
+            }
+        },
+        "additive": {
+            "caption": "This song is an acoustic singer-songwriter track with female vocals, bluesy harmonies, and trite lyrics; it sounds like something you’d hear at a coffee shop open mic.",
+            "additions": [
+                "A light tambourine keeps rhythm in the background",
+                "A short piano riff fills in between vocal lines",
+                "Reverb effects create a warm, intimate atmosphere",
+                "An instrumental break features fingerpicked guitar",
+                "The track fades out with layered vocal harmonies"
+            ]
+        },
+        "negative": {
+            "caption": "This song is an acoustic singer-songwriter track with female vocals, bluesy harmonies, and trite lyrics; it sounds like something you’d hear at a coffee shop open mic.",
+            "negatives": []
+        }
+    },
+    "4": {
+        "original_caption": "Jazzy song with organs, a warm guitar lead, repetitive bassline, triangle on percussion, and drumming, reminiscent of an underground jazz bar.",
+        "subject": {
+            "replace": {
+                "Jazzy song": ["fusion groove track", "ambient downtempo composition", "experimental soundscape"],
+                "organs": ["synth pads", "piano chords", "brass stabs"],
+                "warm guitar lead": ["plucked harp melody", "saxophone improvisation", "synth arpeggio"],
+                "repetitive bassline": ["syncopated bass riffs", "subtle low-frequency drones", "pulsating electronic bass"],
+                "triangle on percussion": ["hand claps", "hi-hat cymbals", "woodblock accents"],
+                "underground jazz bar": ["sunlit outdoor terrace", "smoky blues club", "late-night electronic lounge"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "warm guitar lead": ["crisp, staccato melody", "soft, ambient swells"],
+                "repetitive bassline": ["complex, shifting groove", "minimal, drone-like undertones"],
+                "reminiscent of an underground jazz bar": ["evoking a mysterious, candlelit lounge", "suggestive of a retro cocktail party"]
+            }
+        },
+        "additive": {
+            "caption": "Jazzy song with organs, a warm guitar lead, repetitive bassline, triangle on percussion, and drumming, reminiscent of an underground jazz bar.",
+            "additions": [
+                "A brief flute solo highlights the bridge",
+                "Layered ambient noise adds atmospheric depth",
+                "The drums incorporate a subtle brush technique",
+                "The outro features a slow fade-out with echo effects",
+                "Intermittent vocal samples provide additional texture"
+            ]
+        },
+        "negative": {
+            "caption": "Jazzy song with organs, a warm guitar lead, repetitive bassline, triangle on percussion, and drumming, reminiscent of an underground jazz bar.",
+            "negatives": []
+        }
+    },
+    "509": {
+        "original_caption": "This song has a sweet melody made of electronic organs and is accompanied with a salient drumkit.",
+        "subject": {
+            "replace": {
+                "electronic organs": ["plucked synth arpeggios", "soft piano chords", "reverberated string samples"],
+                "salient drumkit": ["ambient percussion loops", "syncopated handclaps", "deep bass kicks"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "sweet melody": ["haunting, atmospheric tune", "uplifting, rhythmic motif"],
+                "salient drumkit": ["minimal percussive elements", "pulsating, layered beats"]
+            }
+        },
+        "additive": {
+            "caption": "This song has a sweet melody made of electronic organs and is accompanied with a salient drumkit.",
+            "additions": [
+                "The track features a rising synth pad during the chorus",
+                "A subtle bassline fills the low end",
+                "The percussion includes shakers and subtle cymbals",
+                "Layered vocal samples add harmonic texture",
+                "The bridge introduces an echoing bell sound"
+            ]
+        },
+        "negative": {
+            "caption": "This song has a sweet melody made of electronic organs and is accompanied with a salient drumkit.",
+            "negatives": []
+        }
+    },
+    "277": {
+        "original_caption": "Starting with an electric piano with tremolo, playing jazzy lines as synthetic string pads and bongos provide backdrop; the complex chords drop out to ease into a boom-bap drum groove. Nice track for relaxing and taking a bath after a long day.",
+        "subject": {
+            "replace": {
+                "electric piano with tremolo": ["filtered synth lead", "acoustic guitar with reverb"],
+                "synthetic string pads": ["choir harmonies", "ambient brass swells"],
+                "bongos": ["shakers", "tabla percussion"],
+                "boom-bap drum groove": ["trip-hop beat", "syncopated funk rhythm"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "jazzy lines": ["minimalist, ambient phrases", "hypnotic, repetitive motifs"],
+                "complex chords": ["dissonant, layered harmonies", "simple, airy progressions"],
+                "Nice track for relaxing and taking a bath": ["ideal for a late-night meditation", "perfect for zoning out on a long drive"]
+            }
+        },
+        "additive": {
+            "caption": "Starting with an electric piano with tremolo, playing jazzy lines as synthetic string pads and bongos provide backdrop; the complex chords drop out to ease into a boom-bap drum groove. Nice track for relaxing and taking a bath after a long day.",
+            "additions": [
+                "A deep, resonant bassline anchors the groove",
+                "Subtle percussion builds towards the bridge",
+                "A soft flute solo provides a melodic highlight",
+                "The outro features atmospheric field recordings",
+                "A rhythmic hand clap pattern emerges near the climax"
+            ]
+        },
+        "negative": {
+            "caption": "Starting with an electric piano with tremolo, playing jazzy lines as synthetic string pads and bongos provide backdrop; the complex chords drop out to ease into a boom-bap drum groove. Nice track for relaxing and taking a bath after a long day.",
+            "negatives": []
+        }
+    },
+    "642": {
+        "original_caption": "A very energetic and bright funk rock song which features a noticeably solid guitar licks.",
+        "subject": {
+            "replace": {
+                "funk rock song": ["jazz-fusion anthem", "electro-funk groove", "alternative indie track"],
+                "guitar licks": ["horn section riffs", "synth bass leads", "vocal scat phrases"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "very energetic and bright": ["raw and punchy", "smooth and laid-back with dynamic bursts"],
+                "noticeably solid": ["intricate and complex", "subtle but effective"]
+            }
+        },
+        "additive": {
+            "caption": "A very energetic and bright funk rock song which features a noticeably solid guitar licks.",
+            "additions": [
+                "A slap bassline enhances the groove",
+                "Layered claps emphasize key beats",
+                "A wah-wah pedal effect colors the guitar tone",
+                "The bridge includes a call-and-response vocal section",
+                "A saxophone solo provides a vibrant climax"
+            ]
+        },
+        "negative": {
+            "caption": "A very energetic and bright funk rock song which features a noticeably solid guitar licks.",
+            "negatives": []
+        }
+    },
+    "458": {
+        "original_caption": "Expressive classical piano piece typical of the Romantic period with an intense dramatic feel.",
+        "subject": {
+            "replace": {
+                "classical piano piece": ["modern minimalist piano composition", "ambient soundscape with piano accents", "orchestral piano concerto"],
+                "Romantic period": ["early 20th-century impressionist style", "contemporary experimental era", "Baroque-inspired arrangement"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "expressive": ["subdued and introspective", "bold and theatrical"],
+                "intense dramatic feel": ["ethereal and dreamlike atmosphere", "playful and lighthearted tone"]
+            }
+        },
+        "additive": {
+            "caption": "Expressive classical piano piece typical of the Romantic period with an intense dramatic feel.",
+            "additions": [
+                "A soft violin section accompanies the melody",
+                "Subtle dynamic shifts create emotional tension",
+                "The composition features rapid arpeggios",
+                "Ambient reverb enhances the spatial depth",
+                "A recurring thematic motif ties the piece together"
+            ]
+        },
+        "negative": {
+            "caption": "Expressive classical piano piece typical of the Romantic period with an intense dramatic feel.",
+            "negatives": []
+        }
+    },
+    "914": {
+        "original_caption": "Smooth chill electronic music featuring calming flute and techno beats.",
+        "subject": {
+            "replace": {
+                "chill electronic music": ["ambient downtempo track", "lo-fi experimental mix", "synth-driven dreamscape"],
+                "calming flute": ["echoing marimba", "soft vocal pads", "resonant cello harmonies"],
+                "techno beats": ["trip-hop grooves", "organic hand percussion", "syncopated bass rhythms"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "smooth chill": ["haunting and hypnotic", "bright and rhythmic"],
+                "calming flute": ["subtle, airy instrumentation", "repetitive melodic layers"]
+            }
+        },
+        "additive": {
+            "caption": "Smooth chill electronic music featuring calming flute and techno beats.",
+            "additions": [
+                "Ambient sound effects enhance the atmosphere",
+                "A deep sub-bass underscores the rhythm",
+                "The track includes gentle chime accents",
+                "A gradual tempo shift adds dynamic progression",
+                "Layered synths create a lush, evolving soundscape"
+            ]
+        },
+        "negative": {
+            "caption": "Smooth chill electronic music featuring calming flute and techno beats.",
+            "negatives": []
+        }
+    },
+    "118": {
+        "original_caption": "With its upbeat pop sound, catchy female vocals, and samba-infused Latin instrumentation, this lively and energetic song is sure to get you moving and grooving with its infectious rhythms, making it the perfect party anthem or summertime jam.",
+        "subject": {
+            "replace": {
+                "upbeat pop sound": ["funk-inspired groove", "electronic house beat", "soulful R&B vibe"],
+                "catchy female vocals": ["male rap verses", "harmonized vocal layers", "instrumental lead melody"],
+                "samba-infused Latin instrumentation": ["Caribbean steel drums", "Afrobeat-inspired percussion", "jazzy brass accents"],
+                "party anthem or summertime jam": ["festival opener", "late-night club track", "road trip soundtrack"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "upbeat pop sound": ["laid-back and chilled-out", "intense and rhythmically complex"],
+                "lively and energetic": ["smooth and hypnotic", "bold and theatrical"],
+                "infectious rhythms": ["off-kilter grooves", "steady, understated pulses"]
+            }
+        },
+        "additive": {
+            "caption": "With its upbeat pop sound, catchy female vocals, and samba-infused Latin instrumentation, this lively and energetic song is sure to get you moving and grooving with its infectious rhythms, making it the perfect party anthem or summertime jam.",
+            "additions": [
+                "A horn section accentuates the chorus",
+                "Layered percussion builds toward the bridge",
+                "A melodic guitar riff adds texture to the verses",
+                "Ambient crowd noise creates a festival-like atmosphere",
+                "The outro features a call-and-response vocal section"
+            ]
+        },
+        "negative": {
+            "caption": "With its upbeat pop sound, catchy female vocals, and samba-infused Latin instrumentation, this lively and energetic song is sure to get you moving and grooving with its infectious rhythms, making it the perfect party anthem or summertime jam.",
+            "negatives": []
+        }
+    },
+    "817": {
+        "original_caption": "Mixture of styles, including African, Brit Pop, Country Pop, and commercial cleaning products.",
+        "subject": {
+            "replace": {
+                "African": ["Caribbean reggae", "Middle Eastern folk", "South American samba"],
+                "Brit Pop": ["alternative rock", "indie electronic", "classic soul"],
+                "Country Pop": ["bluegrass fusion", "urban contemporary", "psychedelic folk"],
+                "commercial cleaning products": ["quirky ad jingle samples", "abstract sound effects", "vintage radio broadcast clips"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "Mixture of styles": ["genre-bending and experimental blend", "eclectic combination of influences"],
+                "commercial cleaning products": ["odd yet playful audio snippets", "unexpected, surreal sound elements"]
+            }
+        },
+        "additive": {
+            "caption": "Mixture of styles, including African, Brit Pop, Country Pop, and commercial cleaning products.",
+            "additions": [
+                "Percussive rhythms layer to create a complex groove",
+                "A distorted synth riff bridges the genres",
+                "An ambient soundscape fills the background",
+                "Vocals shift between spoken word and melodic singing",
+                "The structure includes multiple tempo changes"
+            ]
+        },
+        "negative": {
+            "caption": "Mixture of styles, including African, Brit Pop, Country Pop, and commercial cleaning products.",
+            "negatives": []
+        }
+    },
+    "311": {
+        "original_caption": "Uplifting House with generic female vocals. Typical breakdown/drop pattern.",
+        "subject": {
+            "replace": {
+                "House": ["techno-inspired dance track", "disco-infused electronic groove", "ambient club mix"],
+                "generic female vocals": ["auto-tuned male falsetto", "vocal chops and samples", "spoken-word interludes"],
+                "breakdown/drop pattern": ["gradual tempo shift", "sudden rhythmic pause", "extended instrumental interlude"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "Uplifting": ["introspective and mellow", "energetic and chaotic"],
+                "Typical breakdown/drop pattern": ["unconventional structure with unpredictable shifts", "smooth, continuous progression"]
+            }
+        },
+        "additive": {
+            "caption": "Uplifting House with generic female vocals. Typical breakdown/drop pattern.",
+            "additions": [
+                "A filtered synth sweep builds anticipation",
+                "Percussive layers become denser toward the climax",
+                "Ambient pads add atmospheric depth to the breakdown",
+                "A melodic hook repeats throughout the drop",
+                "The bassline shifts subtly in the final chorus"
+            ]
+        },
+        "negative": {
+            "caption": "Uplifting House with generic female vocals. Typical breakdown/drop pattern.",
+            "negatives": []
+        }
+    },
+    "1082": {
+        "original_caption": "French song with male voices and some guitars jamming together",
+        "subject": {
+            "replace": {
+                "French song": ["Spanish flamenco piece", "African highlife track", "Italian folk ballad"],
+                "male voices": ["female vocal harmonies", "spoken word narration", "duet with alternating vocals"],
+                "guitars jamming together": ["piano and strings interplay", "synth loops and bass grooves", "horn section improvisation"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "male voices": ["deep, resonant vocal tones", "light, airy harmonized singing"],
+                "guitars jamming together": ["syncopated acoustic strumming", "layered, echoing instrumental sections"]
+            }
+        },
+        "additive": {
+            "caption": "French song with male voices and some guitars jamming together",
+            "additions": [
+                "A gentle accordion line adds a melodic counterpoint",
+                "Subtle percussion enhances the rhythm",
+                "Ambient background sounds provide a live-session feel",
+                "A brief guitar solo highlights the bridge",
+                "The outro features layered vocal harmonies"
+            ]
+        },
+        "negative": {
+            "caption": "French song with male voices and some guitars jamming together",
+            "negatives": []
+        }
+    },
+    "831": {
+        "original_caption": "Hopeful instrumental with guitar being the lead and tabla used for percussion in the middle giving a feeling of going somewhere with positive outlook",
+        "subject": {
+            "replace": {
+                "guitar being the lead": ["piano arpeggios taking the lead", "violin melodies driving the composition", "synth pads leading the progression"],
+                "tabla used for percussion": ["hand drums creating rhythmic textures", "shakers and electronic beats", "djembe providing deep percussion"],
+                "instrumental": ["electronic ambient track", "orchestral arrangement", "folk-inspired melody"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "hopeful": ["dreamy and introspective", "energetic and uplifting"],
+                "giving a feeling of going somewhere with positive outlook": ["evoking a sense of nostalgia and possibility", "suggesting a peaceful yet dynamic journey"]
+            }
+        },
+        "additive": {
+            "caption": "Hopeful instrumental with guitar being the lead and tabla used for percussion in the middle giving a feeling of going somewhere with positive outlook",
+            "additions": [
+                "A subtle flute line enhances the melody",
+                "Background ambient textures build atmosphere",
+                "A crescendo leads into a key change near the climax",
+                "Soft choral pads provide harmonic depth",
+                "The bridge section introduces a rhythmic breakdown"
+            ]
+        },
+        "negative": {
+            "caption": "Hopeful instrumental with guitar being the lead and tabla used for percussion in the middle giving a feeling of going somewhere with positive outlook",
+            "negatives": []
+        }
+    },
+    "356": {
+        "original_caption": "A modern folk ballad with two acoustic guitars, a male soft voice and harmonies in the chorus. After the first verse there is an acoustic guitar solo.",
+        "subject": {
+            "replace": {
+                "modern folk ballad": ["acoustic indie anthem", "ethereal dream-folk track", "lo-fi country-inspired piece"],
+                "two acoustic guitars": ["mandolin and banjo duet", "fingerpicked harp and guitar", "electric guitar and soft strings"],
+                "male soft voice": ["female lead vocals", "duet with contrasting vocal tones", "spoken word segments"],
+                "acoustic guitar solo": ["flute improvisation", "soft piano interlude", "violin solo"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "modern folk ballad": ["nostalgic and earthy composition", "dynamic and haunting acoustic track"],
+                "male soft voice": ["whispery and intimate vocal delivery", "rich and resonant baritone"]
+            }
+        },
+        "additive": {
+            "caption": "A modern folk ballad with two acoustic guitars, a male soft voice and harmonies in the chorus. After the first verse there is an acoustic guitar solo.",
+            "additions": [
+                "A gentle tambourine adds a light rhythm",
+                "The chorus includes layered reverb effects",
+                "Background nature sounds subtly enhance the ambiance",
+                "A recurring melodic motif provides continuity",
+                "The outro features a gradual fade-out of harmonies"
+            ]
+        },
+        "negative": {
+            "caption": "A modern folk ballad with two acoustic guitars, a male soft voice and harmonies in the chorus. After the first verse there is an acoustic guitar solo.",
+            "negatives": []
+        }
+    },
+    "272": {
+        "original_caption": "An instrumental electronic track, with a dark atmosphere, a two-measure basic beat using a characteristic rim shot snare, electronic percussions and synths, with a simple synth riff on top. The track develops using crescendos and diminuendos of sound materials.",
+        "subject": {
+            "replace": {
+                "instrumental electronic track": ["ambient techno composition", "lo-fi experimental beat", "minimalist glitch piece"],
+                "dark atmosphere": ["ethereal and dreamy ambiance", "intense, industrial vibe"],
+                "characteristic rim shot snare": ["clap-like percussive accents", "reverb-heavy kick thumps"],
+                "electronic percussions and synths": ["processed field recordings", "organic drum samples and analog synths"],
+                "simple synth riff on top": ["layered arpeggios", "dissonant harmonic progression"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "dark atmosphere": ["haunting, suspenseful tone", "serene yet eerie mood"],
+                "simple synth riff": ["complex and evolving motif", "sporadic, glitch-like melody"],
+                "develops using crescendos and diminuendos": ["builds through subtle texture shifts", "unfolds with dynamic tempo changes"]
+            }
+        },
+        "additive": {
+            "caption": "An instrumental electronic track, with a dark atmosphere, a two-measure basic beat using a characteristic rim shot snare, electronic percussions and synths, with a simple synth riff on top. The track develops using crescendos and diminuendos of sound materials.",
+            "additions": [
+                "A deep, pulsating bassline enhances the lower frequencies",
+                "Ambient noise textures provide an evolving backdrop",
+                "The middle section introduces a distorted vocal sample",
+                "Synth pads add atmospheric layers in the breakdown",
+                "Percussive clicks and glitches increase intensity in the final section"
+            ]
+        },
+        "negative": {
+            "caption": "An instrumental electronic track, with a dark atmosphere, a two-measure basic beat using a characteristic rim shot snare, electronic percussions and synths, with a simple synth riff on top. The track develops using crescendos and diminuendos of sound materials.",
+            "negatives": []
+        }
+    },
+    "925": {
+        "original_caption": "This track will remind you to the techno trance peak era.",
+        "subject": {
+            "replace": {
+                "techno trance peak era": ["early house music scene", "rave culture of the 90s", "progressive electronic festivals"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "remind you to the techno trance peak era": ["evoke the energy of underground dance clubs", "capture the essence of late-night festival sets"]
+            }
+        },
+        "additive": {
+            "caption": "This track will remind you to the techno trance peak era.",
+            "additions": [
+                "A pulsating bassline drives the rhythm",
+                "High-energy arpeggios build towards the climax",
+                "Synth sweeps create a rising tension",
+                "Repetitive vocal samples loop throughout the track",
+                "A breakdown section adds atmospheric sound layers"
+            ]
+        },
+        "negative": {
+            "caption": "This track will remind you to the techno trance peak era.",
+            "negatives": []
+        }
+    },
+    "901": {
+        "original_caption": "This is a calm swing music with drums, synth and trumpet responding to each other and makes you want to bounce.",
+        "subject": {
+            "replace": {
+                "swing music": ["downtempo electronic jam", "minimal jazz-fusion piece", "funk-inspired instrumental"],
+                "drums, synth and trumpet": ["percussion loops, ambient pads, and saxophone", "handclaps, bass guitar, and electric piano"],
+                "responding to each other": ["interweaving in an evolving pattern", "layering to form a textured atmosphere"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "calm swing music": ["hypnotic and rhythmic composition", "playful and unpredictable groove"],
+                "makes you want to bounce": ["evokes a sense of floating", "inspires subtle head-nodding"]
+            }
+        },
+        "additive": {
+            "caption": "This is a calm swing music with drums, synth and trumpet responding to each other and makes you want to bounce.",
+            "additions": [
+                "A bassline subtly anchors the rhythm",
+                "The track includes occasional vibraphone accents",
+                "Ambient noise textures create depth in the background",
+                "A brief trumpet solo adds a melodic highlight",
+                "The outro fades with a layered synth pad"
+            ]
+        },
+        "negative": {
+            "caption": "This is a calm swing music with drums, synth and trumpet responding to each other and makes you want to bounce.",
+            "negatives": []
+        }
+    },
+    "473": {
+        "original_caption": "A chilled out guitar and piano ballad with a gentle snare drum backing.",
+        "subject": {
+            "replace": {
+                "guitar and piano ballad": ["synth-driven ambient track", "folk-inspired acoustic duet", "lo-fi electronic composition"],
+                "gentle snare drum backing": ["subtle hi-hat rhythms", "soft hand percussion", "minimal electronic beats"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "chilled out": ["dreamy and introspective", "uplifting and steady-paced"],
+                "gentle snare drum backing": ["sporadic percussive accents", "repetitive, ambient pulses"]
+            }
+        },
+        "additive": {
+            "caption": "A chilled out guitar and piano ballad with a gentle snare drum backing.",
+            "additions": [
+                "A subtle string section adds harmonic depth",
+                "Soft vocal harmonies appear in the chorus",
+                "A bassline quietly reinforces the rhythm",
+                "Reverb effects give the track a spacious feel",
+                "The outro features a fading piano arpeggio"
+            ]
+        },
+        "negative": {
+            "caption": "A chilled out guitar and piano ballad with a gentle snare drum backing.",
+            "negatives": []
+        }
+    },
+    "49": {
+        "original_caption": "Reflective and strong major scale piano chords lead into a hall of light strings, airy guitar strums, and an upbeat drum kit. A simulated distorted electric guitar solo pervades before the arrangement starts a minor bridge, leading into an authentic progressive rock electric guitar solo.",
+        "subject": {
+            "replace": {
+                "major scale piano chords": ["complex jazz piano voicings", "subtle, repetitive synth arpeggios"],
+                "light strings": ["ambient synth pads", "vibraphone accents"],
+                "airy guitar strums": ["reverberated harp plucks", "muted bass riffs"],
+                "upbeat drum kit": ["syncopated electronic percussion", "minimal drum machine beats"],
+                "simulated distorted electric guitar solo": ["filtered saxophone improvisation", "synth lead melody with heavy modulation"],
+                "authentic progressive rock electric guitar solo": ["avant-garde cello section", "multi-layered synth solo"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "reflective and strong": ["haunting and delicate", "vivid and rhythmic"],
+                "hall of light strings": ["expansive soundscape of atmospheric tones", "layered, cinematic orchestral buildup"],
+                "airy guitar strums": ["crisp, rhythmic plucks", "soft, ethereal textures"]
+            }
+        },
+        "additive": {
+            "caption": "Reflective and strong major scale piano chords lead into a hall of light strings, airy guitar strums, and an upbeat drum kit. A simulated distorted electric guitar solo pervades before the arrangement starts a minor bridge, leading into an authentic progressive rock electric guitar solo.",
+            "additions": [
+                "A dynamic tempo shift occurs during the bridge",
+                "The outro fades with sustained reverb effects",
+                "Percussion gradually layers for increased tension",
+                "A short, melancholic flute melody fills a transition",
+                "Harmonic vocal layers enhance the track's climax"
+            ]
+        },
+        "negative": {
+            "caption": "Reflective and strong major scale piano chords lead into a hall of light strings, airy guitar strums, and an upbeat drum kit. A simulated distorted electric guitar solo pervades before the arrangement starts a minor bridge, leading into an authentic progressive rock electric guitar solo.",
+            "negatives": []
+        }
+    },
+    "966": {
+        "original_caption": "A rock song that starts with western movie style guitar, features gruff male vocals.",
+        "subject": {
+            "replace": {
+                "rock song": ["blues-inspired ballad", "psychedelic folk anthem", "experimental indie track"],
+                "western movie style guitar": ["reverb-soaked surf guitar", "acoustic fingerpicking", "synth-driven lead melody"],
+                "gruff male vocals": ["soft female harmonies", "spoken-word narration", "distorted vocal samples"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "western movie style guitar": ["haunting, echoing guitar tones", "fast-paced, rhythmic strumming"],
+                "gruff male vocals": ["melodic and dreamy vocal delivery", "deep and resonant baritone with reverb"]
+            }
+        },
+        "additive": {
+            "caption": "A rock song that starts with western movie style guitar, features gruff male vocals.",
+            "additions": [
+                "A harmonica solo bridges the middle section",
+                "The chorus includes dynamic vocal harmonies",
+                "An electric bassline drives the rhythm",
+                "The outro features layered percussion effects",
+                "Ambient noise adds depth to the track's atmosphere"
+            ]
+        },
+        "negative": {
+            "caption": "A rock song that starts with western movie style guitar, features gruff male vocals.",
+            "negatives": []
+        }
+    },
+    "782": {
+        "original_caption": "Upbeat rock guitar song with a punk feel about love",
+        "subject": {
+            "replace": {
+                "rock guitar song": ["synthwave anthem", "folk-punk acoustic track", "electro-rock fusion"],
+                "punk feel": ["grunge-inspired vibe", "garage rock aesthetic", "new wave rhythmic structure"],
+                "about love": ["centered on rebellion", "exploring themes of self-discovery", "reflecting on nostalgia and youth"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "upbeat": ["raw and high-energy", "melancholic with a driving tempo"],
+                "punk feel": ["sophisticated but edgy", "gritty with chaotic undertones"]
+            }
+        },
+        "additive": {
+            "caption": "Upbeat rock guitar song with a punk feel about love",
+            "additions": [
+                "A bass guitar groove emphasizes the rhythm",
+                "The chorus includes shouted group vocals",
+                "A brief drum solo adds intensity to the bridge",
+                "Distorted guitar riffs build tension throughout",
+                "The outro fades with repeated vocal hooks"
+            ]
+        },
+        "negative": {
+            "caption": "Upbeat rock guitar song with a punk feel about love",
+            "negatives": []
+        }
+    },
+    "811": {
+        "original_caption": "1950s New York police caper movie. Or music for a commercial about cat food.",
+        "subject": {
+            "replace": {
+                "1950s New York police caper movie": ["1970s detective TV series", "retro noir film set in Los Angeles", "quirky romantic comedy soundtrack"],
+                "music for a commercial about cat food": ["theme music for a children's cartoon", "background for a vintage fashion ad", "score for a travel documentary"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "1950s New York police caper movie": ["fast-paced and suspenseful with jazz influences", "dramatic yet playful with retro vibes"],
+                "music for a commercial about cat food": ["lighthearted and whimsical with catchy motifs", "laid-back and slightly comical ambiance"]
+            }
+        },
+        "additive": {
+            "caption": "1950s New York police caper movie. Or music for a commercial about cat food.",
+            "additions": [
+                "A saxophone solo intensifies during key moments",
+                "Percussive elements mimic footsteps and city sounds",
+                "Trumpet fanfares create a sense of urgency",
+                "The track transitions into a slower, contemplative section",
+                "Playful xylophone accents provide a comedic touch"
+            ]
+        },
+        "negative": {
+            "caption": "1950s New York police caper movie. Or music for a commercial about cat food.",
+            "negatives": []
+        }
+    },
+    "838": {
+        "original_caption": "Rock song starting with guitar line, with a catchy refrain.",
+        "subject": {
+            "replace": {
+                "Rock song": ["folk-pop anthem", "synth-heavy new wave track", "blues-inspired jam"],
+                "guitar line": ["bass-driven intro", "piano arpeggios", "ambient synth pads"],
+                "catchy refrain": ["repetitive instrumental motif", "haunting vocal chorus", "dynamic rhythmic shift"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "catchy refrain": ["soaring melodic climax", "understated yet memorable hook"],
+                "starting with guitar line": ["opening with atmospheric noise", "launching with a sharp drum fill"]
+            }
+        },
+        "additive": {
+            "caption": "Rock song starting with guitar line, with a catchy refrain.",
+            "additions": [
+                "A short instrumental solo follows the second verse",
+                "The chorus features harmonized backing vocals",
+                "Subtle percussion fills add depth to the rhythm",
+                "A distorted guitar riff intensifies the bridge",
+                "The outro includes a gradual fade-out of layered instruments"
+            ]
+        },
+        "negative": {
+            "caption": "Rock song starting with guitar line, with a catchy refrain.",
+            "negatives": []
+        }
+    },
+    "347": {
+        "original_caption": "Peaceful sounding lo-fi I guess, it gives a feeling of security",
+        "subject": {
+            "replace": {
+                "lo-fi": ["ambient soundscape", "minimalist acoustic piece", "chillhop groove"],
+                "feeling of security": ["sense of nostalgia", "atmosphere of calm introspection", "feeling of gentle warmth"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "peaceful sounding": ["hauntingly serene", "melancholic but comforting"],
+                "gives a feeling of security": ["evokes a meditative stillness", "inspires quiet contemplation"]
+            }
+        },
+        "additive": {
+            "caption": "Peaceful sounding lo-fi I guess, it gives a feeling of security",
+            "additions": [
+                "Soft vinyl crackle adds a nostalgic texture",
+                "A subtle bassline anchors the melody",
+                "Light percussive clicks keep a gentle rhythm",
+                "Ambient background sounds enhance the atmosphere",
+                "A brief piano motif repeats throughout the track"
+            ]
+        },
+        "negative": {
+            "caption": "Peaceful sounding lo-fi I guess, it gives a feeling of security",
+            "negatives": []
+        }
+    },
+    "518": {
+        "original_caption": "A song inviting to feel and live the present moment and enjoy.",
+        "subject": {
+            "replace": {
+                "song": ["instrumental track", "spoken-word piece", "uplifting anthem"],
+                "present moment": ["inner peace", "boundless freedom", "unfiltered emotions"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "inviting to feel and live the present moment": ["encouraging deep reflection", "sparking a sense of adventure"],
+                "enjoy": ["embrace the unknown", "immerse oneself in spontaneous joy"]
+            }
+        },
+        "additive": {
+            "caption": "A song inviting to feel and live the present moment and enjoy.",
+            "additions": [
+                "A soft guitar riff underscores the message",
+                "Ambient nature sounds provide a grounding backdrop",
+                "Uplifting vocal harmonies accentuate the chorus",
+                "A subtle build-up in tempo energizes the second half",
+                "A spoken mantra repeats throughout the track"
+            ]
+        },
+        "negative": {
+            "caption": "A song inviting to feel and live the present moment and enjoy.",
+            "negatives": []
+        }
+    },
+    "144": {
+        "original_caption": "Dull Blues song with a salient female vocal.",
+        "subject": {
+            "replace": {
+                "Blues song": ["jazz-infused ballad", "folk-inspired track", "minimalist soul composition"],
+                "female vocal": ["male baritone voice", "group vocal harmonies", "spoken word narration"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "dull": ["slow and introspective", "melancholic and restrained"],
+                "salient": ["haunting and evocative", "subtle but emotionally gripping"]
+            }
+        },
+        "additive": {
+            "caption": "Dull Blues song with a salient female vocal.",
+            "additions": [
+                "A soft harmonica underscores the chorus",
+                "The track includes a brief piano solo",
+                "Ambient reverb gives the vocals a spacious feel",
+                "A steady bassline reinforces the rhythm",
+                "The bridge features layered vocal harmonies"
+            ]
+        },
+        "negative": {
+            "caption": "Dull Blues song with a salient female vocal.",
+            "negatives": []
+        }
+    },
+    "986": {
+        "original_caption": "Romantic piano solo piece with a lot of rubato, in the style of Chopin",
+        "subject": {
+            "replace": {
+                "piano solo piece": ["orchestral string arrangement", "guitar etude", "synth-based ambient track"],
+                "in the style of Chopin": ["reminiscent of Debussy", "inspired by modern neoclassical trends", "evoking jazz improvisation techniques"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "romantic": ["haunting and introspective", "bright and playful"],
+                "a lot of rubato": ["strictly rhythmic", "sporadic tempo fluctuations"]
+            }
+        },
+        "additive": {
+            "caption": "Romantic piano solo piece with a lot of rubato, in the style of Chopin",
+            "additions": [
+                "Subtle string harmonies enhance the main theme",
+                "A crescendo builds toward the climax",
+                "The piece features delicate trills and arpeggios",
+                "The dynamics shift dramatically between sections",
+                "An ambient reverb creates a dreamlike atmosphere"
+            ]
+        },
+        "negative": {
+            "caption": "Romantic piano solo piece with a lot of rubato, in the style of Chopin",
+            "negatives": []
+        }
+    },
+    "1095": {
+        "original_caption": "Instrumental song with a sad but intense romantic Latin vibe, the melody is carried by a piano.",
+        "subject": {
+            "replace": {
+                "Instrumental song": ["orchestral composition", "acoustic folk ballad", "electronic downtempo track"],
+                "romantic Latin vibe": ["nostalgic Mediterranean atmosphere", "upbeat Caribbean rhythm", "melancholic tango-inspired tone"],
+                "piano": ["classical guitar", "violin solo", "synth lead"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "sad but intense romantic Latin vibe": ["haunting and reflective ambiance", "joyful and rhythmic yet wistful mood"],
+                "carried by a piano": ["driven by intricate guitar lines", "highlighted by a soaring violin"]
+            }
+        },
+        "additive": {
+            "caption": "Instrumental song with a sad but intense romantic Latin vibe, the melody is carried by a piano.",
+            "additions": [
+                "Soft percussion underscores the rhythm",
+                "A subtle string section provides harmonic support",
+                "The track includes a brief, expressive guitar solo",
+                "Ambient sounds enhance the atmosphere",
+                "A dynamic tempo shift occurs in the bridge"
+            ]
+        },
+        "negative": {
+            "caption": "Instrumental song with a sad but intense romantic Latin vibe, the melody is carried by a piano.",
+            "negatives": []
+        }
+    },
+    "196": {
+        "original_caption": "This instrumental song is so calm that makes me feel sleepy",
+        "subject": {
+            "replace": {
+                "instrumental song": ["ambient soundscape", "minimalist piano composition", "acoustic lullaby"],
+                "makes me feel sleepy": ["induces a meditative state", "encourages peaceful reflection", "evokes a sense of tranquility"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "so calm": ["hypnotic and atmospheric", "subdued and dreamlike"],
+                "makes me feel sleepy": ["creates a serene, floating sensation", "inspires a deep sense of relaxation"]
+            }
+        },
+        "additive": {
+            "caption": "This instrumental song is so calm that makes me feel sleepy",
+            "additions": [
+                "Gentle nature sounds provide background ambiance",
+                "Soft string harmonies subtly enhance the melody",
+                "A slow, repetitive piano motif carries the structure",
+                "Ambient synth pads give the track a spacious feel",
+                "A faint chime rings periodically, adding texture"
+            ]
+        },
+        "negative": {
+            "caption": "This instrumental song is so calm that makes me feel sleepy",
+            "negatives": []
+        }
+    },
+    "468": {
+        "original_caption": "French-language song with a jazzy, late-night vibe featuring a male duet.",
+        "subject": {
+            "replace": {
+                "French-language song": ["Spanish-language ballad", "instrumental jazz fusion track", "electronic lounge piece"],
+                "jazzy, late-night vibe": ["bluesy and introspective mood", "funk-inspired, upbeat rhythm"],
+                "male duet": ["female soloist", "vocal quartet", "spoken word narration"]
+            }
+        },
+        "qualificative": {
+            "replace": {
+                "jazzy, late-night vibe": ["haunting and atmospheric", "playful with a light groove"],
+                "featuring a male duet": ["with alternating vocal lines", "highlighting soft instrumental solos"]
+            }
+        },
+        "additive": {
+            "caption": "French-language song with a jazzy, late-night vibe featuring a male duet.",
+            "additions": [
+                "A saxophone improvisation enhances the outro",
+                "Subtle piano chords provide harmonic support",
+                "A rhythmic bassline keeps a steady groove",
+                "Soft cymbal brushes add texture to the percussion",
+                "The track includes a brief instrumental bridge"
+            ]
+        },
+        "negative": {
+            "caption": "French-language song with a jazzy, late-night vibe featuring a male duet.",
+            "negatives": []
+        }
+    }    
+}

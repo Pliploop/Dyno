@@ -1,0 +1,6 @@
+# Launch Gradio retrieval app as a SageMaker Processing job.
+# Use: python launch_gradio.py sagemaker=gradio [overrides]
+# Like launch.yaml: pass sagemaker=gradio on the CLI to compose sagemaker/gradio.
+defaults:
+  - gradio
+  - sagemaker: gradio  # pass on CLI: python launch_gradio.py sagemaker=gradio

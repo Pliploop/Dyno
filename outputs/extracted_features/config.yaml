@@ -1,0 +1,95 @@
+task_name: extract_feature_lit_local
+seed: 42
+paths:
+  root_dir: .
+  data_dir: ./data
+  log_dir: ./logs/
+  pretrained: ./pretrained
+  output_dir: /Users/Juj/Diff-GAR/logs/xps/52afd83f
+  ckpt_dir: /Users/Juj/Diff-GAR/logs/xps/52afd83f/checkpoints
+input_dir: s3://maml-datasets/fawn/audio/commercial-400k-v1
+save_dir: ./outputs/extracted_features
+root_path: ./data
+extract_method: get_audio_embedding_from_data
+out_key: embedding_proj
+hop: 48000
+limit_n: 10
+save: true
+batch_size: 2
+num_workers: 0
+target_n_samples: 96000
+target_sr: 48000
+return_full_audio: true
+state_file: ./dataloader_state.pt
+cache_dir: null
+storage_options: null
+cache_files: false
+recompute_index: false
+data:
+  _target_: gdr.dataloading.dataloaders.TextAudioDataModule
+  datasets: {}
+  batch_size: 2
+  num_workers: 2
+trainer:
+  _target_: lightning.pytorch.trainer.Trainer
+  accelerator: auto
+  strategy: auto
+  devices: auto
+  num_nodes: 1
+  precision: null
+  inference_mode: true
+  use_distributed_sampler: true
+  logger: null
+  callbacks: null
+  enable_progress_bar: true
+  enable_model_summary: false
+  enable_checkpointing: false
+  max_epochs: null
+  max_steps: 10000000000
+  fast_dev_run: false
+  num_sanity_val_steps: 0
+  deterministic: null
+  benchmark: null
+  sync_batchnorm: false
+model:
+  audio_encoder:
+    _target_: gdr.models.ldm.text_encoders.CLAPAudioEncoder
+    clap_kws:
+      enable_fusion: false
+      amodel: HTSAT-base
+      device: cpu
+    clap_ckpt: pretrained/music_audioset_epoch_15_esc_90.14.pt
+    ckpt_path: null
+    freeze: true
+  text_encoder:
+    _target_: gdr.models.ldm.text_encoders.CLAPTextEncoder
+    clap_kws:
+      enable_fusion: false
+      amodel: HTSAT-base
+      device: cpu
+    clap_ckpt: pretrained/music_audioset_epoch_15_esc_90.14.pt
+    ckpt_path: null
+    freeze: true
+  _target_: gdr.models.ldm.diffusion.LightningGDR
+dora:
+  dir: ./logs/
+  exclude:
+  - callbacks.*
+  - data.local_dir
+  - data.num_workers
+  - data.dataloader_kwargs.pin_memory
+  - data.dataloader_kwargs.prefetch_factor
+  - data.dataloader.persistent_workers
+  - extras.*
+  - logger.*
+  - model.compile
+  - paths.*
+  - trainer.accelerator
+  - trainer.devices
+  - trainer.check_val_every_n_epoch
+  - trainer.default_root_dir
+  - trainer.min_epochs
+  - trainer.num_sanity_val_steps
+  - trainer.log_every_n_steps
+  - resume
+  git_save: false

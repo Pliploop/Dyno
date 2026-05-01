@@ -1,0 +1,66 @@
+base_name: extract-feature
+job_name: ${sagemaker.processor.base_job_name}-${now:%Y%m%d%H%M%S}
+s3_data: s3://maml-aimcdt/datasets/
+
+# processing_input:
+#   destination: /opt/ml/processing/input
+#   s3_data_type: ManifestFile
+#   s3_input_mode: File
+#   s3_data_distribution_type: ShardedByS3Key
+#   s3_data: s3://maml-aimcdt/datasets/SLAP2/upmm2/umpg-uppm-prod-music-assets-manifest.jsonl
+
+
+# Old S3Prefix-based input config (commented out)
+processing_input:
+  destination: /opt/ml/processing/input
+  s3_data_type: S3Prefix
+  s3_input_mode: File
+  s3_data_distribution_type: ShardedByS3Key
+  # s3_data: s3://maml-datasets/fawn/audio/commercial-400k-v1
+  # s3_data: s3://maml-aimcdt/datasets/ytm8/ytm8
+  s3_data: s3://maml-aimcdt/datasets/maxcaps_/maxcaps
+
+processing_output:
+  source: /opt/ml/processing/output
+  destination: s3://maml-aimcdt/datasets/GDR-Training/MuQ/maxcaps
+  s3_upload_mode: Continuous
+
+processor:  # TODO: set region and account ID dynamically
+  image_uri: 427750820708.dkr.ecr.us-east-1.amazonaws.com/maml_gdr2:latest
+  instance_count: 4
+  role: maml-sagemaker
+  instance_type: ml.g5.4xlarge
+  # volume_size_in_gb: 1024
+  # volume_size_in_gb: 1024
+  # instance_type: ml.p5.4xlarge  # 1 H100, 4 TB, 7$/h 
+  base_job_name: extract-feature
+  tags:
+    Application-Code: APP91069
+    Application-Name: MAML
+    Name: ${sagemaker.base_name}
+    Owner: ${oc.env:USER,null}
+  entrypoint:
+    - python
+    - gdr/extract_dataset.py
+
+
+
+
+# processor:  # TODO: set region and account ID dynamically
+#   image_uri: 427750820708.dkr.ecr.us-east-1.amazonaws.com/maml_slap:latest
+#   role: maml-sagemaker
+#   instance_count: 1
+#   # instance_type: ml.g5.4xlarge   # 1 A10G, 600 GB, 1.7$/h
+#   instance_type: ml.g5.8xlarge   # 1 A10G, 900 GB, 2.4$/h
+#   # instance_type: ml.g5.16xlarge  # 1 A10G, 2 TB, 4.1$/h
+#   base_job_name: ${sagemaker.base_name}-preproc
+#   env:
+#     LIT_CACHE_LIMIT: 500GB
+#   tags:
+#     Application-Code: APP91069
+#     Application-Name: MAML
+#     Name: ${sagemaker.base_name}
+#     Owner: ${oc.env:USER,null}
+#   entrypoint:
+#     - python
+#     - src/preproc.py

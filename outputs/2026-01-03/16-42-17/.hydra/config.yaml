@@ -1,0 +1,47 @@
+data:
+  _target_: gdr.dataloading.dataloaders.TextAudioDataModule
+  datasets:
+    folder:
+      get_annotations_function: gdr.dataloading.dataloaders.get_folder_annotations
+      task_kwargs:
+        data_path: /opt/ml/processing/input
+      preextracted_features: false
+      truncate_preextracted: 64
+      batch_size: 32
+      num_workers: 4
+paths:
+  root_dir: /opt/ml/code
+  data_dir: /opt/ml/input/data
+  log_dir: ${paths.root_dir}/logs/
+  pretrained: ${paths.root_dir}/pretrained
+  output_dir: ${dora:xp.folder}
+  ckpt_dir: /opt/ml/checkpoints
+sagemaker:
+  base_name: extract-feature
+  job_name: ${sagemaker.processor.base_job_name}-${now:%Y%m%d%H%M%S}
+  s3_data: s3://maml-aimcdt/datasets/
+  processing_input:
+    destination: /opt/ml/processing/input
+    s3_data_type: S3Prefix
+    s3_input_mode: File
+    s3_data_distribution_type: ShardedByS3Key
+    s3_data: s3://maml-datasets/fawn/audio/commercial-400k-v1
+  processing_output:
+    source: /opt/ml/processing/output
+    destination: s3://maml-aimcdt/datasets/GDR-Training/CLAP/commercial-400k-v1
+    s3_upload_mode: Continuous
+  processor:
+    image_uri: 427750820708.dkr.ecr.us-east-1.amazonaws.com/maml_gdr2:latest
+    instance_count: 50
+    role: maml-sagemaker
+    instance_type: ml.m5.4xlarge
+    volume_size_in_gb: 1024
+    base_job_name: extract-feature
+    tags:
+      Application-Code: APP91069
+      Application-Name: MAML
+      Name: ${sagemaker.base_name}
+      Owner: ${oc.env:USER,null}
+    entrypoint:
+    - python
+    - gdr/extract_dataset.py

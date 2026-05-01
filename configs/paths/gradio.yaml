@@ -1,0 +1,8 @@
+defaults:
+  - default
+
+root_dir: /opt/ml/code
+
+data_dir: /opt/ml/processing/input
+
+ckpt_dir: /opt/ml/checkpoints

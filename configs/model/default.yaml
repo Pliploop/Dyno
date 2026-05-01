@@ -1,0 +1,65 @@
+
+defaults:
+  - backbone: default
+  - audio_encoder: default
+  - text_encoder: default
+
+
+_target_: gdr.models.ldm.diffusion.LightningGDR
+
+
+# Model checkpoint and freezing
+ckpt_path: null
+freeze: false
+
+# Classifier-free guidance strength (used during training for CFG masking)
+cfg: 0.1
+
+# Guidance engine configuration
+# When null (default), CFGGuidanceEngine will be automatically created using the backbone.
+# To use a custom guidance algorithm, implement BaseGuidanceEngine and set it here.
+# Note: Engines can be instantiated without backbone/text_encoder dependencies to avoid duplication.
+#       The backbone will be set automatically from the model's backbone instance.
+guidance_engine: 
+  _target_: gdr.models.ldm.engines.CFGGuidanceEngine
+# Example: Using the default CFG engine explicitly (no dependencies needed - will be set automatically):
+# guidance_engine:
+#   _target_: gdr.models.ldm.engines.CFGGuidanceEngine
+
+# Edit engine configuration
+# When null (default), DDIMInversionEditEngine will be automatically created using 
+# backbone, text_encoder, and guidance_engine.
+# To use a custom editing algorithm (e.g., PNDM, DPM-Solver), implement BaseEditEngine 
+# and set it here.
+# Note: Engines can be instantiated without backbone/text_encoder dependencies to avoid duplication.
+#       Dependencies will be set automatically from the model's instances.
+edit_engine: 
+  _target_: gdr.models.ldm.engines.DDIMInversionEditEngine
+# Example: Using the default DDIM inversion engine explicitly (no dependencies needed):
+# edit_engine:
+#   _target_: gdr.models.ldm.engines.DDIMInversionEditEngine
+
+# Additional parameters passed via kwargs
+preextracted_latents: true
+retrieval_every_n_epochs: 1000  # Don't run during test
+
+# Optimizer configuration (will be instantiated in configure_optimizers with model parameters)
+# Using _partial_ to prevent Hydra from instantiating it during model creation
+optimizer:
+  _target_: torch.optim.AdamW
+  _partial_: true
+  lr: 0.0001
+  weight_decay: 0.0001
+  betas: [0.9, 0.999]
+  # Note: 'params' will be added automatically in configure_optimizers()
+
+# Learning rate scheduler configuration (will be instantiated in configure_optimizers with optimizer)
+# Using _partial_ to create a partial function instead of instantiating during model creation
+scheduler:
+  _target_: gdr.models.utils.schedulers.CosineDecayWithLinearWarmup
+  _partial_: true
+  warmup_steps: 10000
+  max_steps: ${trainer.max_steps}
+  base_lr: 0.0001
+  final_lr: 0.00001
+  # Note: 'optimizer' will be added automatically in configure_optimizers()

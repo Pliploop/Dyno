@@ -1,0 +1,7 @@
+_target_: gdr.models.ldm.text_encoders.HuggingFaceTextEncoder
+model_name: chandar-lab/NeoBERT  # 270M encoder, 270M decoder
+ckpt_path: null
+freeze: false
+max_length: 256 
+trust_remote_code: true
+

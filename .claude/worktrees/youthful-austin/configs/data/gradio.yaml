@@ -1,0 +1,60 @@
+# Data configuration for inference with maxcaps as test dataset
+_target_: gdr.dataloading.dataloaders.TextAudioDataModule
+name: gradio
+
+# Only maxcaps dataset as test
+datasets:
+  
+  maxcaps:
+    _target_: gdr.dataloading.datasets.TextAudioDataset
+    get_annotations_function: "gdr.dataloading.dataloaders.get_maxcaps_annotations"
+    task_kwargs:
+      data_path: ${paths.data_dir}/maxcaps
+      csv_path: s3://maml-aimcdt/datasets/GDR-Training/maxcaps.csv
+    split: test
+    preextracted_features: ${data.preextracted_features}
+    truncate_preextracted: ${data.truncate_preextracted}
+
+  # validation datasets
+  song_describer_val:
+    _target_: gdr.dataloading.datasets.TextAudioDataset
+    get_annotations_function: "gdr.dataloading.dataloaders.get_song_describer_annotations"
+    task_kwargs:
+      data_path: ${paths.data_dir}/song_describer
+      csv_path: s3://maml-aimcdt/datasets/GDR-Training/song_describer.csv
+    split: test
+    root_dir: /import/research_c4dm/jpmg86/song-describer/data/audio
+    new_dir: ${paths.data_dir}/song_describer
+    preextracted_features: ${data.preextracted_features}
+    truncate_preextracted: ${data.truncate_preextracted}
+
+  musiccaps_val:
+    _target_: gdr.dataloading.datasets.TextAudioDataset
+    get_annotations_function: "gdr.dataloading.dataloaders.get_musiccaps_annotations"
+    task_kwargs:
+      data_path: ${paths.data_dir}/musiccaps
+      csv_path: s3://maml-aimcdt/datasets/GDR-Training/musiccaps.csv
+    split: test
+    root_dir: /import/c4dm-datasets/musiccaps/musiccaps_10s
+    new_dir: ${paths.data_dir}/musiccaps
+    preextracted_features: ${data.preextracted_features}
+    truncate_preextracted: ${data.truncate_preextracted}
+
+  yt8m_val:
+    _target_: gdr.dataloading.datasets.TextAudioDataset
+    get_annotations_function: "gdr.dataloading.dataloaders.get_yt8m_annotations"
+    task_kwargs:
+      data_path: ${paths.data_dir}/yt8m
+      csv_path: s3://maml-aimcdt/datasets/GDR-Training/yt8m.csv
+    split: test
+    root_dir: /import/c4dm-datasets/yt8m
+    new_dir: ${paths.data_dir}/yt8m
+    preextracted_features: ${data.preextracted_features}
+    truncate_preextracted: ${data.truncate_preextracted}
+
+
+batch_size: 1  # Small batch size for inference
+num_workers: 1  # No workers needed for inference
+preextracted_features: true
+truncate_preextracted: 64
+

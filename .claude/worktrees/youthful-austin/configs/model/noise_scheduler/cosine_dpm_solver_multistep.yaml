@@ -1,0 +1,14 @@
+_target_: diffusers.schedulers.CosineDPMSolverMultistepScheduler
+euler_at_final: false
+final_sigmas_type: zero
+lower_order_final: true
+num_train_timesteps: 1000
+prediction_type: epsilon
+rho: 7.0
+sigma_data: 1.0
+sigma_max: 500
+sigma_min: 0.3
+sigma_schedule: exponential
+solver_order: 2
+solver_type: midpoint
+

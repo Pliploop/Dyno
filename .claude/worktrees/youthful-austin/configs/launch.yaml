@@ -1,0 +1,5 @@
+defaults:
+# override default cluster to aws
+  - train
+  - cluster: aws
+  # - sagemaker: default

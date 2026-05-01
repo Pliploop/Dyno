@@ -1,0 +1,9 @@
+_target_: gdr.models.muleT5.muleT5.MULE
+encoder: null  # Can be specified as a dict config if needed
+head_dims: [[1728, 1728, 512]]
+temperature: 0.1
+feat_extract_head: 0
+plusplus: false
+ckpt_path: null  # Specify path to pretrained MULE checkpoint
+freeze: true
+

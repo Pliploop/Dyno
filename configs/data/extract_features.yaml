@@ -1,0 +1,21 @@
+
+_target_: gdr.dataloading.dataloaders.TextAudioDataModule
+
+# Data overrides - folder extraction (no specific task)
+datasets:
+  folder:
+    _target_: gdr.dataloading.datasets.TextAudioDataset
+    get_annotations_function: gdr.dataloading.dataloaders.get_folder_annotations
+    task_kwargs:
+      data_path: /opt/ml/processing/input
+    split: train
+    preextracted_features: false
+    return_text: false
+  
+batch_size: 8
+num_workers: 8
+preextracted_features: false
+truncate_preextracted: 64
+return_text: false
+
+    

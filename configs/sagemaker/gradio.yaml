@@ -1,0 +1,50 @@
+# SageMaker Processing config for Gradio retrieval app.
+# Use with: python launch_gradio.py sagemaker=gradio [overrides]
+# Entrypoint is gdr/gradio_retrieval_app.py (like gdr/train.py for training).
+
+base_name: gradio-retrieval
+job_name: ${sagemaker.processor.base_job_name}-${now:%Y%m%d%H%M%S}
+s3_data: s3://maml-aimcdt/datasets/
+
+# Optional: mount data for retrieval (uncomment and set s3_data if needed)
+processing_input:
+  - input_name: song_describer
+    s3_data: s3://maml-aimcdt/datasets/GDR-Training/CLAP/song_describer/
+    destination: /opt/ml/processing/input/song_describer
+    s3_data_type: S3Prefix
+    s3_input_mode: File
+    s3_data_distribution_type: FullyReplicated
+  - input_name: musiccaps
+    s3_data: s3://maml-aimcdt/datasets/GDR-Training/CLAP/musiccaps/
+    destination: /opt/ml/processing/input/musiccaps
+    s3_data_type: S3Prefix
+    s3_input_mode: File
+    s3_data_distribution_type: FullyReplicated
+  - input_name: yt8m
+    s3_data: s3://maml-aimcdt/datasets/GDR-Training/CLAP/yt8m/
+    destination: /opt/ml/processing/input/yt8m
+    s3_data_type: S3Prefix
+    s3_input_mode: File
+    s3_data_distribution_type: FullyReplicated
+  - input_name: maxcaps
+    s3_data: s3://maml-aimcdt/datasets/GDR-Training/CLAP/maxcaps/
+    destination: /opt/ml/processing/input/maxcaps
+    s3_data_type: S3Prefix
+    s3_input_mode: File
+    s3_data_distribution_type: FullyReplicated
+
+processor:
+  image_uri: 427750820708.dkr.ecr.us-east-1.amazonaws.com/maml_gdr2:latest
+  instance_count: 1
+  role: maml-sagemaker
+  instance_type: ml.g5.4xlarge
+  base_job_name: gradio-retrieval
+  tags:
+    Application-Code: APP91069
+    Application-Name: MAML
+    Name: ${sagemaker.base_name}
+    Owner: ${oc.env:USER,null}
+  env: {}
+  entrypoint:
+    - python
+    - gdr/gradio_retrieval_app.py

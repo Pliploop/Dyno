@@ -1,0 +1,11 @@
+[submodule "diffgar/models/clap"]
+	path = diffgar/models/clap
+	url = https://github.com/Pliploop/CLAP.git
+	branch = diffgar
+[submodule "diffgar/models/muscall"]
+	path = diffgar/models/muscall
+	url = https://github.com/Pliploop/muscall.git
+[submodule "gdr/models/clap"]
+	path = gdr/models/clap
+	url = https://github.com/Pliploop/CLAP.git
+	branch = diffgar

@@ -1,0 +1,34 @@
+base_name: slap
+job_name: ${sagemaker.processor.base_job_name}-${now:%Y%m%d%H%M%S}
+# s3_data: s3://maml-datasets
+s3_data: s3://maml-aimcdt/datasets
+
+processing_input:
+  destination: /opt/ml/processing/input/data/${data.name}
+  s3_data_type: ManifestFile
+  s3_input_mode: File
+  s3_data_distribution_type: ShardedByS3Key
+
+processing_output:
+  source: /opt/ml/processing/output/data
+  destination: ${sagemaker.s3_data}/litdata
+  s3_upload_mode: Continuous
+
+processor:  # TODO: set region and account ID dynamically
+  image_uri: 427750820708.dkr.ecr.us-east-1.amazonaws.com/maml_slap:latest
+  role: maml-sagemaker
+  instance_count: 1
+  # instance_type: ml.g5.4xlarge   # 1 A10G, 600 GB, 1.7$/h
+  instance_type: ml.g5.8xlarge   # 1 A10G, 900 GB, 2.4$/h
+  # instance_type: ml.g5.16xlarge  # 1 A10G, 2 TB, 4.1$/h
+  base_job_name: ${sagemaker.base_name}-preproc
+  env:
+    LIT_CACHE_LIMIT: 500GB
+  tags:
+    Application-Code: APP91069
+    Application-Name: MAML
+    Name: ${sagemaker.base_name}
+    Owner: ${oc.env:USER,null}
+  entrypoint:
+    - python
+    - src/preproc.py

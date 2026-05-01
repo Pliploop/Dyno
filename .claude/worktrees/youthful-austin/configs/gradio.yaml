@@ -1,0 +1,38 @@
+# @package _global_
+
+defaults:
+  - _self_
+  - data: gradio
+  - paths: default
+  - hydra: default
+  - dora: default
+  - logger: wandb
+  - trainer: default
+  - extras: default
+  
+  # optional local config for machine/user specific settings
+  - optional local: default
+
+task_name: "gradio_retrieval"
+
+# seed for random number generators in pytorch, numpy and python.random
+seed: 42
+
+# device for inference
+device: cuda:0
+
+# Model will be overridden from WandB run config
+model: null
+
+# WandB selection options (can be overridden from CLI)
+wandb:
+  entity: ${logger.wandb.entity}
+  project: ${logger.wandb.project}
+  tags:
+    - gradio
+
+# Retrieval options
+top_k: 10
+preextracted_features: true
+num_samples_per_prompt: 1
+

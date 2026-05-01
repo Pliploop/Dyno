@@ -1,0 +1,184 @@
+seed: 42
+train: true
+test: false
+resume: false
+ckpt_path: null
+paths:
+  root_dir: .
+  data_dir: ${paths.root_dir}/data
+  ckpt_dir: ${paths.output_dir}/checkpoints
+  output_dir: ${dora:xp.folder}
+  log_dir: ${paths.root_dir}/logs/
+  pretrained: ${paths.root_dir}/pretrained
+trainer:
+  _target_: lightning.pytorch.Trainer
+  accelerator: gpu
+  devices: 1
+  max_steps: 20000
+  log_every_n_steps: 1
+  num_sanity_val_steps: 0
+  enable_checkpointing: false
+  enable_progress_bar: true
+  enable_model_summary: true
+  precision: 16-mixed
+callbacks:
+  model_summary:
+    _target_: lightning.pytorch.callbacks.RichModelSummary
+    max_depth: 1
+  progress:
+    _target_: lightning.pytorch.callbacks.progress.RichProgressBar
+    refresh_rate: 1
+  generation:
+    _target_: gdr.callbacks.generation.GenerationCallback
+    enable_on_validation: true
+    enable_on_test: true
+    every_n_epochs: 1
+  teacher_retrieval:
+    _target_: gdr.callbacks.retrieval.TeacherRetrieval
+    thresholds:
+    - 1
+    - 5
+    - 10
+    enable_on_validation: true
+    enable_on_test: true
+    every_n_epochs: 1
+  teacher_score:
+    _target_: gdr.callbacks.retrieval.TeacherScore
+    enable_on_validation: true
+    enable_on_test: true
+    every_n_epochs: 1
+  gen_retrieval:
+    _target_: gdr.callbacks.retrieval.GenRetrieval
+    thresholds:
+    - 1
+    - 5
+    - 10
+    enable_on_validation: true
+    enable_on_test: true
+    every_n_epochs: 1
+  gen_score:
+    _target_: gdr.callbacks.retrieval.GenScore
+    enable_on_validation: true
+    enable_on_test: true
+    every_n_epochs: 1
+logger:
+  wandb:
+    _target_: lightning.pytorch.loggers.wandb.WandbLogger
+    save_dir: ${paths.output_dir}
+    offline: false
+    project: GDR2
+    log_model: false
+    save_code: true
+    prefix: ''
+    entity: jul-guinot
+    tags: []
+    job_type: ''
+data:
+  _target_: gdr.dataloading.dataloaders.TextAudioDataModule
+  datasets:
+    musiccaps:
+      _target_: gdr.dataloading.datasets.TextAudioDataset
+      get_annotations_function: gdr.dataloading.dataloaders.get_musiccaps_annotations
+      task_kwargs:
+        data_path: /data3/scratch/acw749/datasets/musiccaps/musiccaps_10s
+        csv_path: /data3/scratch/acw749/datasets/musiccaps/musiccaps-public.csv
+      split: train
+      root_dir: /data3/scratch/acw749/datasets/musiccaps/musiccaps_10s
+      new_dir: /data3/scratch/acw749/datasets/musiccaps/clap/musiccaps_10s
+      target_n_samples: 96000
+      target_sr: 48000
+      return_audio: true
+      return_text: true
+      preextracted_features: true
+      truncate_preextracted: 32
+    musiccaps_val:
+      _target_: gdr.dataloading.datasets.TextAudioDataset
+      get_annotations_function: gdr.dataloading.dataloaders.get_musiccaps_annotations
+      task_kwargs:
+        data_path: /data3/scratch/acw749/datasets/musiccaps/musiccaps_10s
+        csv_path: /data3/scratch/acw749/datasets/musiccaps/musiccaps-public.csv
+      split: val
+      root_dir: /data3/scratch/acw749/datasets/musiccaps/musiccaps_10s
+      new_dir: /data3/scratch/acw749/datasets/musiccaps/clap/musiccaps_10s
+      target_n_samples: 96000
+      target_sr: 48000
+      return_audio: true
+      return_text: true
+      preextracted_features: true
+      truncate_preextracted: 32
+  batch_size: 32
+  num_workers: 8
+  preextracted_features: true
+  truncate_preextracted: 32
+model:
+  _target_: gdr.models.ldm.diffusion.LightningGDR
+  audio_encoder:
+    _target_: gdr.models.ldm.text_encoders.CLAPAudioEncoder
+    clap_kws:
+      enable_fusion: false
+      amodel: HTSAT-base
+      device: cpu
+    clap_ckpt: gdr/models/pretrained_ckpt/CLAP/music_audioset_epoch_15_esc_90.14.pt
+    ckpt_path: null
+    freeze: true
+  text_encoder:
+    _target_: gdr.models.ldm.text_encoders.CLAPTextEncoder
+    clap_kws:
+      enable_fusion: false
+      amodel: HTSAT-base
+      device: cpu
+    clap_ckpt: gdr/models/pretrained_ckpt/CLAP/music_audioset_epoch_15_esc_90.14.pt
+    ckpt_path: null
+    freeze: true
+  noise_scheduler:
+    _target_: diffusers.DDPMScheduler.from_pretrained
+    pretrained_model_name_or_path: cvssp/audioldm2
+    subfolder: scheduler
+    prediction_type: epsilon
+  backbone:
+    _target_: gdr.models.ldm.transformer.TransformerBackbone
+    in_channels: 512
+    out_channels: 512
+    sample_size: 64
+    num_layers: 8
+    num_single_layers: 6
+    inner_dim: 1024
+    num_attention_heads: 8
+    cond_dim: 768
+    timestep_guidance_channels: 256
+    mlp_ratio: 3.0
+    axes_dims_rope:
+    - 128
+    rope_theta: 2000
+    eps: 1.0e-06
+    use_classifier_free_guidance: true
+    embedding_max_length: 77
+  ckpt_path: null
+  freeze: false
+  cfg: 0.1
+  preextracted_latents: true
+  retrieval_every_n_epochs: 1000
+  optimizer:
+    _target_: torch.optim.AdamW
+    _partial_: true
+    lr: 0.0001
+    weight_decay: 0.0001
+    betas:
+    - 0.9
+    - 0.999
+  scheduler:
+    _target_: gdr.models.utils.schedulers.CosineDecayWithLinearWarmup
+    _partial_: true
+    warmup_steps: 1000
+    max_steps: ${trainer.max_steps}
+    base_lr: 0.0001
+    final_lr: 1.0e-05
+extras:
+  ignore_warnings: false
+  enforce_tags: false
+  print_config: true
+tags:
+- test
+- refactor_validation
+task_name: test_refactor
+optimized_metric: null

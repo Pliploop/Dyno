@@ -1,0 +1,5 @@
+_target_: gdr.models.ldm.text_encoders.T5TextEncoder
+model_name: google-t5/t5-base  # Can be changed to t5-small, t5-large, etc.
+ckpt_path: null
+freeze: true
+

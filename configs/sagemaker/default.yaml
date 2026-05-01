@@ -1,0 +1,29 @@
+base_name: gdr2
+job_name: ${sagemaker.estimator.base_job_name}-${now:%Y%m%d%H%M%S}
+s3_data: s3://maml-aimcdt/datasets
+
+training_input:
+  distribution: FullyReplicated
+  input_mode: File
+  s3_data: s3://maml-aimcdt/datasets/GDR-Training/CLAP/
+
+estimator:  # TODO: set region and account ID dynamically
+  image_uri: 427750820708.dkr.ecr.us-east-1.amazonaws.com/maml_gdr2:latest
+  role: maml-sagemaker
+  instance_count: 1
+  # instance_type: ml.g6.xlarge   # 1 L4, 250 GB, 1$/h
+  # instance_type: ml.g6.12xlarge   # 4 L4, 4 TB, 4.6$/h
+  # instance_type: ml.g6e.12xlarge
+  volume_size_in_gb: 1024
+  # instance_type: ml.p5.4xlarge  # 1 H100, 4 TB, 7$/h 
+  max_run: 360000  # 10 days  # 1200  # 20min for now, just to try it out  # job timeout in seconds, corresponds to 5 days, the maximum available
+  output_path: s3://maml-aimcdt/${sagemaker.base_name}/logs/${dora:xp.sig}
+  base_job_name: ${sagemaker.base_name}-${dora:xp.sig}
+  tags:
+    Application-Code: APP91069
+    Application-Name: MAML
+    Name: ${sagemaker.base_name}
+    Owner: ${oc.env:USER,null}
+  checkpoint_s3_uri: ${sagemaker.estimator.output_path}/checkpoints  # we map /opt/ml/checkpoints to the checkpoints_dir of the corresponding xp
+  enable_sagemaker_metrics: true
+  entry_point: gdr/train.py

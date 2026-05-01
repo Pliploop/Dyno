@@ -1,0 +1,16 @@
+_target_: gdr.models.ldm.transformer.TransformerBackbone
+in_channels: 512
+out_channels: 512
+sample_size: 64  # Sequence length
+num_layers: 10  # Number of dual stream transformer layers
+num_single_layers: 4  # Number of single stream transformer layers
+inner_dim: 1536  # Inner dimension for the transformer
+num_attention_heads: 16  # Number of attention heads
+cond_dim: 1152  # Embedding dimension for joint text-audio attention
+timestep_guidance_channels: 256  # Channels for timestep/guidance embedding
+mlp_ratio: 3.0  # MLP ratio for feedforward layers
+axes_dims_rope: [96]  # Dimensions for RoPE (for 1D: single dimension)
+rope_theta: 2000  # Theta parameter for RoPE
+eps: 1e-6  # Epsilon for normalization
+use_classifier_free_guidance: true
+embedding_max_length: 128

@@ -1,0 +1,67 @@
+defaults:
+  - model_checkpoint
+  # - model_checkpoint_best
+  # - monitor
+  - model_summary
+  # - progress_bar
+  # - wandb_callback
+  # - retrieval
+
+  - _self_
+
+
+generation:
+  _target_: gdr.callbacks.generation.GenerationCallback
+  enable_on_validation: true
+  enable_on_test: true
+  every_n_epochs: 1
+  guidance_scale: 5.0
+  num_inference_steps: 50
+  max_samples_global: 1280
+  max_batches_global: null
+  max_samples_global_by_dataloader: {}
+  max_batches_global_by_dataloader: {}
+teacher_retrieval:
+  _target_: gdr.callbacks.retrieval.TeacherRetrieval
+  thresholds: [1, 5, 10]
+  enable_on_validation: true
+  enable_on_test: true
+  every_n_epochs: 1
+  text_encoder:
+    _target_: gdr.models.ldm.text_encoders.CLAPTextEncoder
+    clap_kws:
+      enable_fusion: false
+      amodel: HTSAT-base
+      device: cpu
+    clap_ckpt: /opt/ml/code/pretrained/music_audioset_epoch_15_esc_90.14.pt
+    ckpt_path: null
+    freeze: true
+
+teacher_score:
+  _target_: gdr.callbacks.retrieval.TeacherScore
+  enable_on_validation: true
+  enable_on_test: true
+  every_n_epochs: 1
+  text_encoder:
+    _target_: gdr.models.ldm.text_encoders.CLAPTextEncoder
+    clap_kws:
+      enable_fusion: false
+      amodel: HTSAT-base
+      device: cpu
+    clap_ckpt: /opt/ml/code/pretrained/music_audioset_epoch_15_esc_90.14.pt
+    ckpt_path: null
+    freeze: true
+gen_retrieval:
+  _target_: gdr.callbacks.retrieval.GenRetrieval
+  thresholds: [1, 5, 10]
+  enable_on_validation: true
+  enable_on_test: true
+  every_n_epochs: 1
+gen_score:
+  _target_: gdr.callbacks.retrieval.GenScore
+  enable_on_validation: true
+  enable_on_test: true
+  every_n_epochs: 1
+
+model_summary:
+  max_depth: 1

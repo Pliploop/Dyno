@@ -1,0 +1,9 @@
+_target_: gdr.models.ldm.text_encoders.CLAPTextEncoder
+clap_kws:
+  enable_fusion: false
+  amodel: HTSAT-base
+  device: cpu
+clap_ckpt: /opt/ml/code/pretrained/music_audioset_epoch_15_esc_90.14.pt
+ckpt_path: null
+freeze: true
+

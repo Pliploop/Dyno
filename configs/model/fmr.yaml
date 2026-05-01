@@ -1,0 +1,7 @@
+
+defaults:
+  - default
+  - noise_scheduler: flow_match_euler_discrete
+  
+_target_: gdr.models.ldm.diffusion.LightningFMR
+  

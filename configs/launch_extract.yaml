@@ -1,0 +1,4 @@
+defaults:
+  # override default cluster to aws
+  - extract_feature
+

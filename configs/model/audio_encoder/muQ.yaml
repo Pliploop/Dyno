@@ -1,0 +1,4 @@
+_target_: gdr.models.ldm.text_encoders.MuQAudioEncoder
+model_name: OpenMuQ/MuQ-MuLan-large
+freeze: true
+
