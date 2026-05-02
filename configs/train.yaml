@@ -31,10 +31,10 @@ defaults:
 # task name, determines output directory path
 task_name: "train"
 
-# Human-readable experiment name derived from active config choices.
-# Used as the W&B run name and as the Dora display name (xp.delta).
-# Composed from: data config / bottleneck class / output mode / learning rate
-name: "${hydra:runtime.choices.data}/${cls_name:${model.bottleneck._target_}}/${model.output_mode}/lr=${model.optimizer.lr}"
+# Human-readable experiment name used by W&B.
+# Avoid HydraConfig-dependent resolvers here because Dora inspects this before
+# HydraConfig is initialized.
+name: "dyno/${data.embedding_encoder}/${data.embedding_rate}/${cls_name:${model.bottleneck._target_}}/${model.output_mode}/lr=${model.optimizer.lr}"
 
 # tags to help you identify your experiments
 # you can overwrite this in experiment configs

@@ -4,3 +4,4 @@ layer_index: -1
 pool: false
 downsample_factor: 1
 freeze: true
+use_safetensors: true

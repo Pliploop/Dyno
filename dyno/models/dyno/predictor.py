@@ -119,11 +119,17 @@ class AdaLNZeroBlock(nn.Module):
 
         self.norm2 = nn.LayerNorm(model_dim, elementwise_affine=False)
         self.ffn = make_ffn(model_dim, ffn_dim, dropout)
-        self.modulation = AdaLNZeroModulation(model_dim, context_dim=2 * model_dim)
+        self.z_modulation = AdaLNZeroModulation(model_dim, context_dim=model_dim)
+        self.content_modulation = AdaLNZeroModulation(model_dim, context_dim=model_dim)
 
     def forward(self, x, cond, cos, sin):
         B, T, _ = x.shape
-        shift_sa, scale_sa, gate_sa, shift_ffn, scale_ffn, gate_ffn = self.modulation(cond)
+        z_cond, content_cond = cond.chunk(2, dim=-1)
+        z_mod = self.z_modulation(z_cond)
+        content_mod = self.content_modulation(content_cond)
+        shift_sa, scale_sa, gate_sa, shift_ffn, scale_ffn, gate_ffn = (
+            z_part + content_part for z_part, content_part in zip(z_mod, content_mod)
+        )
 
         x_n = (1.0 + scale_sa.unsqueeze(1)) * self.norm1(x) + shift_sa.unsqueeze(1)
         q = self.q(x_n).view(B, T, self.num_heads, self.head_dim)

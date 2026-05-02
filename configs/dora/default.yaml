@@ -2,6 +2,9 @@ dir: ${paths.log_dir}
 exclude:
   - callbacks.*
   - data.local_dir
+  - data.train_csv
+  - data.val_csv
+  - data.test_csv
   - data.num_workers
   - data.dataloader_kwargs.pin_memory
   - data.dataloader_kwargs.prefetch_factor

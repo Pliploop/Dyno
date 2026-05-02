@@ -15,6 +15,7 @@ class MatPacEncoder(AudioEncoderBase):
 
     def __init__(
         self,
+        model_name: str = "aurianworld/matpac",
         checkpoint_path: str = None,
         pool: bool = True,
         downsample_factor: int = 1,

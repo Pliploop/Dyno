@@ -1,4 +1,5 @@
 _target_: dyno.models.encoders.matpac.MatPacEncoder
+model_name: aurianworld/matpac
 checkpoint_path: ???
 pool: true
 downsample_factor: 1

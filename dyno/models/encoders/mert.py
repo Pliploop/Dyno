@@ -21,11 +21,16 @@ class MERTEncoder(AudioEncoderBase):
         downsample_factor: int = 1,
         ckpt_path: str = None,
         freeze: bool = True,
+        use_safetensors: bool = True,
     ):
         super().__init__(pool=pool, downsample_factor=downsample_factor, ckpt_path=ckpt_path, freeze=freeze)
         from transformers import AutoModel, Wav2Vec2FeatureExtractor
         self.processor = Wav2Vec2FeatureExtractor.from_pretrained(model_name, trust_remote_code=True)
-        self.model = AutoModel.from_pretrained(model_name, trust_remote_code=True)
+        self.model = AutoModel.from_pretrained(
+            model_name,
+            trust_remote_code=True,
+            use_safetensors=use_safetensors,
+        )
         self.model.eval()
         self.layer_index = layer_index
         if freeze:

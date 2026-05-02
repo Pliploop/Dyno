@@ -47,6 +47,7 @@ class DynoAggregator(nn.Module):
     ):
         super().__init__()
         assert (model_dim // num_heads) % 2 == 0
+        self.input_dim = input_dim
         self.input_proj = nn.Linear(input_dim, model_dim) if input_dim != model_dim else nn.Identity()
         self.cls_token = nn.Parameter(torch.randn(1, 1, model_dim) * 0.02)
         self.dropout = nn.Dropout(dropout)

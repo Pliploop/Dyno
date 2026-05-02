@@ -253,7 +253,7 @@ class AudioDataset(Dataset):
     def extract_and_save_features(self, model, save_dir=None, extract_method='extract_features', extract_kwargs={}, out_key='embedding', hop=None, return_full_audio=True, limit_n=None, save=False, verbose=True, root_path=None, done_ids=None, batch_size=1, num_workers=0, max_batch_chunks=200):
         print(self.__len__())
 
-        audio_features_all = []
+        audio_features_all = [] if not save else None
         counter = 0
         skipped_count = 0
 
@@ -309,7 +309,8 @@ class AudioDataset(Dataset):
                 flat = audio_features.flatten(0, 1) if audio_features.ndim == 3 else audio_features
                 pbar.set_description(f"{file_path}, shape: {flat.shape}")
 
-            audio_features_all.append(audio_features.detach().cpu()) if audio_features is not None else None
+            if not save and audio_features is not None:
+                audio_features_all.append(audio_features.detach().cpu())
 
             counter += 1
             if limit_n and counter >= limit_n:
@@ -319,6 +320,8 @@ class AudioDataset(Dataset):
             print(f"Skipped {skipped_count} already processed items") if verbose else None
 
         try:
+            if save:
+                return None
             print(f"Returning {len(audio_features_all)} features") if verbose else None
             all_ = torch.stack(audio_features_all)
             print(f"Stacked features, shape: {all_.shape}") if verbose else None

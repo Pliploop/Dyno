@@ -1,8 +1,14 @@
 _target_: dyno.dataloading.dataloaders.AudioDataModule
 
-train_csv: ???
-val_csv: ???
+train_csv: null
+val_csv: null
 test_csv: null
+
+# Metadata for pre-extracted embeddings. These fields are intentionally kept in
+# the experiment config/signature so trained checkpoints identify their source.
+embedding_encoder: unknown
+embedding_rate: unknown
+embedding_dim: ${model.embedding_dim}
 
 path_col: npy_path
 n_frames: 60

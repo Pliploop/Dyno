@@ -32,10 +32,13 @@ def _get_wandb_logger(trainer):
 def _fig_to_wandb_image(fig):
     import wandb
     import io
+    from PIL import Image
+
     buf = io.BytesIO()
     fig.savefig(buf, format="png", bbox_inches="tight", dpi=100)
     buf.seek(0)
-    return wandb.Image(buf)
+    image = Image.open(buf).copy()
+    return wandb.Image(image)
 
 
 def _crop_valid(x: torch.Tensor, mask: torch.Tensor | None) -> torch.Tensor:
@@ -97,12 +100,13 @@ class MSPFCallback(BaseCallback):
         indices = random.sample(range(B), n)
 
         with torch.no_grad():
+            x_ref = pl_module.normalize_input(x) if hasattr(pl_module, "normalize_input") else x
             _, _, _, x_hat = pl_module(x, mask=mask)
 
         for i in indices:
             m = mask[i].cpu() if mask is not None else None
             self._samples.append((
-                x[i].cpu(),
+                x_ref[i].cpu(),
                 x_hat[i].cpu(),
                 m,
             ))
@@ -204,11 +208,12 @@ class SSMCallback(BaseCallback):
         indices = random.sample(range(B), n)
 
         with torch.no_grad():
+            x_ref = pl_module.normalize_input(x) if hasattr(pl_module, "normalize_input") else x
             _, _, _, x_hat = pl_module(x, mask=mask)
 
         for i in indices:
             m = mask[i].cpu() if mask is not None else None
-            self._samples.append((x[i].cpu(), x_hat[i].cpu(), m))
+            self._samples.append((x_ref[i].cpu(), x_hat[i].cpu(), m))
 
         self._collected = True
 

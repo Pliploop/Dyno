@@ -1,10 +1,10 @@
 _target_: dyno.models.dyno.predictor.DynoVelocityPredictor
-input_dim: 512
-latent_dim: 256
-model_dim: 512
-num_heads: 8
-num_layers: 4
-ffn_dim: 2048
+input_dim: ${..embedding_dim}
+latent_dim: ${..latent_dim}
+model_dim: ${..model_dim}
+num_heads: 16
+num_layers: 8
+ffn_dim: 4096
 dropout: 0.1
 max_frames: 1024
 rope_theta: 10000.0

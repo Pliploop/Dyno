@@ -15,6 +15,7 @@ class Music2LatentEncoder(AudioEncoderBase):
 
     def __init__(
         self,
+        model_name: str = "SonyCSLParis/music2latent",
         sample_rate: int = 44100,
         pool: bool = False,
         downsample_factor: int = 1,
@@ -29,8 +30,23 @@ class Music2LatentEncoder(AudioEncoderBase):
         self.sample_rate = sample_rate
         self.encdec = EncoderDecoder()
         if freeze:
-            for param in self.encdec.parameters():
+            for param in self.parameters():
                 param.requires_grad = False
+
+    def parameters(self, recurse: bool = True):
+        return self.encdec.gen.parameters(recurse=recurse)
+
+    def to(self, *args, **kwargs):
+        super().to(*args, **kwargs)
+        self.encdec.gen.to(*args, **kwargs)
+        if args:
+            try:
+                self.encdec.device = torch.device(args[0])
+            except (TypeError, RuntimeError):
+                pass
+        if "device" in kwargs and kwargs["device"] is not None:
+            self.encdec.device = torch.device(kwargs["device"])
+        return self
 
     def encode(self, audio: torch.Tensor) -> torch.Tensor:
         # audio: (B, samples)
@@ -39,7 +55,7 @@ class Music2LatentEncoder(AudioEncoderBase):
         # music2latent encode returns (B, 64, T) — needs numpy
         audio_np = audio.cpu().numpy()
         device = audio.device
-        latents = self.encdec.encode(audio_np, extract_features=True)  # (B, 64, T)
+        latents = self.encdec.encode(audio_np, extract_features=False)  # (B, 64, T)
         if isinstance(latents, np.ndarray):
             latents = torch.from_numpy(latents).to(device)
         elif isinstance(latents, torch.Tensor):

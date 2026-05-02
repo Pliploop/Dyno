@@ -89,6 +89,9 @@ class AudioDataModule(LightningDataModule):
         limit_n: int | None = None,
         target_sr: int = 48000,
         target_n_samples: int = 96000,
+        embedding_encoder: str = "unknown",
+        embedding_rate: str = "unknown",
+        embedding_dim: int | None = None,
     ):
         super().__init__()
         self.train_csv = train_csv
@@ -101,6 +104,9 @@ class AudioDataModule(LightningDataModule):
         self.limit_n = limit_n
         self.target_sr = target_sr
         self.target_n_samples = target_n_samples
+        self.embedding_encoder = embedding_encoder
+        self.embedding_rate = embedding_rate
+        self.embedding_dim = embedding_dim
 
     def _make_dataset(self, csv_path: str, split: str) -> AudioDataset:
         return AudioDataset(
