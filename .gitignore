@@ -43,7 +43,7 @@ wandb/
 *.pkl
 
 # Jupyter Notebooks
-*.ipynb
+# *.ipynb
 .ipynb_checkpoints/
 
 # Logs and temporary files
