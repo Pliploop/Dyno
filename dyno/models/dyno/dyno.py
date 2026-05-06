@@ -29,6 +29,12 @@ class Dyno(BaseModule):
     "embeddings" T full embedding predictions
     "centered_residuals" T residual predictions around the mean content token
 
+    Conditioning
+    ------------
+    temporal_only_conditioning=True sends only z_tau to the predictor. This is valid only
+    for output modes where content is supplied outside the predictor: velocity and
+    centered_residuals.
+
     Loss
     ----
     Reconstruction loss computed only on valid (non-padding) positions when mask is supplied.
@@ -43,8 +49,11 @@ class Dyno(BaseModule):
         beta: float = 1.0,
         content_token: str = "first",
         output_mode: str = "velocity",
+        temporal_only_conditioning: bool = False,
         embedding_dim: int | None = None,
         model_dim: int | None = None,
+        aggregator_model_dim: int | None = None,
+        predictor_model_dim: int | None = None,
         latent_dim: int | None = None,
         input_norm: str | None = None,
         input_norm_eps: float = 1e-5,
@@ -66,15 +75,29 @@ class Dyno(BaseModule):
                 "output_mode='centered_residuals' requires content_token='mean' "
                 "so residual targets are centered on the same content token."
             )
+        if temporal_only_conditioning and output_mode == "embeddings":
+            raise ValueError(
+                "temporal_only_conditioning=True is only available with "
+                "output_mode='velocity' or output_mode='centered_residuals'."
+            )
         super().__init__(ckpt_path=ckpt_path, freeze=freeze)
+        predictor_temporal_only = getattr(predictor, "temporal_only_conditioning", False)
+        if predictor_temporal_only != temporal_only_conditioning:
+            raise ValueError(
+                "Dyno temporal_only_conditioning must match "
+                "predictor.temporal_only_conditioning."
+            )
         self.aggregator = aggregator
         self.bottleneck = bottleneck
         self.predictor = predictor
         self.beta = beta
         self.content_token_mode = content_token
         self.output_mode = output_mode
+        self.temporal_only_conditioning = temporal_only_conditioning
         self.embedding_dim = embedding_dim
-        self.model_dim = model_dim
+        self.aggregator_model_dim = aggregator_model_dim or model_dim
+        self.predictor_model_dim = predictor_model_dim or model_dim
+        self.model_dim = model_dim or self.aggregator_model_dim
         self.latent_dim = latent_dim
         self.recon_loss = recon_loss.lower()
         if self.recon_loss not in ("l1", "l2", "mse", "huber", "smooth_l1"):
@@ -102,6 +125,16 @@ class Dyno(BaseModule):
         if self.recon_loss in ("huber", "smooth_l1"):
             return F.huber_loss(x_hat, x, delta=self.huber_delta)
         return F.mse_loss(x_hat, x)
+
+    def masked_reconstruction_loss(
+        self,
+        x_hat: torch.Tensor,
+        x: torch.Tensor,
+        mask: torch.Tensor | None = None,
+    ) -> torch.Tensor:
+        if mask is not None:
+            return self.reconstruction_loss(x_hat[mask], x[mask])
+        return self.reconstruction_loss(x_hat, x)
 
     def get_content_token(self, x: torch.Tensor, mask: torch.Tensor | None = None) -> torch.Tensor:
         if self.content_token_mode == "first":
@@ -140,6 +173,39 @@ class Dyno(BaseModule):
         prediction = self.predict_target(z_tau, content, T)
         return self.decode_prediction(prediction, content)
 
+    def reconstruct_embeddings(
+        self, x: torch.Tensor, mask: torch.Tensor | None = None
+    ) -> tuple[torch.Tensor, torch.Tensor]:
+        """Return normalized input embeddings and reconstructed embeddings.
+
+        This always returns embedding-space tensors, even when the training
+        objective predicts velocities or centered residuals internally.
+        """
+        x = self.normalize_input(x)
+        B, T, D = x.shape
+        content = self.get_content_token(x, mask=mask)
+        mu, log_var, z_tau = self.encode(x, mask=mask)
+        x_hat = self.decode(z_tau, content, T)
+        return x, x_hat
+
+    def diagnostic_noise_reconstruction_losses(
+        self,
+        x: torch.Tensor,
+        content: torch.Tensor,
+        z_tau: torch.Tensor,
+        mask: torch.Tensor | None = None,
+    ) -> tuple[torch.Tensor, torch.Tensor]:
+        B, T, D = x.shape
+        temporal_noise = torch.randn_like(z_tau)
+        content_noise = torch.randn_like(content)
+
+        temporal_noise_recon = self.decode(temporal_noise, content, T)
+        content_noise_recon = self.decode(z_tau, content_noise, T)
+
+        temporal_noise_loss = self.masked_reconstruction_loss(temporal_noise_recon, x, mask=mask)
+        content_noise_loss = self.masked_reconstruction_loss(content_noise_recon, x, mask=mask)
+        return temporal_noise_loss, content_noise_loss
+
     def forward(self, x: torch.Tensor, mask: torch.Tensor | None = None):
         x = self.normalize_input(x)
         B, T, D = x.shape
@@ -148,9 +214,9 @@ class Dyno(BaseModule):
         x_hat = self.decode(z_tau, content, T)
         return mu, log_var, z_tau, x_hat
 
-    def compute_loss(
+    def compute_loss_components(
         self, x: torch.Tensor, mask: torch.Tensor | None = None
-    ) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
+    ) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor]:
         x = self.normalize_input(x)
         B, T, D = x.shape
         content = self.get_content_token(x, mask=mask)
@@ -160,11 +226,14 @@ class Dyno(BaseModule):
         kl_loss = self.bottleneck.kl_loss(mu, log_var)
         if self.output_mode == "velocity":
             prediction = self.decode_prediction(prediction, content)
-        if mask is not None:
-            recon_loss = self.reconstruction_loss(prediction[mask], target[mask])
-        else:
-            recon_loss = self.reconstruction_loss(prediction, target)
+        recon_loss = self.masked_reconstruction_loss(prediction, target, mask=mask)
         total_loss = recon_loss + self.beta * kl_loss
+        return total_loss, recon_loss, kl_loss, x, content, z_tau
+
+    def compute_loss(
+        self, x: torch.Tensor, mask: torch.Tensor | None = None
+    ) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor]:
+        total_loss, recon_loss, kl_loss, _, _, _ = self.compute_loss_components(x, mask=mask)
         return total_loss, recon_loss, kl_loss
 
 
@@ -179,8 +248,11 @@ class LightningDyno(Dyno, LightningModule):
         beta: float = 1.0,
         content_token: str = "first",
         output_mode: str = "velocity",
+        temporal_only_conditioning: bool = False,
         embedding_dim: int | None = None,
         model_dim: int | None = None,
+        aggregator_model_dim: int | None = None,
+        predictor_model_dim: int | None = None,
         latent_dim: int | None = None,
         input_norm: str | None = None,
         input_norm_eps: float = 1e-5,
@@ -200,8 +272,11 @@ class LightningDyno(Dyno, LightningModule):
             beta=beta,
             content_token=content_token,
             output_mode=output_mode,
+            temporal_only_conditioning=temporal_only_conditioning,
             embedding_dim=embedding_dim,
             model_dim=model_dim,
+            aggregator_model_dim=aggregator_model_dim,
+            predictor_model_dim=predictor_model_dim,
             latent_dim=latent_dim,
             input_norm=input_norm,
             input_norm_eps=input_norm_eps,
@@ -216,12 +291,36 @@ class LightningDyno(Dyno, LightningModule):
     def _step(self, batch: dict, stage: str) -> torch.Tensor:
         x = batch["audio"]                                  # (B, T, D)
         mask = batch.get("attention_mask", None)            # (B, T) bool or None
-        total, recon, kl = self.compute_loss(x, mask=mask)
+        total, recon, kl, x_norm, content, z_tau = self.compute_loss_components(x, mask=mask)
         on_step = stage == "train"
         self.log(f"{stage}/loss",     total,          on_step=on_step, on_epoch=True, prog_bar=True,  sync_dist=True)
         self.log(f"{stage}/recon",    recon,          on_step=on_step, on_epoch=True, prog_bar=False, sync_dist=True)
         self.log(f"{stage}/kl",       kl,             on_step=on_step, on_epoch=True, prog_bar=False, sync_dist=True)
         self.log(f"{stage}/beta_kl",  self.beta * kl, on_step=on_step, on_epoch=True, prog_bar=False, sync_dist=True)
+        if not self.temporal_only_conditioning:
+            with torch.no_grad():
+                temporal_noise_recon, content_noise_recon = self.diagnostic_noise_reconstruction_losses(
+                    x_norm,
+                    content,
+                    z_tau,
+                    mask=mask,
+                )
+            self.log(
+                f"{stage}/recon_temporal_noise",
+                temporal_noise_recon,
+                on_step=on_step,
+                on_epoch=True,
+                prog_bar=False,
+                sync_dist=True,
+            )
+            self.log(
+                f"{stage}/recon_content_noise",
+                content_noise_recon,
+                on_step=on_step,
+                on_epoch=True,
+                prog_bar=False,
+                sync_dist=True,
+            )
         return total
 
     def training_step(self, batch: dict, batch_idx: int) -> torch.Tensor:

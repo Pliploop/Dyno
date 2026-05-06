@@ -30,7 +30,14 @@ class AdaLNZeroModulation(nn.Module):
 
 
 class CrossAttentionBlock(nn.Module):
-    def __init__(self, model_dim: int, num_heads: int, ffn_dim: int, dropout: float = 0.0):
+    def __init__(
+        self,
+        model_dim: int,
+        num_heads: int,
+        ffn_dim: int,
+        dropout: float = 0.0,
+        conditioning_dim: int | None = None,
+    ):
         super().__init__()
         assert model_dim % num_heads == 0
         self.num_heads = num_heads
@@ -74,12 +81,19 @@ class CrossAttentionBlock(nn.Module):
 
 
 class FiLMBlock(nn.Module):
-    def __init__(self, model_dim: int, num_heads: int, ffn_dim: int, dropout: float = 0.0):
+    def __init__(
+        self,
+        model_dim: int,
+        num_heads: int,
+        ffn_dim: int,
+        dropout: float = 0.0,
+        conditioning_dim: int | None = None,
+    ):
         super().__init__()
         assert model_dim % num_heads == 0
         self.num_heads = num_heads
         self.head_dim = model_dim // num_heads
-        context_dim = 2 * model_dim
+        context_dim = conditioning_dim or 2 * model_dim
 
         self.norm1 = make_norm(model_dim)
         self.q = nn.Linear(model_dim, model_dim, bias=False)
@@ -105,11 +119,19 @@ class FiLMBlock(nn.Module):
 
 
 class AdaLNZeroBlock(nn.Module):
-    def __init__(self, model_dim: int, num_heads: int, ffn_dim: int, dropout: float = 0.0):
+    def __init__(
+        self,
+        model_dim: int,
+        num_heads: int,
+        ffn_dim: int,
+        dropout: float = 0.0,
+        conditioning_dim: int | None = None,
+    ):
         super().__init__()
         assert model_dim % num_heads == 0
         self.num_heads = num_heads
         self.head_dim = model_dim // num_heads
+        self.temporal_only = conditioning_dim == model_dim
 
         self.norm1 = nn.LayerNorm(model_dim, elementwise_affine=False)
         self.q = nn.Linear(model_dim, model_dim, bias=False)
@@ -120,16 +142,19 @@ class AdaLNZeroBlock(nn.Module):
         self.norm2 = nn.LayerNorm(model_dim, elementwise_affine=False)
         self.ffn = make_ffn(model_dim, ffn_dim, dropout)
         self.z_modulation = AdaLNZeroModulation(model_dim, context_dim=model_dim)
-        self.content_modulation = AdaLNZeroModulation(model_dim, context_dim=model_dim)
+        self.content_modulation = None if self.temporal_only else AdaLNZeroModulation(model_dim, context_dim=model_dim)
 
     def forward(self, x, cond, cos, sin):
         B, T, _ = x.shape
-        z_cond, content_cond = cond.chunk(2, dim=-1)
-        z_mod = self.z_modulation(z_cond)
-        content_mod = self.content_modulation(content_cond)
-        shift_sa, scale_sa, gate_sa, shift_ffn, scale_ffn, gate_ffn = (
-            z_part + content_part for z_part, content_part in zip(z_mod, content_mod)
-        )
+        if self.temporal_only:
+            shift_sa, scale_sa, gate_sa, shift_ffn, scale_ffn, gate_ffn = self.z_modulation(cond)
+        else:
+            z_cond, content_cond = cond.chunk(2, dim=-1)
+            z_mod = self.z_modulation(z_cond)
+            content_mod = self.content_modulation(content_cond)
+            shift_sa, scale_sa, gate_sa, shift_ffn, scale_ffn, gate_ffn = (
+                z_part + content_part for z_part, content_part in zip(z_mod, content_mod)
+            )
 
         x_n = (1.0 + scale_sa.unsqueeze(1)) * self.norm1(x) + shift_sa.unsqueeze(1)
         q = self.q(x_n).view(B, T, self.num_heads, self.head_dim)
@@ -143,7 +168,14 @@ class AdaLNZeroBlock(nn.Module):
 
 
 class PrefixBlock(nn.Module):
-    def __init__(self, model_dim: int, num_heads: int, ffn_dim: int, dropout: float = 0.0):
+    def __init__(
+        self,
+        model_dim: int,
+        num_heads: int,
+        ffn_dim: int,
+        dropout: float = 0.0,
+        conditioning_dim: int | None = None,
+    ):
         super().__init__()
         assert model_dim % num_heads == 0
         self.num_heads = num_heads
@@ -196,24 +228,42 @@ class DynoVelocityPredictor(nn.Module):
         max_frames: int = 1024,
         rope_theta: float = 10000.0,
         conditioning_type: str = "adaLN_zero",
+        temporal_only_conditioning: bool = False,
     ):
         if conditioning_type not in _BLOCK_CLS:
             raise ValueError(f"conditioning_type must be one of {list(_BLOCK_CLS)}, got {conditioning_type!r}")
         super().__init__()
         assert (model_dim // num_heads) % 2 == 0
         self.conditioning_type = conditioning_type
+        self.temporal_only_conditioning = temporal_only_conditioning
 
         self.position_queries = nn.Parameter(torch.randn(max_frames, model_dim) * 0.02)
         self.z_tau_proj = nn.Linear(latent_dim, model_dim)
-        self.content_proj = nn.Linear(input_dim, model_dim)
+        self.content_proj = None if temporal_only_conditioning else nn.Linear(input_dim, model_dim)
         self.dropout = nn.Dropout(dropout)
         self.rope = RotaryEmbedding(dim=model_dim // num_heads, max_seq_len=max_frames, theta=rope_theta)
-        self.blocks = nn.ModuleList([_BLOCK_CLS[conditioning_type](model_dim, num_heads, ffn_dim, dropout) for _ in range(num_layers)])
+        conditioning_dim = model_dim if temporal_only_conditioning else 2 * model_dim
+        self.blocks = nn.ModuleList(
+            [
+                _BLOCK_CLS[conditioning_type](
+                    model_dim,
+                    num_heads,
+                    ffn_dim,
+                    dropout,
+                    conditioning_dim=conditioning_dim,
+                )
+                for _ in range(num_layers)
+            ]
+        )
         self.norm = make_norm(model_dim)
         self.out_proj = nn.Linear(model_dim, input_dim)
 
     def _build_cond(self, z_tau, content):
         z = self.z_tau_proj(z_tau)
+        if self.temporal_only_conditioning:
+            if self.conditioning_type in ("cross_attention", "prefix"):
+                return z.unsqueeze(1)
+            return z
         c = self.content_proj(content)
         if self.conditioning_type in ("cross_attention", "prefix"):
             return torch.stack([z, c], dim=1)

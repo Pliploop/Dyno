@@ -9,7 +9,7 @@ import rootutils
 import torch
 from lightning import Callback, LightningDataModule, LightningModule, Trainer
 from lightning.pytorch.loggers import Logger
-from omegaconf import DictConfig
+from omegaconf import DictConfig, open_dict
 import logging
 
 
@@ -46,6 +46,82 @@ log = RankedLogger(__name__, rank_zero_only=True)
 register_resolvers()
 
 
+def _cuda_capability() -> tuple[int, int] | None:
+    if not torch.cuda.is_available():
+        return None
+    return torch.cuda.get_device_capability(0)
+
+
+def _torch_cuda_arch_flags() -> set[int]:
+    get_arch_flags = getattr(torch._C, "_cuda_getArchFlags", None)
+    if get_arch_flags is None:
+        return set()
+
+    arch_flags = set()
+    for flag in get_arch_flags().split():
+        if flag.startswith("sm_") and flag[3:].isdigit():
+            arch_flags.add(int(flag[3:]))
+    return arch_flags
+
+
+def _assert_torch_supports_current_gpu() -> None:
+    capability = _cuda_capability()
+    if capability is None:
+        return
+
+    arch_flags = _torch_cuda_arch_flags()
+    if not arch_flags:
+        return
+
+    cc = capability[0] * 10 + capability[1]
+    compatible_arches = {arch for arch in arch_flags if arch // 10 == cc // 10 and arch <= cc}
+    if compatible_arches:
+        return
+
+    device_name = torch.cuda.get_device_name(0)
+    supported = ", ".join(f"sm_{arch}" for arch in sorted(arch_flags))
+    raise RuntimeError(
+        f"Installed PyTorch {torch.__version__} was not compiled for {device_name} "
+        f"(CUDA compute capability {capability[0]}.{capability[1]}, sm_{cc}). "
+        f"This build supports: {supported}. Install a PyTorch build that includes sm_{cc}, "
+        "or run on a newer GPU supported by this build."
+    )
+
+
+def _is_single_device(devices: Any) -> bool:
+    if devices == 1 or devices == "1":
+        return True
+    if isinstance(devices, (list, tuple)) and len(devices) == 1:
+        return True
+    return False
+
+
+def _patch_trainer_for_cuda_compat(cfg: DictConfig) -> None:
+    trainer_cfg = cfg.get("trainer")
+    if trainer_cfg is None:
+        return
+
+    capability = _cuda_capability()
+
+    with open_dict(trainer_cfg):
+        precision = str(trainer_cfg.get("precision", ""))
+        if capability is not None and capability < (8, 0) and "bf16" in precision:
+            device_name = torch.cuda.get_device_name(0)
+            log.warning(
+                f"{device_name} has CUDA capability {capability[0]}.{capability[1]} and does not support "
+                "native bf16. Switching trainer.precision from bf16-mixed to 16-mixed."
+            )
+            trainer_cfg.precision = "16-mixed"
+
+        strategy = trainer_cfg.get("strategy")
+        if _is_single_device(trainer_cfg.get("devices")) and isinstance(strategy, str) and strategy.startswith("ddp"):
+            log.warning(
+                f"trainer.devices={trainer_cfg.devices} does not need DDP. Switching trainer.strategy "
+                f"from {strategy} to auto."
+            )
+            trainer_cfg.strategy = "auto"
+
+
 @task_wrapper
 def train(cfg: DictConfig) -> Tuple[Dict[str, Any], Dict[str, Any]]:
     """Trains the model. Can additionally evaluate on a testset, using best weights obtained during
@@ -74,6 +150,8 @@ def train(cfg: DictConfig) -> Tuple[Dict[str, Any], Dict[str, Any]]:
 
     log.info("Instantiating loggers...")
     logger: List[Logger] = instantiate_loggers(cfg.get("logger"))
+
+    _patch_trainer_for_cuda_compat(cfg)
 
     log.info(f"Instantiating trainer <{cfg.trainer._target_}>")
     trainer: Trainer = hydra.utils.instantiate(cfg.trainer, logger=logger, callbacks=callbacks)
@@ -129,14 +207,17 @@ def train(cfg: DictConfig) -> Tuple[Dict[str, Any], Dict[str, Any]]:
 
     if cfg.get("train"):
         log.info("Starting training!")
-        with torch.backends.cuda.sdp_kernel(enable_flash=True, enable_math=True, enable_mem_efficient=True):
+        capability = _cuda_capability()
+        enable_flash = capability is None or capability >= (8, 0)
+        with torch.backends.cuda.sdp_kernel(enable_flash=enable_flash, enable_math=True, enable_mem_efficient=True):
             trainer.fit(model=model, datamodule=datamodule, ckpt_path=ckpt_path)
 
     train_metrics = trainer.callback_metrics
 
     if cfg.get("test"):
         log.info("Starting testing!")
-        ckpt_path = trainer.checkpoint_callback.best_model_path
+        checkpoint_callback = trainer.checkpoint_callback
+        ckpt_path = checkpoint_callback.best_model_path if checkpoint_callback is not None else None
         if ckpt_path == "":
             log.warning("Best ckpt not found! Using current weights for testing...")
             ckpt_path = None
@@ -179,6 +260,8 @@ def main(cfg: DictConfig) -> Optional[float]:
 
     # prevent annoying warning
     os.environ["TOKENIZERS_PARALLELISM"] = "false"
+
+    _assert_torch_supports_current_gpu()
 
     # apply extra utilities
     # (e.g. ask for tags if none are provided in cfg, print cfg tree, etc.)

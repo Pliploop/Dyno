@@ -1,3 +1,3 @@
 _target_: dyno.models.dyno.bottleneck.DynoBetaVAE
-input_dim: ${..model_dim}
+input_dim: ${..aggregator_model_dim}
 latent_dim: ${..latent_dim}

@@ -1,6 +1,7 @@
 _target_: lightning.pytorch.trainer.Trainer
 
 default_root_dir: ${paths.output_dir}
+enable_checkpointing: false
 
 min_epochs: 1
 max_steps: 1000000
@@ -9,8 +10,8 @@ accelerator: gpu
 devices: auto
 strategy: ddp_find_unused_parameters_true
 
-precision: 16-mixed
-check_val_every_n_epoch: 2
+precision: bf16-mixed
+check_val_every_n_epoch: 5
 # val_check_interval: 0.25
 deterministic: False
 gradient_clip_val: 1.0

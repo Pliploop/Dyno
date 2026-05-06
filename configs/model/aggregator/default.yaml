@@ -1,6 +1,6 @@
 _target_: dyno.models.dyno.aggregator.DynoAggregator
 input_dim: ${..embedding_dim}
-model_dim: ${..model_dim}
+model_dim: ${..aggregator_model_dim}
 num_heads: 16
 num_layers: 8
 ffn_dim: 4096

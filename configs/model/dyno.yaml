@@ -9,32 +9,38 @@ ckpt_path: null
 freeze: false
 
 # Central dimensions. Subconfigs interpolate these so changing encoder width,
-# transformer width, or bottleneck size only happens here.
+# transformer widths, or bottleneck size only happens here.
 embedding_dim: 512
-model_dim: 1024
-latent_dim: 512
+aggregator_model_dim: 1024
+predictor_model_dim: 512
+latent_dim: 256
 
 # Beta-VAE weight on the KL term — ignored (returns 0) with bottleneck: ae
-beta: 1e-6
+beta: 1.0e-6
 
 # Which frame to use as the predictor conditioning token
 #   "first" → x[:, 0, :]     — required when output_mode=velocity
 #   "mean"  → x.mean(dim=1)  — average-content anchor; valid with embeddings or centered_residuals
-content_token: mean
+content_token: first
 
 # What the predictor outputs
 #   "velocity"   — T-1 frame-difference vectors; integrated from first frame; requires content_token=first
 #   "embeddings" — T full embedding predictions; conditioned on content_token (first or mean)
 #   "centered_residuals" — T residual predictions against x - mean; requires content_token=mean
-output_mode: centered_residuals
+output_mode: velocity
+
+# If true, the predictor conditions only on the temporal bottleneck token z_tau.
+# This is valid only with output_mode=velocity or output_mode=centered_residuals,
+# where the content token is still used outside the predictor as the anchor.
+temporal_only_conditioning: true
 
 # Optional normalization applied over the embedding dimension before Dyno encodes,
 # conditions, and computes reconstruction loss. Uses aggregator.input_dim.
-input_norm: layernorm
+input_norm: null
 input_norm_eps: 1.0e-5
 
 # Reconstruction loss for embedding trajectories: l1, l2/mse, or huber/smooth_l1.
-recon_loss: huber
+recon_loss: l1
 huber_delta: 0.1
 
 optimizer:

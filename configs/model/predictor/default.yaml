@@ -1,12 +1,13 @@
 _target_: dyno.models.dyno.predictor.DynoVelocityPredictor
 input_dim: ${..embedding_dim}
 latent_dim: ${..latent_dim}
-model_dim: ${..model_dim}
-num_heads: 16
-num_layers: 8
-ffn_dim: 4096
+model_dim: ${..predictor_model_dim}
+num_heads: 8
+num_layers: 6
+ffn_dim: 2048
 dropout: 0.1
 max_frames: 1024
 rope_theta: 10000.0
 # Conditioning mechanism — one of: adaLN_zero | film | cross_attention | prefix
 conditioning_type: adaLN_zero
+temporal_only_conditioning: ${..temporal_only_conditioning}

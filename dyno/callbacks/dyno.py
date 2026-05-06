@@ -1,5 +1,5 @@
 """
-Dyno validation callbacks.
+Dyno temporal callbacks.
 
 MSPFCallback  — plots Music Semantic Progress Function for original vs reconstructed
 SSMCallback   — plots Self-Similarity Matrices for original vs reconstructed
@@ -9,8 +9,6 @@ import random
 import logging
 import numpy as np
 import torch
-
-from lightning.pytorch.callbacks import Callback
 
 from dyno.callbacks.utils import BaseCallback
 from dyno.evaluation.temporal import compute_mspf, compute_ssm, linearity_score
@@ -48,10 +46,24 @@ def _crop_valid(x: torch.Tensor, mask: torch.Tensor | None) -> torch.Tensor:
     return x[mask]
 
 
+def _reconstruct_batch(pl_module, x: torch.Tensor, mask: torch.Tensor | None):
+    was_training = pl_module.training
+    pl_module.eval()
+    with torch.no_grad():
+        if hasattr(pl_module, "reconstruct_embeddings"):
+            x_ref, x_hat = pl_module.reconstruct_embeddings(x, mask=mask)
+        else:
+            x_ref = pl_module.normalize_input(x) if hasattr(pl_module, "normalize_input") else x
+            _, _, _, x_hat = pl_module(x, mask=mask)
+    if was_training:
+        pl_module.train()
+    return x_ref, x_hat
+
+
 class MSPFCallback(BaseCallback):
     """
-    At each validation epoch (every ``every_n_epochs`` epochs) selects
-    ``n_samples`` random sequences from the first validation batch, computes
+    At each train/validation epoch (every ``every_n_epochs`` epochs) selects
+    ``n_samples`` random sequences from the first batch, computes
     the MSPF for both the original and Dyno-reconstructed sequence, and logs:
 
     - A line plot of original vs reconstructed MSPF (+ ideal linear reference)
@@ -79,17 +91,15 @@ class MSPFCallback(BaseCallback):
         self.power = power
         self.absolute = absolute
         self.n_points = n_points
-        self._samples: list[tuple] = []   # (x_cpu, x_hat_cpu, mask_cpu)
-        self._collected = False
+        self._samples: dict[str, list[tuple]] = {"train": [], "val": []}
+        self._collected: dict[str, bool] = {"train": False, "val": False}
 
-    def on_validation_epoch_start(self, trainer, pl_module):
-        self._samples = []
-        self._collected = False
+    def _reset_stage(self, stage: str):
+        self._samples[stage] = []
+        self._collected[stage] = False
 
-    def on_validation_batch_end(self, trainer, pl_module, outputs, batch, batch_idx):
-        if not self._check_epoch(trainer, pl_module):
-            return
-        if self._collected:
+    def _collect_batch(self, stage: str, trainer, pl_module, batch):
+        if not self._check_epoch(trainer, pl_module) or self._collected[stage]:
             return
 
         x = batch["audio"]                          # (B, T, D)
@@ -99,22 +109,39 @@ class MSPFCallback(BaseCallback):
         n = min(self.n_samples, B)
         indices = random.sample(range(B), n)
 
-        with torch.no_grad():
-            x_ref = pl_module.normalize_input(x) if hasattr(pl_module, "normalize_input") else x
-            _, _, _, x_hat = pl_module(x, mask=mask)
+        x_ref, x_hat = _reconstruct_batch(pl_module, x, mask)
 
         for i in indices:
-            m = mask[i].cpu() if mask is not None else None
-            self._samples.append((
-                x_ref[i].cpu(),
-                x_hat[i].cpu(),
+            m = mask[i].detach().cpu() if mask is not None else None
+            self._samples[stage].append((
+                x_ref[i].detach().cpu(),
+                x_hat[i].detach().cpu(),
                 m,
             ))
 
-        self._collected = True
+        self._collected[stage] = True
+
+    def on_train_epoch_start(self, trainer, pl_module):
+        self._reset_stage("train")
+
+    def on_train_batch_end(self, trainer, pl_module, outputs, batch, batch_idx):
+        self._collect_batch("train", trainer, pl_module, batch)
+
+    def on_validation_epoch_start(self, trainer, pl_module):
+        self._reset_stage("val")
+
+    def on_validation_batch_end(self, trainer, pl_module, outputs, batch, batch_idx):
+        self._collect_batch("val", trainer, pl_module, batch)
+
+    def on_train_epoch_end(self, trainer, pl_module):
+        self._log_stage("train", trainer, pl_module)
 
     def on_validation_epoch_end(self, trainer, pl_module):
-        if not self._check_epoch(trainer, pl_module) or not self._samples:
+        self._log_stage("val", trainer, pl_module)
+
+    def _log_stage(self, stage: str, trainer, pl_module):
+        samples = self._samples[stage]
+        if not self._check_epoch(trainer, pl_module) or not samples:
             return
 
         import matplotlib
@@ -125,7 +152,7 @@ class MSPFCallback(BaseCallback):
         lin_scores_orig, lin_scores_recon = [], []
         figures = []
 
-        for idx, (x, x_hat, mask) in enumerate(self._samples):
+        for idx, (x, x_hat, mask) in enumerate(samples):
             x_v    = _crop_valid(x,    mask)   # (T_valid, D)
             x_hat_v = _crop_valid(x_hat, mask)
 
@@ -154,32 +181,30 @@ class MSPFCallback(BaseCallback):
             ax.plot(x_axis, ideal,   label="ideal linear",   color="gray", linestyle="--", linewidth=0.8)
             ax.set_xlabel(xlabel)
             ax.set_ylabel("cumulative semantic progress")
-            ax.set_title(f"MSPF ({mode_tag}) — sample {idx + 1}")
+            ax.set_title(f"{stage} MSPF ({mode_tag}) — sample {idx + 1}")
             ax.legend(fontsize=8)
             fig.tight_layout()
             figures.append(fig)
 
         # Scalar logs (mean over samples)
         if lin_scores_orig:
-            pl_module.log("val/mspf_linearity_orig",  float(np.mean(lin_scores_orig)),  on_epoch=True, sync_dist=True)
-            pl_module.log("val/mspf_linearity_recon", float(np.mean(lin_scores_recon)), on_epoch=True, sync_dist=True)
+            pl_module.log(f"{stage}/mspf_linearity_orig",  float(np.mean(lin_scores_orig)),  on_epoch=True, sync_dist=True)
+            pl_module.log(f"{stage}/mspf_linearity_recon", float(np.mean(lin_scores_recon)), on_epoch=True, sync_dist=True)
 
         # W&B image logs
         if wandb_logger is not None and figures:
-            import wandb
             wandb_logger.experiment.log(
-                {"val/mspf": [_fig_to_wandb_image(f) for f in figures]},
-                step=trainer.global_step,
+                {f"{stage}/mspf": [_fig_to_wandb_image(f) for f in figures]}
             )
 
         for f in figures:
             plt.close(f)
-        self._samples = []
+        self._samples[stage] = []
 
 
 class SSMCallback(BaseCallback):
     """
-    At each validation epoch selects ``n_samples`` random sequences,
+    At each train/validation epoch selects ``n_samples`` random sequences,
     computes the cosine Self-Similarity Matrix for both the original and the
     Dyno-reconstructed sequence, and logs side-by-side heatmaps to W&B.
     """
@@ -187,38 +212,53 @@ class SSMCallback(BaseCallback):
     def __init__(self, n_samples: int = 4, every_n_epochs: int = 1):
         super().__init__(every_n_epochs=every_n_epochs)
         self.n_samples = n_samples
-        self._samples: list[tuple] = []
-        self._collected = False
+        self._samples: dict[str, list[tuple]] = {"train": [], "val": []}
+        self._collected: dict[str, bool] = {"train": False, "val": False}
 
-    def on_validation_epoch_start(self, trainer, pl_module):
-        self._samples = []
-        self._collected = False
+    def _reset_stage(self, stage: str):
+        self._samples[stage] = []
+        self._collected[stage] = False
 
-    def on_validation_batch_end(self, trainer, pl_module, outputs, batch, batch_idx):
-        if not self._check_epoch(trainer, pl_module):
-            return
-        if self._collected:
+    def _collect_batch(self, stage: str, trainer, pl_module, batch):
+        if not self._check_epoch(trainer, pl_module) or self._collected[stage]:
             return
 
-        x = batch["audio"]
+        x = batch["audio"]                          # (B, T, D)
         mask = batch.get("attention_mask", None)
 
         B = x.shape[0]
         n = min(self.n_samples, B)
         indices = random.sample(range(B), n)
 
-        with torch.no_grad():
-            x_ref = pl_module.normalize_input(x) if hasattr(pl_module, "normalize_input") else x
-            _, _, _, x_hat = pl_module(x, mask=mask)
+        x_ref, x_hat = _reconstruct_batch(pl_module, x, mask)
 
         for i in indices:
-            m = mask[i].cpu() if mask is not None else None
-            self._samples.append((x_ref[i].cpu(), x_hat[i].cpu(), m))
+            m = mask[i].detach().cpu() if mask is not None else None
+            self._samples[stage].append((x_ref[i].detach().cpu(), x_hat[i].detach().cpu(), m))
 
-        self._collected = True
+        self._collected[stage] = True
+
+    def on_train_epoch_start(self, trainer, pl_module):
+        self._reset_stage("train")
+
+    def on_train_batch_end(self, trainer, pl_module, outputs, batch, batch_idx):
+        self._collect_batch("train", trainer, pl_module, batch)
+
+    def on_validation_epoch_start(self, trainer, pl_module):
+        self._reset_stage("val")
+
+    def on_validation_batch_end(self, trainer, pl_module, outputs, batch, batch_idx):
+        self._collect_batch("val", trainer, pl_module, batch)
+
+    def on_train_epoch_end(self, trainer, pl_module):
+        self._log_stage("train", trainer, pl_module)
 
     def on_validation_epoch_end(self, trainer, pl_module):
-        if not self._check_epoch(trainer, pl_module) or not self._samples:
+        self._log_stage("val", trainer, pl_module)
+
+    def _log_stage(self, stage: str, trainer, pl_module):
+        samples = self._samples[stage]
+        if not self._check_epoch(trainer, pl_module) or not samples:
             return
 
         import matplotlib
@@ -228,7 +268,7 @@ class SSMCallback(BaseCallback):
         wandb_logger = _get_wandb_logger(trainer)
         figures = []
 
-        for idx, (x, x_hat, mask) in enumerate(self._samples):
+        for idx, (x, x_hat, mask) in enumerate(samples):
             x_v     = _crop_valid(x,     mask)
             x_hat_v = _crop_valid(x_hat, mask)
 
@@ -248,17 +288,15 @@ class SSMCallback(BaseCallback):
                 ax.set_xlabel("frame")
                 ax.set_ylabel("frame")
             fig.colorbar(im0, ax=axes, shrink=0.7, label="cosine similarity")
-            fig.suptitle(f"SSM — sample {idx + 1}")
+            fig.suptitle(f"{stage} SSM — sample {idx + 1}")
             fig.tight_layout()
             figures.append(fig)
 
         if wandb_logger is not None and figures:
-            import wandb
             wandb_logger.experiment.log(
-                {"val/ssm": [_fig_to_wandb_image(f) for f in figures]},
-                step=trainer.global_step,
+                {f"{stage}/ssm": [_fig_to_wandb_image(f) for f in figures]}
             )
 
         for f in figures:
             plt.close(f)
-        self._samples = []
+        self._samples[stage] = []

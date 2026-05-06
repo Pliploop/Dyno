@@ -3,20 +3,20 @@ defaults:
 
 model_summary:
   _target_: lightning.pytorch.callbacks.RichModelSummary
-  max_depth: 2
+  max_depth: 1
 
 progress:
   _target_: lightning.pytorch.callbacks.progress.RichProgressBar
   refresh_rate: 1
 
-model_checkpoint:
-  _target_: lightning.pytorch.callbacks.ModelCheckpoint
-  dirpath: ${paths.ckpt_dir}
-  filename: "epoch={epoch}-val_loss={val/loss:.4f}"
-  monitor: val/loss
-  mode: min
-  save_top_k: 3
-  auto_insert_metric_name: false
+# model_checkpoint:
+#   _target_: lightning.pytorch.callbacks.ModelCheckpoint
+#   dirpath: ${paths.ckpt_dir}
+#   filename: "epoch={epoch}-val_loss={val/loss:.4f}"
+#   monitor: val/loss
+#   mode: min
+#   save_top_k: 3
+#   auto_insert_metric_name: false
 
 mspf:
   _target_: dyno.callbacks.dyno.MSPFCallback
