@@ -23,6 +23,7 @@ class AudioDataset(Dataset):
                  return_full_audio=False,
                  preextracted_features=False,
                  n_frames=50,
+                 random_crop=True,
                  truncate_preextracted=None,
                  split=None,
                  filter_split=None,
@@ -56,6 +57,7 @@ class AudioDataset(Dataset):
         self.preextracted_features = preextracted_features
         # truncate_preextracted kept as alias; n_frames is the canonical name
         self.n_frames = truncate_preextracted if truncate_preextracted is not None else n_frames
+        self.random_crop = random_crop
         self.split = split
         self.root_dir = root_dir
         self.new_dir = new_dir
@@ -136,8 +138,8 @@ class AudioDataset(Dataset):
                     raw = np.load(file_path, mmap_mode='r')
                     T_actual = raw.shape[0]
                     if T_actual >= self.n_frames:
-                        rand_start = random.randint(0, T_actual - self.n_frames)
-                        audio = torch.tensor(np.array(raw[rand_start:rand_start + self.n_frames]), dtype=torch.float32)
+                        start = random.randint(0, T_actual - self.n_frames) if self.random_crop else 0
+                        audio = torch.tensor(np.array(raw[start:start + self.n_frames]), dtype=torch.float32)
                         attention_mask = torch.ones(self.n_frames, dtype=torch.bool)
                     else:
                         audio = torch.zeros(self.n_frames, raw.shape[-1], dtype=torch.float32)
@@ -278,36 +280,64 @@ class AudioDataset(Dataset):
 
         self.annotations = new_annotations
 
-        for audio_features, file_path in (pbar := tqdm(self.extract_features(model, extract_method=extract_method, extract_kwargs=extract_kwargs, out_key=out_key, hop=hop, return_full_audio=return_full_audio, verbose=verbose, batch_size=batch_size, num_workers=num_workers, max_batch_chunks=max_batch_chunks))):
+        def _shape_str(features):
+            return "x".join(str(dim) for dim in features.shape)
+
+        pbar = tqdm(
+            self.extract_features(
+                model,
+                extract_method=extract_method,
+                extract_kwargs=extract_kwargs,
+                out_key=out_key,
+                hop=hop,
+                return_full_audio=return_full_audio,
+                verbose=verbose,
+                batch_size=batch_size,
+                num_workers=num_workers,
+                max_batch_chunks=max_batch_chunks,
+            ),
+            desc="Extracting features",
+            unit="file",
+            dynamic_ncols=True,
+            leave=True,
+        )
+
+        for audio_features, file_path in pbar:
             if root_path is not None:
                 file_path = file_path.replace(root_path + '/', '')
 
             save_path = os.path.join(save_dir, file_path)
+            display_path = file_path.replace(os.sep, "/")
 
             if save and audio_features is not None:
                 # Sequence encoders return (N_chunks, T, D); flatten to (N_chunks*T, D) for storage
                 feat_to_save = audio_features.flatten(0, 1) if audio_features.ndim == 3 else audio_features
+                shape = _shape_str(feat_to_save)
                 if 's3://' in save_dir:
                     bucket, key = save_dir.replace("s3://", "").split("/", 1)
                     key = f"{key}/{file_path}"
-                    pbar.set_description(f"Uploading features to s3://{bucket}/{key}") if verbose else None
                     try:
                         buffer = io.BytesIO()
                         np.save(buffer, feat_to_save.detach().cpu().numpy())
                         buffer.seek(0)
                         client.put_object(Bucket=bucket, Key=key, Body=buffer)
+                        pbar.set_postfix_str(f"{display_path} shape={shape}", refresh=True)
+                        if verbose:
+                            tqdm.write(f"Saved s3://{bucket}/{key} shape={shape}")
                     except Exception as e:
                         print(f"Error uploading to s3: {e}") if verbose else None
                 else:
-                    pbar.set_description(f"Saving features in {save_path}, shape: {feat_to_save.shape}")
                     os.makedirs(os.path.dirname(save_path), exist_ok=True)
                     if os.path.exists(save_path):
                         os.remove(save_path)
                     np.save(save_path, feat_to_save.detach().cpu().numpy())
+                    pbar.set_postfix_str(f"{display_path} shape={shape}", refresh=True)
+                    if verbose:
+                        tqdm.write(f"Saved {save_path} shape={shape}")
 
             if not save and audio_features is not None:
                 flat = audio_features.flatten(0, 1) if audio_features.ndim == 3 else audio_features
-                pbar.set_description(f"{file_path}, shape: {flat.shape}")
+                pbar.set_postfix_str(f"{display_path} shape={_shape_str(flat)}", refresh=True)
 
             if not save and audio_features is not None:
                 audio_features_all.append(audio_features.detach().cpu())

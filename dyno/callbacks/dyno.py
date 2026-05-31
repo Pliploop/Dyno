@@ -9,6 +9,7 @@ import random
 import logging
 import numpy as np
 import torch
+import torch.nn.functional as F
 
 from dyno.callbacks.utils import BaseCallback
 from dyno.evaluation.temporal import compute_mspf, compute_ssm, linearity_score
@@ -49,7 +50,7 @@ def _crop_valid(x: torch.Tensor, mask: torch.Tensor | None) -> torch.Tensor:
 def _reconstruct_batch(pl_module, x: torch.Tensor, mask: torch.Tensor | None):
     was_training = pl_module.training
     pl_module.eval()
-    with torch.no_grad():
+    with torch.inference_mode():
         if hasattr(pl_module, "reconstruct_embeddings"):
             x_ref, x_hat = pl_module.reconstruct_embeddings(x, mask=mask)
         else:
@@ -57,7 +58,7 @@ def _reconstruct_batch(pl_module, x: torch.Tensor, mask: torch.Tensor | None):
             _, _, _, x_hat = pl_module(x, mask=mask)
     if was_training:
         pl_module.train()
-    return x_ref, x_hat
+    return x_ref.detach().cpu(), x_hat.detach().cpu()
 
 
 class MSPFCallback(BaseCallback):
@@ -82,6 +83,7 @@ class MSPFCallback(BaseCallback):
         power: float = 1.0,
         absolute: bool = True,
         n_points: int = 100,
+        evaluation_suite: str = "MSPFReconstruction",
     ):
         super().__init__(every_n_epochs=every_n_epochs)
         self.n_samples = n_samples
@@ -91,6 +93,7 @@ class MSPFCallback(BaseCallback):
         self.power = power
         self.absolute = absolute
         self.n_points = n_points
+        self.evaluation_suite = evaluation_suite
         self._samples: dict[str, list[tuple]] = {"train": [], "val": []}
         self._collected: dict[str, bool] = {"train": False, "val": False}
 
@@ -113,11 +116,7 @@ class MSPFCallback(BaseCallback):
 
         for i in indices:
             m = mask[i].detach().cpu() if mask is not None else None
-            self._samples[stage].append((
-                x_ref[i].detach().cpu(),
-                x_hat[i].detach().cpu(),
-                m,
-            ))
+            self._samples[stage].append((x_ref[i], x_hat[i], m))
 
         self._collected[stage] = True
 
@@ -150,6 +149,7 @@ class MSPFCallback(BaseCallback):
 
         wandb_logger = _get_wandb_logger(trainer)
         lin_scores_orig, lin_scores_recon = [], []
+        recon_mse, mspf_rmse, mspf_r2, mspf_corr = [], [], [], []
         figures = []
 
         for idx, (x, x_hat, mask) in enumerate(samples):
@@ -168,6 +168,16 @@ class MSPFCallback(BaseCallback):
             ls_recon = linearity_score(S_recon)
             lin_scores_orig.append(ls_orig)
             lin_scores_recon.append(ls_recon)
+            recon_mse.append(float(F.mse_loss(x_hat_v.float(), x_v.float()).item()))
+
+            err = S_orig - S_recon
+            mspf_rmse.append(float(np.sqrt(np.mean(err ** 2))))
+            denom = float(np.sum((S_orig - np.mean(S_orig)) ** 2))
+            mspf_r2.append(float(1.0 - np.sum(err ** 2) / denom) if denom > 1e-12 else float("nan"))
+            if len(S_orig) >= 2 and np.std(S_orig) > 1e-12 and np.std(S_recon) > 1e-12:
+                mspf_corr.append(float(np.corrcoef(S_orig, S_recon)[0, 1]))
+            else:
+                mspf_corr.append(float("nan"))
 
             T = len(S_orig)
             x_axis = np.linspace(0.0, 1.0, T) if not self.absolute else np.arange(T)
@@ -187,14 +197,19 @@ class MSPFCallback(BaseCallback):
             figures.append(fig)
 
         # Scalar logs (mean over samples)
+        prefix = f"{self.evaluation_suite}/{stage}"
         if lin_scores_orig:
-            pl_module.log(f"{stage}/mspf_linearity_orig",  float(np.mean(lin_scores_orig)),  on_epoch=True, sync_dist=True)
-            pl_module.log(f"{stage}/mspf_linearity_recon", float(np.mean(lin_scores_recon)), on_epoch=True, sync_dist=True)
+            pl_module.log(f"{prefix}/MSPF linearity (original)", float(np.mean(lin_scores_orig)), on_epoch=True, sync_dist=True)
+            pl_module.log(f"{prefix}/MSPF linearity (reconstruction)", float(np.mean(lin_scores_recon)), on_epoch=True, sync_dist=True)
+            pl_module.log(f"{prefix}/Embedding MSE (reconstruction vs original)", float(np.mean(recon_mse)), on_epoch=True, sync_dist=True)
+            pl_module.log(f"{prefix}/MSPF RMSE (reconstruction vs original)", float(np.mean(mspf_rmse)), on_epoch=True, sync_dist=True)
+            pl_module.log(f"{prefix}/MSPF R2 (reconstruction vs original)", float(np.nanmean(mspf_r2)), on_epoch=True, sync_dist=True)
+            pl_module.log(f"{prefix}/MSPF Pearson r (reconstruction vs original)", float(np.nanmean(mspf_corr)), on_epoch=True, sync_dist=True)
 
         # W&B image logs
         if wandb_logger is not None and figures:
             wandb_logger.experiment.log(
-                {f"{stage}/mspf": [_fig_to_wandb_image(f) for f in figures]}
+                {f"{prefix}/MSPF curves (original vs reconstruction)": [_fig_to_wandb_image(f) for f in figures]}
             )
 
         for f in figures:
@@ -209,9 +224,15 @@ class SSMCallback(BaseCallback):
     Dyno-reconstructed sequence, and logs side-by-side heatmaps to W&B.
     """
 
-    def __init__(self, n_samples: int = 4, every_n_epochs: int = 1):
+    def __init__(
+        self,
+        n_samples: int = 4,
+        every_n_epochs: int = 1,
+        evaluation_suite: str = "SSMReconstruction",
+    ):
         super().__init__(every_n_epochs=every_n_epochs)
         self.n_samples = n_samples
+        self.evaluation_suite = evaluation_suite
         self._samples: dict[str, list[tuple]] = {"train": [], "val": []}
         self._collected: dict[str, bool] = {"train": False, "val": False}
 
@@ -234,7 +255,7 @@ class SSMCallback(BaseCallback):
 
         for i in indices:
             m = mask[i].detach().cpu() if mask is not None else None
-            self._samples[stage].append((x_ref[i].detach().cpu(), x_hat[i].detach().cpu(), m))
+            self._samples[stage].append((x_ref[i], x_hat[i], m))
 
         self._collected[stage] = True
 
@@ -294,7 +315,7 @@ class SSMCallback(BaseCallback):
 
         if wandb_logger is not None and figures:
             wandb_logger.experiment.log(
-                {f"{stage}/ssm": [_fig_to_wandb_image(f) for f in figures]}
+                {f"{self.evaluation_suite}/{stage}/SSM matrices (original vs reconstruction)": [_fig_to_wandb_image(f) for f in figures]}
             )
 
         for f in figures:

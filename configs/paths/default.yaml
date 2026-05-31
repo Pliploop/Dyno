@@ -6,6 +6,10 @@ root_dir: .
 # path to data directory
 data_dir: ${paths.root_dir}/data
 
+# Shared dataset storage for large external corpora and extracted embeddings.
+dataset_root: /gpfs/scratch/acw749/datasets
+structure_root: ${paths.dataset_root}/structure
+
 # path to logging directory
 log_dir: ${paths.root_dir}/logs/
 

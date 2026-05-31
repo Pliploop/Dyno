@@ -33,6 +33,8 @@ s3torchconnector
 sagemaker
 scikit-learn
 soundfile
+plotly
+umap-learn
 timm
 tokenizers
 torchlibrosa

@@ -229,20 +229,35 @@ class DynoVelocityPredictor(nn.Module):
         rope_theta: float = 10000.0,
         conditioning_type: str = "adaLN_zero",
         temporal_only_conditioning: bool = False,
+        condition_z_tau: bool | None = None,
+        condition_zc: bool | None = None,
+        direct_z_tau_conditioning: bool = False,
     ):
         if conditioning_type not in _BLOCK_CLS:
             raise ValueError(f"conditioning_type must be one of {list(_BLOCK_CLS)}, got {conditioning_type!r}")
+        if temporal_only_conditioning:
+            condition_z_tau = True
+            condition_zc = False
+        if condition_z_tau is None:
+            condition_z_tau = True
+        if condition_zc is None:
+            condition_zc = True
+        if not condition_z_tau and not condition_zc:
+            raise ValueError("At least one predictor condition must be enabled: condition_z_tau or condition_zc.")
         super().__init__()
         assert (model_dim // num_heads) % 2 == 0
         self.conditioning_type = conditioning_type
-        self.temporal_only_conditioning = temporal_only_conditioning
+        self.condition_z_tau = condition_z_tau
+        self.condition_zc = condition_zc
+        self.temporal_only_conditioning = condition_z_tau and not condition_zc
+        self.direct_z_tau_conditioning = direct_z_tau_conditioning and condition_z_tau
 
         self.position_queries = nn.Parameter(torch.randn(max_frames, model_dim) * 0.02)
-        self.z_tau_proj = nn.Linear(latent_dim, model_dim)
-        self.content_proj = None if temporal_only_conditioning else nn.Linear(input_dim, model_dim)
+        self.z_tau_proj = nn.Linear(latent_dim, model_dim) if condition_z_tau else None
+        self.content_proj = nn.Linear(input_dim, model_dim) if condition_zc else None
         self.dropout = nn.Dropout(dropout)
         self.rope = RotaryEmbedding(dim=model_dim // num_heads, max_seq_len=max_frames, theta=rope_theta)
-        conditioning_dim = model_dim if temporal_only_conditioning else 2 * model_dim
+        conditioning_dim = model_dim * (int(condition_z_tau) + int(condition_zc))
         self.blocks = nn.ModuleList(
             [
                 _BLOCK_CLS[conditioning_type](
@@ -259,20 +274,21 @@ class DynoVelocityPredictor(nn.Module):
         self.out_proj = nn.Linear(model_dim, input_dim)
 
     def _build_cond(self, z_tau, content):
-        z = self.z_tau_proj(z_tau)
-        if self.temporal_only_conditioning:
-            if self.conditioning_type in ("cross_attention", "prefix"):
-                return z.unsqueeze(1)
-            return z
-        c = self.content_proj(content)
+        cond_parts = []
+        if self.condition_z_tau:
+            cond_parts.append(self.z_tau_proj(z_tau))
+        if self.condition_zc:
+            cond_parts.append(self.content_proj(content))
         if self.conditioning_type in ("cross_attention", "prefix"):
-            return torch.stack([z, c], dim=1)
-        return torch.cat([z, c], dim=-1)
+            return torch.stack(cond_parts, dim=1)
+        return cond_parts[0] if len(cond_parts) == 1 else torch.cat(cond_parts, dim=-1)
 
     def forward(self, z_tau, content, num_frames):
         B = z_tau.shape[0]
         cond = self._build_cond(z_tau, content)
         queries = self.dropout(self.position_queries[:num_frames].unsqueeze(0).expand(B, -1, -1))
+        if self.direct_z_tau_conditioning:
+            queries = queries + self.z_tau_proj(z_tau).unsqueeze(1)
         cos, sin = self.rope(seq_len=num_frames)
         for block in self.blocks:
             queries = block(queries, cond, cos, sin)

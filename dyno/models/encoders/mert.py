@@ -17,11 +17,11 @@ class MERTEncoder(AudioEncoderBase):
         self,
         model_name: str = "m-a-p/MERT-v1-330M",
         layer_index: int = -1,
-        pool: bool = False,
+        pool: bool = True,
         downsample_factor: int = 1,
         ckpt_path: str = None,
         freeze: bool = True,
-        use_safetensors: bool = True,
+        use_safetensors: bool = False,
     ):
         super().__init__(pool=pool, downsample_factor=downsample_factor, ckpt_path=ckpt_path, freeze=freeze)
         from transformers import AutoModel, Wav2Vec2FeatureExtractor

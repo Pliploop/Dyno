@@ -21,7 +21,8 @@ progress:
 mspf:
   _target_: dyno.callbacks.dyno.MSPFCallback
   n_samples: 4
-  every_n_epochs: 1
+  every_n_epochs: 5
+  evaluation_suite: MSPF reconstruction
   window: 30
   sigma: 10.0
   lam: 1.0e-3
@@ -32,4 +33,81 @@ mspf:
 ssm:
   _target_: dyno.callbacks.dyno.SSMCallback
   n_samples: 4
-  every_n_epochs: 1
+  every_n_epochs: 5
+  evaluation_suite: SSM reconstruction
+
+annotation_free_temporal:
+  _target_: dyno.callbacks.annotation_free.AnnotationFreeTemporalCallback
+  every_n_epochs: 50
+  n_samples: 500
+  evaluation_suite: Temporal
+  mspf_window: 30
+  mspf_sigma: 10.0
+  mspf_lam: 1.0e-3
+  mspf_power: 1.0
+  mspf_points: 64
+  transform_agreement:
+    - shuffle
+    - reverse
+    - splice
+  order_transforms:
+    - shuffle
+    - reverse
+    - half_swap
+    - circular_shift
+    - local_shuffle
+    - splice
+  random_dim: ${model.latent_dim}
+  seed: 0
+  estimate_mi: true
+  latent_swapping: true
+
+flipflop:
+  _target_: dyno.callbacks.flipflop.FlipFlopCallback
+  n_flips: 64
+  every_n_epochs: 5
+  evaluation_suite: FlipFlop order sensitivity
+  chunk_width_min: 1
+  chunk_width_max: 4
+  distance_min: 1
+  distance_max: 20
+  n_chunks_min: 1
+  n_chunks_max: 4
+
+coverx:
+  _target_: dyno.callbacks.coverx.CoverXCallback
+  manifest_csv: ${paths.structure_root}/manifests/${data.embedding_encoder}/${data.embedding_rate}/all.csv
+  feature_root: ${paths.structure_root}/features
+  encoder: ${data.embedding_encoder}
+  rate: ${data.embedding_rate}
+  evaluation_suite: Structure annotation agreement
+  clean_labels: dataset
+  per_dataset: true
+  every_n_epochs: 20
+  test_only: false
+  max_tracks: 512
+  max_frames: 1024
+  batch_size: 64
+  form_epsilon: 0.25
+  content_control_pool: 50
+  ssm_frames: 64
+  mspf_points: 64
+
+structviz:
+  _target_: dyno.callbacks.structviz.StructVizCallback
+  manifest_csv: ${paths.structure_root}/manifests/${data.embedding_encoder}/${data.embedding_rate}/all.csv
+  feature_root: ${paths.structure_root}/features
+  evaluation_suite: Structure visualization
+  clean_labels: dataset
+  every_n_epochs: 20
+  test_only: false
+  n_samples_per_dataset: 4
+  datasets:
+    - salami
+    - harmonix
+  max_frames: 1024
+  mspf_window: 3
+  mspf_sigma: 1
+  mspf_lam: 1.0e-3
+  mspf_power: 5
+  mspf_points: 100

@@ -3,7 +3,7 @@ input_dim: ${..embedding_dim}
 model_dim: ${..aggregator_model_dim}
 num_heads: 16
 num_layers: 8
-ffn_dim: 4096
+ffn_dim: 3072
 dropout: 0.1
 max_seq_len: 1024
 rope_theta: 10000.0

@@ -1,0 +1,61 @@
+# @package _global_
+
+# Sanity-check memorization run for velocity reconstruction.
+# Velocity mode anchors on the first frame and trains directly against
+# adjacent frame deltas.
+
+defaults:
+  - override /model/bottleneck: ae
+
+task_name: "overfit_velocity"
+tags: ["overfit", "velocity"]
+
+data:
+  n_frames: 30
+  batch_size: 16
+  num_workers: 0
+  random_crop: false
+
+model:
+  aggregator_model_dim: 256
+  predictor_model_dim: 256
+  latent_dim: 64
+  content_token: first
+  output_mode: velocity
+  condition_z_tau: true
+  condition_zc: false
+  temporal_only_conditioning: false
+  input_norm: dataset_stats
+  beta: 0.0
+  aggregator:
+    num_heads: 8
+    num_layers: 2
+    ffn_dim: 1024
+    dropout: 0.0
+  predictor:
+    num_heads: 8
+    num_layers: 2
+    ffn_dim: 1024
+    dropout: 0.0
+    conditioning_type: adaLN_zero
+    condition_z_tau: ${..condition_z_tau}
+    condition_zc: ${..condition_zc}
+    temporal_only_conditioning: ${..temporal_only_conditioning}
+    direct_z_tau_conditioning: true
+  optimizer:
+    lr: 0.0003
+    weight_decay: 0.0
+  scheduler: null
+
+trainer:
+  devices: 1
+  strategy: auto
+  precision: 32-true
+  max_steps: 5000
+  max_epochs: 100000
+  overfit_batches: 2
+  accumulate_grad_batches: 1
+  check_val_every_n_epoch: 1
+  limit_val_batches: 2
+  gradient_clip_val: 1.0
+  enable_checkpointing: false

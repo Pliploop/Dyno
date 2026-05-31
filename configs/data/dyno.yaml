@@ -12,6 +12,7 @@ embedding_dim: ${model.embedding_dim}
 
 path_col: npy_path
 n_frames: 60
+random_crop: true
 batch_size: 32
 num_workers: 4
 limit_n: null

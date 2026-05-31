@@ -1,0 +1,4 @@
+# @package _global_
+
+feature_rate: 0.1hz
+hop: ${eval:'int(${data.target_sr} / 0.1)'}

@@ -92,6 +92,7 @@ class AudioDataModule(LightningDataModule):
         embedding_encoder: str = "unknown",
         embedding_rate: str = "unknown",
         embedding_dim: int | None = None,
+        random_crop: bool = True,
     ):
         super().__init__()
         self.train_csv = train_csv
@@ -107,6 +108,7 @@ class AudioDataModule(LightningDataModule):
         self.embedding_encoder = embedding_encoder
         self.embedding_rate = embedding_rate
         self.embedding_dim = embedding_dim
+        self.random_crop = random_crop
 
     def _make_dataset(self, csv_path: str, split: str) -> AudioDataset:
         return AudioDataset(
@@ -114,6 +116,7 @@ class AudioDataModule(LightningDataModule):
             task_kwargs={"csv_path": csv_path, "path_col": self.path_col},
             preextracted_features=True,
             n_frames=self.n_frames,
+            random_crop=self.random_crop,
             split=split,
             limit_n=self.limit_n,
             target_sr=self.target_sr,
@@ -125,6 +128,8 @@ class AudioDataModule(LightningDataModule):
         self.val_dataset = self._make_dataset(self.val_csv, split="val")
         if self.test_csv is not None:
             self.test_dataset = self._make_dataset(self.test_csv, split="test")
+        else:
+            self.test_dataset = self.val_dataset
 
     # --- plural aliases used by gdr/extract_dataset.py ---
     @property

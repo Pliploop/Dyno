@@ -1,6 +1,6 @@
 defaults:
   - aggregator: default
-  - bottleneck: default     # switch to "ae" for DynoAutoEncoder (no KL penalty)
+  - bottleneck: ae     # switch to "ae" for DynoAutoEncoder (no KL penalty)
   - predictor: default
 
 _target_: dyno.models.dyno.dyno.LightningDyno
@@ -12,30 +12,38 @@ freeze: false
 # transformer widths, or bottleneck size only happens here.
 embedding_dim: 512
 aggregator_model_dim: 1024
-predictor_model_dim: 512
+predictor_model_dim: 768
 latent_dim: 256
 
 # Beta-VAE weight on the KL term — ignored (returns 0) with bottleneck: ae
-beta: 1.0e-6
+beta: 1.0e-3
 
 # Which frame to use as the predictor conditioning token
 #   "first" → x[:, 0, :]     — required when output_mode=velocity
 #   "mean"  → x.mean(dim=1)  — average-content anchor; valid with embeddings or centered_residuals
-content_token: first
+content_token: mean
 
 # What the predictor outputs
 #   "velocity"   — T-1 frame-difference vectors; integrated from first frame; requires content_token=first
 #   "embeddings" — T full embedding predictions; conditioned on content_token (first or mean)
 #   "centered_residuals" — T residual predictions against x - mean; requires content_token=mean
-output_mode: velocity
+output_mode: centered_residuals
 
-# If true, the predictor conditions only on the temporal bottleneck token z_tau.
-# This is valid only with output_mode=velocity or output_mode=centered_residuals,
-# where the content token is still used outside the predictor as the anchor.
-temporal_only_conditioning: true
+# Which tokens the predictor receives as conditioning. At least one must be true.
+# condition_zc=false is valid only with velocity/centered_residuals, where the
+# content token is still used outside the predictor as the reconstruction anchor.
+condition_z_tau: true
+condition_zc: true
 
-# Optional normalization applied over the embedding dimension before Dyno encodes,
-# conditions, and computes reconstruction loss. Uses aggregator.input_dim.
+# Compatibility alias: when true, this overrides the knobs to z_tau-only
+# conditioning (condition_z_tau=true, condition_zc=false).
+temporal_only_conditioning: false
+
+# Optional non-learnable normalization applied over the embedding dimension before
+# Dyno encodes, conditions, and computes reconstruction loss. Uses aggregator.input_dim.
+#   null / identity  - no normalization
+#   layernorm        - per-sample LayerNorm with no affine parameters
+#   dataset_stats    - one train-loader pass before fit; mean/std saved as buffers
 input_norm: null
 input_norm_eps: 1.0e-5
 
@@ -53,7 +61,7 @@ optimizer:
 scheduler:
   _target_: dyno.models.utils.schedulers.CosineDecayWithLinearWarmup
   _partial_: true
-  warmup_steps: 1000
+  warmup_steps: 0
   max_steps: ${trainer.max_steps}
   base_lr: 0.0001
   final_lr: 0.00001

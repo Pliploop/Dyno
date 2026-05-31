@@ -1,6 +1,5 @@
 import torch.nn as nn
 import torch.nn.functional as F
-from transformers.models.llama.modeling_llama import LlamaRMSNorm
 
 try:
     import xformers.ops as xops
@@ -43,4 +42,4 @@ def make_ffn(model_dim: int, ffn_dim: int, dropout: float) -> nn.Module:
 
 
 def make_norm(dim: int) -> nn.Module:
-    return LlamaRMSNorm(dim)
+    return nn.LayerNorm(dim, elementwise_affine=False)

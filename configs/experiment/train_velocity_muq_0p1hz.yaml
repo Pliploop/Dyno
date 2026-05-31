@@ -1,0 +1,68 @@
+# @package _global_
+
+# Full-dataset velocity baseline for MuQ 0.1 Hz embeddings.
+# Mirrors train_residuals_muq_0p1hz, but predicts adjacent frame deltas
+# anchored on the first frame.
+
+defaults:
+  - override /model/bottleneck: default
+
+task_name: "train_velocity_muq_0p1hz"
+tags: ["baseline", "velocity", "muq", "0.1hz"]
+
+data:
+  embedding_encoder: muq
+  embedding_rate: 0.1hz
+  n_frames: 30
+  batch_size: 512
+  num_workers: 16
+  random_crop: true
+
+model:
+  embedding_dim: 512
+  aggregator_model_dim: 768
+  predictor_model_dim: 768
+  latent_dim: 128
+  content_token: first
+  output_mode: velocity
+  condition_z_tau: true
+  condition_zc: false
+  temporal_only_conditioning: false
+  input_norm: dataset_stats
+  beta: 1e-3
+  recon_loss: l1
+  aggregator:
+    num_heads: 12
+    num_layers: 6
+    ffn_dim: 3072
+    dropout: 0.05
+  predictor:
+    num_heads: 12
+    num_layers: 6
+    ffn_dim: 3072
+    dropout: 0.05
+    conditioning_type: adaLN_zero
+    condition_z_tau: ${..condition_z_tau}
+    condition_zc: ${..condition_zc}
+    temporal_only_conditioning: ${..temporal_only_conditioning}
+    direct_z_tau_conditioning: true
+  optimizer:
+    lr: 0.0001
+    weight_decay: 0.00001
+  scheduler:
+    warmup_steps: 2000
+    max_steps: ${trainer.max_steps}
+    base_lr: 0.0001
+    final_lr: 0.00001
+
+trainer:
+  accelerator: gpu
+  devices: 1
+  strategy: auto
+  precision: bf16-mixed
+  max_steps: 200000
+  accumulate_grad_batches: 2
+  check_val_every_n_epoch: 1
+  # limit_val_batches: 20
+  gradient_clip_val: 1.0
+  enable_checkpointing: false
