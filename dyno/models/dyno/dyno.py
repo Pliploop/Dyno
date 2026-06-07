@@ -8,7 +8,7 @@ from torch.utils.data import DataLoader
 from dyno.models.utils.base import BaseModule
 from .aggregator import DynoAggregator
 from .bottleneck import DynoBetaVAE, DynoAutoEncoder
-from .predictor import DynoVelocityPredictor
+from .predictor import DynoTrajectoryPredictor
 
 
 class DatasetStatsNorm(nn.Module):
@@ -69,7 +69,7 @@ class Dyno(BaseModule):
         self,
         aggregator: DynoAggregator,
         bottleneck: DynoBetaVAE | DynoAutoEncoder,
-        predictor: DynoVelocityPredictor,
+        predictor: DynoTrajectoryPredictor,
         beta: float = 1.0,
         content_token: str = "first",
         output_mode: str = "velocity",
@@ -316,7 +316,7 @@ class LightningDyno(Dyno, LightningModule):
         self,
         aggregator: DynoAggregator,
         bottleneck: DynoBetaVAE | DynoAutoEncoder,
-        predictor: DynoVelocityPredictor,
+        predictor: DynoTrajectoryPredictor,
         beta: float = 1.0,
         content_token: str = "first",
         output_mode: str = "velocity",

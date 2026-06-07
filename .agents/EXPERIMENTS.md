@@ -5,6 +5,7 @@ evaluation and diffusion child runs.
 
 | Alias | Date | Status | Phase | Paper section | Kind | Parent | W&B | Local checkpoint or artifact | Launch/config | Notes |
 |---|---|---|---|---|---|---|---|---|---|---|
+| muq-1hz-residuals-d32-seed0 | 2026-06-07 | running | 2 | Main training | training | - | [W&B](https://wandb.ai/jul-guinot/dyno-paper/runs/0e33a658_1780839236) | `/gpfs/scratch/acw749/dyno/logs/xps/0e33a658_1780839236/checkpoints` | `sbatch train.sh` (`experiment=paper_muq_1hz`, `seed=0`) | Slurm 11872287; centered residuals despite historical `DynoVelocityPredictor` class name. |
 
 
 ## Status Values

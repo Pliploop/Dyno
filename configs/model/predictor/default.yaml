@@ -1,4 +1,4 @@
-_target_: dyno.models.dyno.predictor.DynoVelocityPredictor
+_target_: dyno.models.dyno.predictor.DynoTrajectoryPredictor
 input_dim: ${..embedding_dim}
 latent_dim: ${..latent_dim}
 model_dim: ${..predictor_model_dim}

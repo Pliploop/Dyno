@@ -14,6 +14,7 @@ def test_paper_default_uses_centered_residuals():
 
     assert cfg.model.latent_dim == 32
     assert cfg.model.output_mode == "centered_residuals"
+    assert cfg.model.predictor._target_.endswith("DynoTrajectoryPredictor")
     assert cfg.model.content_token == "mean"
     assert cfg.model.condition_z_tau is True
     assert cfg.model.condition_zc is False

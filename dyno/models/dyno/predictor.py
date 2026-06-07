@@ -215,7 +215,7 @@ _BLOCK_CLS = {
 }
 
 
-class DynoVelocityPredictor(nn.Module):
+class DynoTrajectoryPredictor(nn.Module):
     def __init__(
         self,
         input_dim: int,
@@ -293,3 +293,7 @@ class DynoVelocityPredictor(nn.Module):
         for block in self.blocks:
             queries = block(queries, cond, cos, sin)
         return self.out_proj(self.norm(queries))
+
+
+# Backward-compatible import path for existing configs and checkpoints.
+DynoVelocityPredictor = DynoTrajectoryPredictor
