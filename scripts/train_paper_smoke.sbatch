@@ -49,5 +49,5 @@ export WANDB_PROJECT=dyno-paper
   trainer.devices=1 \
   trainer.strategy=auto \
   data.num_workers=8 \
-  "name=paper/smoke/${ALIAS}/seed=0" \
+  "name=paper/smoke/${ALIAS}/seed0" \
   "tags=[paper,phase3_smoke,${ALIAS}]"
