@@ -39,6 +39,7 @@ class StructureProbeCallback(Callback):
         num_workers: int = 0,
         max_tracks: int | None = None,
         salami_boundary_layers: list[str] | None = None,
+        trim_boundaries: bool = False,
         run_on_train_end: bool = True,
         run_on_test_end: bool = True,
         run_once: bool = True,
@@ -65,6 +66,7 @@ class StructureProbeCallback(Callback):
         self.num_workers = num_workers
         self.max_tracks = max_tracks
         self.salami_boundary_layers = salami_boundary_layers or ["uppercase", "lowercase"]
+        self.trim_boundaries = trim_boundaries
         self.run_on_train_end = run_on_train_end
         self.run_on_test_end = run_on_test_end
         self.run_once = run_once
@@ -115,6 +117,7 @@ class StructureProbeCallback(Callback):
                     num_workers=self.num_workers,
                     max_tracks=self.max_tracks,
                     salami_boundary_layer=layer,
+                    trim_boundaries=self.trim_boundaries,
                     device=pl_module.device,
                 )
                 if layer == "lowercase":

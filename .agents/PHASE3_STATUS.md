@@ -14,7 +14,8 @@
   - five warmup epochs and 95 cosine-decay epochs;
   - validation checkpoint selection and validation-tuned peak threshold;
   - segment-averaged function probabilities;
-  - HR.5F, HR3F, PWF, and ACC with fold mean and standard deviation.
+  - HR.5F, HR3F, and PWF through `mir_eval` defaults, plus frame ACC,
+    with fold mean and standard deviation.
 - Added all six paper probe inputs: local sequence, local plus content, local
   plus temporal, local plus both globals, content plus position, and temporal
   plus position.
@@ -34,9 +35,11 @@
   content, temporal, and combined retrieval.
 - Added cross-encoder MSPF geometry for aligned MuQ, MERT, and Music2Latent
   structure fixtures. Pair sampling is deterministic and bounded.
-- Added audio-domain perturbation evaluation for gain, pitch shift, time
-  stretch, chunk shuffle, reversal, and section deletion. It logs content and
-  temporal displacement, MSPF-DTW, and preserving/disrupting separation.
+- Added mixed-domain perturbation evaluation. Gain, pitch shift, and time
+  stretch run in the audio domain; chunk shuffle, reversal, and section
+  deletion run directly on the frozen embedding sequence. Each result records
+  its domain and logs content and temporal displacement, MSPF-DTW, and
+  preserving/disrupting separation.
 
 ## Launch Contract
 

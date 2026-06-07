@@ -608,10 +608,11 @@ available extracted tracks, and are fixed across paper experiments.
 
 The evaluation contract is fixed across the suite.  Reconstruction,
 MSPF, perturbation, retrieval, and compression results use the same
-held-out split and are reported at the track level.  Controlled
-perturbations are generated from the evaluation audio before feature
-extraction, while exact permutation tests are applied directly to the
-frozen embedding sequence.  Unless otherwise stated, MSPF metrics are
+held-out split and are reported at the track level.  Gain, pitch-shift,
+and time-stretch perturbations are generated from the evaluation audio
+before feature extraction.  Chunk shuffle, reversal, and section
+deletion are applied directly to the frozen embedding sequence.  Unless
+otherwise stated, MSPF metrics are
 computed in MuQ space; cross-encoder MSPF checks recompute the same
 metrics with MERT, USAD, and Music2Latent features.  Diffusion
 experiments draw $N$ samples for each conditioning pair and report
@@ -939,7 +940,9 @@ construct two families of perturbations.  The preserving family
 includes pitch shift, moderate time stretch, gain change, and
 optional generative edits such as instrument insertion when the
 global arrangement is preserved.  The disrupting family includes
-chunk shuffle, reversal, and section deletion.
+chunk shuffle, reversal, and section deletion, all applied in the
+latent sequence domain so that they isolate temporal organisation
+without introducing audio-encoder artefacts.
 
 For each original track $x$ and perturbed track $x'$, we measure
 normalised displacement in temporal-token space:
@@ -1119,8 +1122,12 @@ tracks with similar symbolic form, which can be sparse and
 ill-defined for small annotated datasets, we evaluate boundary
 detection and function prediction using lightweight probes.
 
-The probing setup is intentionally simple.  We freeze all
-representations and train a linear frame-level head.  For boundary
+The probing setup follows Toyama et al.: we freeze all representations,
+align features to 2\,Hz, and train on 30-second windows using a single
+linear frame-level head.  Toyama et al. probe the framewise encoder
+sequence; our global-token inputs are controlled extensions evaluated
+with the same folds, windows, optimisation, head, and post-processing.
+For boundary
 detection, the head predicts whether each frame corresponds to a
 section change.  For function prediction, it predicts one of the
 structural function labels.  The probe receives local frame
@@ -1134,8 +1141,9 @@ features, global tokens, or their concatenation:
   \label{eq:probe_inputs}
 \end{align}
 %
-Including positional encoding allows global tokens to be used for
-frame-level prediction.  Comparing $[z_t,\ztau]$ to $z_t$ tests
+Full-track global tokens are repeated at every frame in the 30-second
+window.  Including positional encoding allows global tokens to be used
+for frame-level prediction.  Comparing $[z_t,\ztau]$ to $z_t$ tests
 whether the temporal token provides global form information beyond
 local frame features.  Comparing $\ztau$ to $\zC$ tests whether the
 temporal token is more informative than order-invariant content for

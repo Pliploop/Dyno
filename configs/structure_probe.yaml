@@ -44,6 +44,8 @@ probe:
   num_folds: 8
   num_workers: 4
   max_tracks: null
+  # Toyama et al. report mir_eval defaults, where endpoint trimming is off.
+  trim_boundaries: false
 
 wandb:
   enabled: true

@@ -33,6 +33,7 @@ structure_probe:
   num_workers: 4
   max_tracks: null
   salami_boundary_layers: [uppercase, lowercase]
+  trim_boundaries: false
   run_on_train_end: true
   run_on_test_end: true
   run_once: true

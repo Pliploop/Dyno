@@ -7,6 +7,7 @@ from dyno.evaluation.structure_probe import (
     ProbeTrack,
     ProbeWindowDataset,
     _boundary_f1,
+    _pairwise_f1,
     _position_encoding,
     normalize_harmonix_function,
 )
@@ -52,11 +53,17 @@ def test_probe_window_variants_have_expected_dimensions():
         assert item["mask"].sum() == 60
 
 
-def test_boundary_f1_uses_trimmed_internal_boundaries():
+def test_boundary_f1_can_reproduce_trimmed_diagnostic():
     reference = np.asarray([0.0, 10.0, 20.0, 30.0])
     estimated = np.asarray([10.2, 19.8])
 
-    assert _boundary_f1(reference, estimated, window=0.5) == 1.0
+    assert _boundary_f1(reference, estimated, window=0.5, trim=True) == 1.0
+
+
+def test_pairwise_f1_uses_mir_eval_segment_protocol():
+    reference = np.asarray([0, 0, 1, 1, 2, 2])
+
+    assert _pairwise_f1(reference, reference.copy(), frame_rate=2.0) == 1.0
 
 
 def test_harmonix_functions_map_to_seven_class_vocabulary():

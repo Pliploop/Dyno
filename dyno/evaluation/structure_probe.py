@@ -533,7 +533,12 @@ def _peak_times(
     return (peaks.astype(np.float64) + 0.5) / frame_rate
 
 
-def _boundary_f1(reference: np.ndarray, estimated: np.ndarray, window: float) -> float:
+def _boundary_f1(
+    reference: np.ndarray,
+    estimated: np.ndarray,
+    window: float,
+    trim: bool = False,
+) -> float:
     duration = float(reference[-1]) if reference.size else 0.0
     if duration <= 0.0:
         return float("nan")
@@ -550,7 +555,7 @@ def _boundary_f1(reference: np.ndarray, estimated: np.ndarray, window: float) ->
             reference_intervals,
             estimated_intervals,
             window=window,
-            trim=True,
+            trim=trim,
         )[2]
     )
 
@@ -560,6 +565,7 @@ def _select_threshold(
     predictions: dict[int, tuple[np.ndarray, np.ndarray]],
     frame_rate: float,
     thresholds: Iterable[float],
+    trim_boundaries: bool,
 ) -> float:
     best_threshold = 0.5
     best_score = -float("inf")
@@ -569,6 +575,7 @@ def _select_threshold(
                 tracks[index].boundary_times,
                 _peak_times(boundary, frame_rate, threshold),
                 3.0,
+                trim=trim_boundaries,
             )
             for index, (boundary, _) in predictions.items()
         ]
@@ -594,18 +601,36 @@ def _segment_function_predictions(
     return output
 
 
-def _pairwise_f1(reference: np.ndarray, estimated: np.ndarray) -> float:
-    if reference.size < 2:
+def _frame_labels_to_segments(
+    labels: np.ndarray,
+    frame_rate: float,
+) -> tuple[np.ndarray, list[str]]:
+    if labels.size == 0:
+        return np.empty((0, 2), dtype=np.float64), []
+    changes = np.flatnonzero(labels[1:] != labels[:-1]) + 1
+    edges = np.concatenate([[0], changes, [labels.size]])
+    intervals = np.column_stack([edges[:-1], edges[1:]]).astype(np.float64) / frame_rate
+    segment_labels = [str(labels[start]) for start in edges[:-1]]
+    return intervals, segment_labels
+
+
+def _pairwise_f1(
+    reference: np.ndarray,
+    estimated: np.ndarray,
+    frame_rate: float,
+) -> float:
+    if reference.size == 0:
         return float("nan")
-    ref_same = reference[:, None] == reference[None, :]
-    est_same = estimated[:, None] == estimated[None, :]
-    upper = np.triu_indices(reference.size, k=1)
-    ref_same = ref_same[upper]
-    est_same = est_same[upper]
-    true_positive = np.sum(ref_same & est_same)
-    precision = true_positive / max(np.sum(est_same), 1)
-    recall = true_positive / max(np.sum(ref_same), 1)
-    return float(2 * precision * recall / max(precision + recall, 1e-12))
+    reference_intervals, reference_labels = _frame_labels_to_segments(reference, frame_rate)
+    estimated_intervals, estimated_labels = _frame_labels_to_segments(estimated, frame_rate)
+    return float(
+        mir_eval.segment.pairwise(
+            reference_intervals,
+            reference_labels,
+            estimated_intervals,
+            estimated_labels,
+        )[2]
+    )
 
 
 def _evaluate_predictions(
@@ -614,6 +639,7 @@ def _evaluate_predictions(
     vocabulary: dict[str, int],
     frame_rate: float,
     threshold: float,
+    trim_boundaries: bool,
 ) -> dict[str, float]:
     hr_0p5: list[float] = []
     hr_3: list[float] = []
@@ -622,8 +648,22 @@ def _evaluate_predictions(
     for index, (boundary_probability, function_probability) in predictions.items():
         track = tracks[index]
         estimated_boundaries = _peak_times(boundary_probability, frame_rate, threshold)
-        hr_0p5.append(_boundary_f1(track.boundary_times, estimated_boundaries, 0.5))
-        hr_3.append(_boundary_f1(track.boundary_times, estimated_boundaries, 3.0))
+        hr_0p5.append(
+            _boundary_f1(
+                track.boundary_times,
+                estimated_boundaries,
+                0.5,
+                trim=trim_boundaries,
+            )
+        )
+        hr_3.append(
+            _boundary_f1(
+                track.boundary_times,
+                estimated_boundaries,
+                3.0,
+                trim=trim_boundaries,
+            )
+        )
         reference_labels = _segment_labels(
             track.function_times,
             track.function_labels,
@@ -639,7 +679,7 @@ def _evaluate_predictions(
             estimated_boundaries,
             frame_rate,
         )
-        pwf.append(_pairwise_f1(reference, estimated))
+        pwf.append(_pairwise_f1(reference, estimated, frame_rate))
         accuracy.append(float(np.mean(reference == estimated)))
     return {
         "hr_0p5_f": float(np.nanmean(hr_0p5)),
@@ -672,6 +712,7 @@ def run_structure_probe(
     num_workers: int = 0,
     max_tracks: int | None = None,
     salami_boundary_layer: str = "uppercase",
+    trim_boundaries: bool = False,
     device: str | torch.device = "cuda",
 ) -> tuple[dict[str, float], list[dict[str, float | int | str]]]:
     device = torch.device(device)
@@ -731,7 +772,13 @@ def run_structure_probe(
                 device,
                 num_workers,
             )
-            threshold = _select_threshold(tracks, val_predictions, frame_rate, threshold_grid)
+            threshold = _select_threshold(
+                tracks,
+                val_predictions,
+                frame_rate,
+                threshold_grid,
+                trim_boundaries,
+            )
             test_predictions = _predict_tracks(
                 probe,
                 tracks,
@@ -752,6 +799,7 @@ def run_structure_probe(
                 vocabulary,
                 frame_rate,
                 threshold,
+                trim_boundaries,
             )
             fold_rows.append(
                 {

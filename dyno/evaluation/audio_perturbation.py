@@ -1,4 +1,4 @@
-"""Audio-domain perturbation evaluation for frozen Dyno checkpoints."""
+"""Controlled audio- and latent-domain perturbations for frozen checkpoints."""
 
 from __future__ import annotations
 
@@ -26,34 +26,49 @@ def transform_audio(
     gain_db: float = -6.0,
     pitch_steps: float = 2.0,
     stretch_rate: float = 1.1,
-    chunk_seconds: float = 15.0,
 ) -> np.ndarray:
     audio = np.asarray(audio, dtype=np.float32)
-    rng = np.random.default_rng(seed)
     if condition == "gain":
         return audio * np.float32(10.0 ** (gain_db / 20.0))
     if condition == "pitch_shift":
         return librosa.effects.pitch_shift(y=audio, sr=sample_rate, n_steps=pitch_steps).astype(np.float32)
     if condition == "time_stretch":
         return librosa.effects.time_stretch(y=audio, rate=stretch_rate).astype(np.float32)
-    if condition == "reverse":
-        return audio[::-1].copy()
+    raise ValueError(f"{condition!r} is not an audio-domain perturbation")
 
-    chunk_samples = max(1, int(round(chunk_seconds * sample_rate)))
-    chunks = [audio[start : start + chunk_samples] for start in range(0, len(audio), chunk_samples)]
+
+def transform_embedding_sequence(
+    sequence: np.ndarray,
+    condition: str,
+    seed: int,
+    chunk_frames: int = 15,
+) -> np.ndarray:
+    """Apply order and deletion interventions directly to a frozen sequence."""
+    sequence = np.asarray(sequence, dtype=np.float32)
+    if sequence.ndim != 2:
+        raise ValueError(f"Expected [time, feature] sequence, got {sequence.shape}")
+    if condition == "reverse":
+        return sequence[::-1].copy()
+
+    rng = np.random.default_rng(seed)
+    chunk_frames = max(1, int(chunk_frames))
+    chunks = [
+        sequence[start : start + chunk_frames]
+        for start in range(0, len(sequence), chunk_frames)
+    ]
     if condition == "chunk_shuffle":
         order = rng.permutation(len(chunks))
         return np.concatenate([chunks[index] for index in order]).astype(np.float32)
     if condition == "section_delete":
         if len(chunks) <= 2:
-            start = len(audio) // 3
-            stop = 2 * len(audio) // 3
-            return np.concatenate([audio[:start], audio[stop:]]).astype(np.float32)
+            start = len(sequence) // 3
+            stop = 2 * len(sequence) // 3
+            return np.concatenate([sequence[:start], sequence[stop:]]).astype(np.float32)
         delete_index = int(rng.integers(1, len(chunks) - 1))
         return np.concatenate([chunk for index, chunk in enumerate(chunks) if index != delete_index]).astype(
             np.float32
         )
-    raise ValueError(f"Unknown audio perturbation {condition!r}")
+    raise ValueError(f"{condition!r} is not a latent-domain perturbation")
 
 
 def extract_embedding_sequence(
@@ -120,6 +135,7 @@ def run_audio_perturbation_evaluation(
     window_seconds: float = 10.0,
     hop_seconds: float = 1.0,
     batch_size: int = 32,
+    latent_chunk_frames: int = 15,
     mspf_points: int = 100,
     mspf_max_frames: int = 256,
     seed: int = 142,
@@ -151,27 +167,41 @@ def run_audio_perturbation_evaluation(
         original_content, original_temporal = _dyno_tokens(model, original_sequence, device)
         original_mspf = _mspf(original_sequence, mspf_points, mspf_max_frames)
         for condition_index, condition in enumerate(conditions):
-            changed_audio = transform_audio(
-                audio,
-                sample_rate,
-                condition,
-                seed + row_index * 100 + condition_index,
-            )
-            changed_sequence = extract_embedding_sequence(
-                encoder,
-                changed_audio,
-                sample_rate,
-                window_seconds,
-                hop_seconds,
-                batch_size,
-                device,
-            )
+            transform_seed = seed + row_index * 100 + condition_index
+            if condition in PRESERVING_TRANSFORMS:
+                changed_audio = transform_audio(
+                    audio,
+                    sample_rate,
+                    condition,
+                    transform_seed,
+                )
+                changed_sequence = extract_embedding_sequence(
+                    encoder,
+                    changed_audio,
+                    sample_rate,
+                    window_seconds,
+                    hop_seconds,
+                    batch_size,
+                    device,
+                )
+                domain = "audio"
+            elif condition in DISRUPTIVE_TRANSFORMS:
+                changed_sequence = transform_embedding_sequence(
+                    original_sequence,
+                    condition,
+                    transform_seed,
+                    chunk_frames=latent_chunk_frames,
+                )
+                domain = "latent"
+            else:
+                raise ValueError(f"Unknown perturbation {condition!r}")
             changed_content, changed_temporal = _dyno_tokens(model, changed_sequence, device)
             changed_mspf = _mspf(changed_sequence, mspf_points, mspf_max_frames)
             rows.append(
                 {
                     "track_id": str(row.track_id),
                     "condition": condition,
+                    "domain": domain,
                     "content_displacement": _normalized_displacement(
                         original_content,
                         changed_content,

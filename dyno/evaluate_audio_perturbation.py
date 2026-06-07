@@ -1,4 +1,4 @@
-"""Standalone audio-domain perturbation evaluation."""
+"""Standalone controlled perturbation evaluation."""
 
 from __future__ import annotations
 
@@ -44,6 +44,7 @@ def main(cfg: DictConfig) -> None:
         window_seconds=cfg.evaluation.window_seconds,
         hop_seconds=cfg.evaluation.hop_seconds,
         batch_size=cfg.evaluation.batch_size,
+        latent_chunk_frames=cfg.evaluation.latent_chunk_frames,
         mspf_points=cfg.evaluation.mspf_points,
         mspf_max_frames=cfg.evaluation.mspf_max_frames,
         seed=cfg.seed,

@@ -63,6 +63,7 @@ def main(cfg: DictConfig) -> None:
                 num_workers=cfg.probe.num_workers,
                 max_tracks=cfg.probe.max_tracks,
                 salami_boundary_layer=layer,
+                trim_boundaries=cfg.probe.trim_boundaries,
                 device=device,
             )
             if layer == "lowercase":

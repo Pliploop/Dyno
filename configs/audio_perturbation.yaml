@@ -33,6 +33,8 @@ evaluation:
   window_seconds: 10.0
   hop_seconds: 1.0
   batch_size: 32
+  # Order-changing edits operate on the extracted 1 Hz sequence.
+  latent_chunk_frames: 15
   mspf_points: 100
   mspf_max_frames: 256
 
