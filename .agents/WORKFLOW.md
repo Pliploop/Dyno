@@ -114,9 +114,18 @@ in W&B. Artifact and figure keys follow the same section prefix.
 
 - SALAMI is the primary structure-probing benchmark.
 - Harmonix is also required as a secondary benchmark.
-- Reproduce the linear-probing protocol from Toyama et al.,
-  arXiv:2512.17209v2: 2 Hz labels, 30-second windows, a single linear layer,
-  joint boundary/function training, HR.5F, HR3F, PWF, and ACC.
+- Use the exact embedding encoder and temporal rate of the evaluated training
+  checkpoint, without probe-time resampling.
+- Freeze Dyno and train a one-layer full-track attention probe with joint
+  boundary/function prediction. Report HR.5F, HR3F, PWF, and ACC.
+- Compare seven inputs: the full local sequence; content, temporal, or both
+  global tokens alone; and the local sequence conditioned on content,
+  temporal, or both global tokens.
+- Token-only probes start from learned mask tokens plus position and receive
+  global tokens through adaLN. Local-plus-token variants use the native
+  sequence as input and the selected global tokens through adaLN.
+- Variable-length tracks may be padded only for batching. Padding must be
+  attention-masked, loss-masked, and removed before metric computation.
 - Use dataset-appropriate folds without mixing tracks across train,
   validation, and test. Harmonix uses the reported 8-fold 6/1/1 protocol.
 - For SALAMI, report coarse/uppercase boundaries as the primary HR.5F/HR3F

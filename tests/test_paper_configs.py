@@ -102,6 +102,8 @@ def test_paper_mspf_defaults_are_consistent():
 
     reconstruction = cfg.callbacks.trajectory_reconstruction
     geometry = cfg.callbacks.annotation_free_temporal
+    assert cfg.callbacks.mspf is None
+    assert cfg.callbacks.ssm is None
     assert reconstruction.window == 4
     assert reconstruction.power == 3.0
     assert reconstruction.sigma == 10.0

@@ -47,6 +47,10 @@ trajectory_reconstruction:
     - test
   n_plot_samples: 4
 
+# Disable legacy duplicate diagnostics inherited from callbacks/dyno.
+mspf: null
+ssm: null
+
 annotation_free_temporal:
   _target_: dyno.callbacks.annotation_free.AnnotationFreeTemporalCallback
   every_n_epochs: 1
@@ -84,3 +88,23 @@ flipflop:
   distance_max: 20
   n_chunks_min: 1
   n_chunks_max: 4
+
+
+structviz:
+  _target_: dyno.callbacks.structviz.StructVizCallback
+  manifest_csv: ${paths.structure_root}/manifests/${data.embedding_encoder}/${data.embedding_rate}/all.csv
+  feature_root: ${paths.structure_root}/features
+  evaluation_suite: Structure visualization
+  clean_labels: dataset
+  every_n_epochs: 20
+  test_only: false
+  n_samples_per_dataset: 4
+  datasets:
+    - salami
+    - harmonix
+  max_frames: 1024
+  mspf_window: 3
+  mspf_sigma: 1
+  mspf_lam: 1.0e-3
+  mspf_power: 5
+  mspf_points: 100
