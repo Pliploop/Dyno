@@ -25,3 +25,10 @@ def test_velocity_remains_an_explicit_ablation():
     assert cfg.model.latent_dim == 32
     assert cfg.model.output_mode == "velocity"
     assert cfg.model.content_token == "first"
+
+
+def test_paper_flipflop_uses_512_samples():
+    cfg = _compose("paper_muq_1hz")
+
+    assert cfg.callbacks.flipflop.n_flips == 512
+    assert cfg.callbacks.flipflop.every_n_epochs == 5

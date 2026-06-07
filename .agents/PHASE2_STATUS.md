@@ -25,6 +25,9 @@
   including its sampling procedure, cosine and L2 diagnostics, FlipFlop score,
   normalized extremeness, W&B table, and Plotly scatter. Paper mode adds
   Spearman summaries and changes only the enclosing W&B section namespace.
+- Paper FlipFlop evaluation draws 512 perturbations every five validation
+  epochs to stabilize the severity scatter and correlation estimates. Legacy
+  callback defaults remain unchanged.
 - Added paper MuQ 1 Hz residual configs for bottleneck dimensions 1, 2, 4, 8,
   16, 32, 64, 128, and 256, plus a trained content-only decoder config.
 - Residual prediction around the mean content token is the authoritative paper
