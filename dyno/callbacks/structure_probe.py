@@ -24,8 +24,7 @@ class StructureProbeCallback(Callback):
         annotation_root: str,
         output_dir: str,
         probe_inputs: list[str],
-        frame_rate: float = 2.0,
-        model_rate: float = 1.0,
+        frame_rate: str | float = 1.0,
         window_seconds: float = 30.0,
         hop_seconds: float = 30.0,
         position_dim: int = 32,
@@ -52,7 +51,6 @@ class StructureProbeCallback(Callback):
         self.output_dir = output_dir
         self.probe_inputs = probe_inputs
         self.frame_rate = frame_rate
-        self.model_rate = model_rate
         self.window_seconds = window_seconds
         self.hop_seconds = hop_seconds
         self.position_dim = position_dim
@@ -103,7 +101,6 @@ class StructureProbeCallback(Callback):
                     dataset=dataset,
                     probe_inputs=self.probe_inputs,
                     frame_rate=self.frame_rate,
-                    model_rate=self.model_rate,
                     window_seconds=self.window_seconds,
                     hop_seconds=self.hop_seconds,
                     position_dim=self.position_dim,

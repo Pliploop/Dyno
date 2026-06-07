@@ -14,8 +14,24 @@ from dyno.callbacks.annotation_free import (
     _standardized_euclidean_distance_matrix,
 )
 from dyno.evaluation.structure import cosine_distance_matrix
-from dyno.evaluation.structure_probe import _resample_sequence
 from dyno.evaluation.temporal import compute_mspf
+
+
+def _resample_sequence(
+    features: torch.Tensor,
+    source_rate: float,
+    target_rate: float,
+) -> torch.Tensor:
+    if source_rate == target_rate:
+        return features
+    target_frames = max(1, int(round(features.shape[0] * target_rate / source_rate)))
+    pooled = torch.nn.functional.interpolate(
+        features.T.unsqueeze(0),
+        size=target_frames,
+        mode="linear",
+        align_corners=False,
+    )
+    return pooled.squeeze(0).T
 
 
 def _load_manifest_paths(manifest_csv: str | Path, feature_root: str | Path) -> dict[str, Path]:

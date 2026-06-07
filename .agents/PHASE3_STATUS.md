@@ -8,7 +8,8 @@
   validation, and one for testing.
 - Added the Toyama et al. linear structure-probing protocol:
   - frozen representations;
-  - 30-second windows and 2 Hz labels;
+  - full-track features at the evaluated checkpoint's native encoder rate,
+    batched in 30-second windows for the framewise linear head;
   - one linear layer with joint boundary BCE and function CE;
   - AdamW at `1e-4`, weight decay `0.01`;
   - five warmup epochs and 95 cosine-decay epochs;
@@ -23,9 +24,11 @@
   primary result. Lowercase/fine boundaries are logged separately under
   `salami_fine`. Harmonix functions are collapsed to the reference
   seven-function vocabulary.
-- Frozen content and temporal tokens are extracted once over the full track at
-  the checkpoint's training rate. The 30-second probe windows retain the 2 Hz
-  local features and repeat the full-track globals.
+- The checkpoint's saved encoder and rate select the structure fixtures.
+  Frozen content and temporal tokens are extracted once from that exact
+  full-track feature sequence, with no probe-time resampling. The 30-second
+  probe batches retain the native-rate local features and repeat the
+  full-track globals.
 - Added both standalone Hydra execution and an opt-in Lightning callback. The
   callback runs directly on `on_test_epoch_end` for
   `train=false test=true run_ref=<reference>`, and can also run on

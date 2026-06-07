@@ -66,7 +66,8 @@ def test_structure_probe_callback_is_opt_in_and_uses_reference_protocol():
         )
 
     probe = cfg.callbacks.structure_probe
-    assert probe.frame_rate == 2.0
+    assert probe.frame_rate == "1hz"
+    assert "/muq/1hz/" in probe.datasets.salami
     assert probe.window_seconds == 30.0
     assert probe.epochs == 100
     assert probe.warmup_epochs == 5

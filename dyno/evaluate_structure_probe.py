@@ -8,14 +8,14 @@ from pathlib import Path
 import rootutils
 import torch
 from hydra.core.hydra_config import HydraConfig
-from omegaconf import DictConfig, OmegaConf
+from omegaconf import DictConfig, OmegaConf, open_dict
 
 
 rootutils.setup_root(__file__, indicator=".project-root", pythonpath=True)
 
 import hydra
 
-from dyno.evaluation.checkpoint import load_checkpoint_model
+from dyno.evaluation.checkpoint import load_checkpoint_model, load_checkpoint_run_config
 from dyno.evaluation.structure_probe import run_structure_probe
 from dyno.utils import register_resolvers
 from dyno.utils.experiment_registry import resolve_experiment_reference
@@ -32,6 +32,29 @@ def main(cfg: DictConfig) -> None:
         checkpoint_preference=cfg.checkpoint_preference,
     )
     device = torch.device(cfg.device if torch.cuda.is_available() else "cpu")
+    saved_cfg = load_checkpoint_run_config(resolved.checkpoint)
+    if saved_cfg is None or saved_cfg.get("data") is None:
+        raise ValueError(
+            "Could not recover the checkpoint training data signature. "
+            "The structure probe requires the original embedding encoder and rate."
+        )
+    training_encoder = str(saved_cfg.data.embedding_encoder)
+    training_rate = str(saved_cfg.data.embedding_rate)
+    requested_encoder = str(cfg.probe_encoder)
+    requested_rate = str(cfg.probe_rate)
+    if requested_encoder not in {"auto", training_encoder}:
+        raise ValueError(
+            f"Probe encoder {requested_encoder!r} does not match checkpoint "
+            f"encoder {training_encoder!r}"
+        )
+    if requested_rate not in {"auto", training_rate}:
+        raise ValueError(
+            f"Probe rate {requested_rate!r} does not match checkpoint "
+            f"rate {training_rate!r}"
+        )
+    with open_dict(cfg):
+        cfg.probe_encoder = training_encoder
+        cfg.probe_rate = training_rate
     model = load_checkpoint_model(cfg, resolved.checkpoint).to(device)
     output_dir = Path(HydraConfig.get().runtime.output_dir)
     all_metrics: dict[str, float] = {}
@@ -49,7 +72,6 @@ def main(cfg: DictConfig) -> None:
                 dataset=dataset,
                 probe_inputs=cfg.probe.probe_inputs,
                 frame_rate=cfg.probe.frame_rate,
-                model_rate=cfg.probe.model_rate,
                 window_seconds=cfg.probe.window_seconds,
                 hop_seconds=cfg.probe.hop_seconds,
                 position_dim=cfg.probe.position_dim,

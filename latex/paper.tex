@@ -1122,11 +1122,15 @@ tracks with similar symbolic form, which can be sparse and
 ill-defined for small annotated datasets, we evaluate boundary
 detection and function prediction using lightweight probes.
 
-The probing setup follows Toyama et al.: we freeze all representations,
-align features to 2\,Hz, and train on 30-second windows using a single
-linear frame-level head.  Toyama et al. probe the framewise encoder
-sequence; our global-token inputs are controlled extensions evaluated
-with the same folds, windows, optimisation, head, and post-processing.
+The probing setup follows Toyama et al.: we freeze all representations
+and use a single linear frame-level head.  Unlike their common 2\,Hz
+benchmark grid, each of our probes uses the exact encoder and feature
+rate used to train the evaluated checkpoint.  The local input is
+therefore the checkpoint's native $z_t$ sequence, and $\zC$ and $\ztau$
+are extracted from that same full-track sequence without probe-time
+resampling.  Toyama et al. probe the framewise encoder sequence; our
+global-token inputs are controlled extensions evaluated with the same
+folds, optimisation, head, and post-processing.
 For boundary
 detection, the head predicts whether each frame corresponds to a
 section change.  For function prediction, it predicts one of the

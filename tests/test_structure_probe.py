@@ -10,6 +10,7 @@ from dyno.evaluation.structure_probe import (
     _pairwise_f1,
     _position_encoding,
     normalize_harmonix_function,
+    parse_frame_rate,
 )
 
 
@@ -51,6 +52,27 @@ def test_probe_window_variants_have_expected_dimensions():
         item = dataset[0]
         assert item["x"].shape == (60, dimension)
         assert item["mask"].sum() == 60
+
+
+def test_probe_windows_follow_native_training_rate():
+    vocabulary = {"intro": 0, "verse": 1, "chorus": 2, "outro": 3, "unknown": 4}
+    dataset = ProbeWindowDataset(
+        [_track()],
+        [0],
+        vocabulary,
+        "local_temporal",
+        frame_rate=0.1,
+        window_seconds=30.0,
+        hop_seconds=30.0,
+        position_dim=8,
+    )
+
+    assert dataset[0]["x"].shape == (3, 6)
+
+
+def test_embedding_rate_labels_parse_to_hz():
+    assert parse_frame_rate("1hz") == 1.0
+    assert parse_frame_rate("0.1hz") == 0.1
 
 
 def test_boundary_f1_can_reproduce_trimmed_diagnostic():

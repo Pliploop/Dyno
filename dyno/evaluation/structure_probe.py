@@ -29,6 +29,18 @@ PROBE_INPUTS = (
 HARMONIX_FUNCTIONS = ("intro", "verse", "chorus", "bridge", "inst", "outro", "silence")
 
 
+def parse_frame_rate(value: str | float) -> float:
+    if isinstance(value, (int, float)):
+        return float(value)
+    normalized = str(value).strip().lower()
+    if normalized.endswith("hz"):
+        normalized = normalized[:-2]
+    rate = float(normalized)
+    if rate <= 0:
+        raise ValueError(f"Frame rate must be positive, got {value!r}")
+    return rate
+
+
 @dataclass
 class ProbeTrack:
     dataset: str
@@ -126,31 +138,19 @@ def _position_encoding(n_frames: int, dim: int = 32) -> np.ndarray:
     return encoding
 
 
-def _resample_sequence(features: torch.Tensor, source_rate: float, target_rate: float) -> torch.Tensor:
-    if source_rate == target_rate:
-        return features
-    target_frames = max(1, int(round(features.shape[0] * target_rate / source_rate)))
-    pooled = torch.nn.functional.interpolate(
-        features.T.unsqueeze(0),
-        size=target_frames,
-        mode="linear",
-        align_corners=False,
-    )
-    return pooled.squeeze(0).T
-
-
 def extract_track_tokens(
     model,
     tracks: Iterable[ProbeTrack],
-    probe_rate: float,
-    model_rate: float,
     device: torch.device,
 ) -> None:
     model.eval()
     with torch.inference_mode():
         for track in tracks:
-            sequence = torch.from_numpy(track.features).to(device=device, dtype=torch.float32)
-            sequence = _resample_sequence(sequence, probe_rate, model_rate).unsqueeze(0)
+            sequence = (
+                torch.from_numpy(track.features)
+                .to(device=device, dtype=torch.float32)
+                .unsqueeze(0)
+            )
             mask = torch.ones(sequence.shape[:2], dtype=torch.bool, device=device)
             normalized = model.normalize_input(sequence)
             track.content = model.get_content_token(normalized, mask=mask)[0].cpu().float().numpy()
@@ -163,7 +163,7 @@ def load_probe_tracks(
     feature_root: str | Path,
     annotation_root: str | Path,
     dataset: str,
-    frame_rate: float = 2.0,
+    frame_rate: str | float = 1.0,
     salami_boundary_layer: str = "uppercase",
     max_tracks: int | None = None,
 ) -> list[ProbeTrack]:
@@ -234,7 +234,7 @@ class ProbeWindowDataset(Dataset):
         track_indices: list[int],
         label_to_index: dict[str, int],
         probe_input: str,
-        frame_rate: float = 2.0,
+        frame_rate: float = 1.0,
         window_seconds: float = 30.0,
         hop_seconds: float = 30.0,
         position_dim: int = 32,
@@ -697,8 +697,7 @@ def run_structure_probe(
     annotation_root: str | Path,
     dataset: str,
     probe_inputs: Iterable[str] = PROBE_INPUTS,
-    frame_rate: float = 2.0,
-    model_rate: float = 1.0,
+    frame_rate: float = 1.0,
     window_seconds: float = 30.0,
     hop_seconds: float = 30.0,
     position_dim: int = 32,
@@ -715,6 +714,7 @@ def run_structure_probe(
     trim_boundaries: bool = False,
     device: str | torch.device = "cuda",
 ) -> tuple[dict[str, float], list[dict[str, float | int | str]]]:
+    frame_rate = parse_frame_rate(frame_rate)
     device = torch.device(device)
     tracks = load_probe_tracks(
         manifest_csv,
@@ -726,7 +726,7 @@ def run_structure_probe(
         salami_boundary_layer,
         max_tracks,
     )
-    extract_track_tokens(model, tracks, frame_rate, model_rate, device)
+    extract_track_tokens(model, tracks, device)
     fold_rows: list[dict[str, float | int | str]] = []
 
     for probe_input in probe_inputs:

@@ -18,12 +18,16 @@ def checkpoint_run_config(checkpoint: Path) -> Path | None:
     return None
 
 
+def load_checkpoint_run_config(checkpoint: Path) -> DictConfig | None:
+    path = checkpoint_run_config(checkpoint)
+    return OmegaConf.load(path) if path is not None else None
+
+
 def load_checkpoint_model(cfg: DictConfig, checkpoint: Path):
     model_cfg = cfg.model
     if cfg.get("use_checkpoint_config", True):
-        run_config_path = checkpoint_run_config(checkpoint)
-        if run_config_path is not None:
-            saved = OmegaConf.load(run_config_path)
+        saved = load_checkpoint_run_config(checkpoint)
+        if saved is not None:
             if saved.get("model") is not None:
                 model_cfg = saved.model
     model = hydra.utils.instantiate(model_cfg)

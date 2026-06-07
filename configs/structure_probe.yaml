@@ -9,7 +9,8 @@ checkpoint_preference: best
 use_checkpoint_config: true
 device: cuda
 tags: [paper, phase3, structure_probe]
-probe_encoder: muq
+probe_encoder: auto
+probe_rate: auto
 
 # Required only when a direct checkpoint has no saved Hydra config.
 trainer:
@@ -17,8 +18,8 @@ trainer:
 
 probe:
   datasets:
-    salami: ${paths.structure_root}/manifests/${probe_encoder}/2hz/salami.csv
-    harmonix: ${paths.structure_root}/manifests/${probe_encoder}/2hz/harmonix.csv
+    salami: ${paths.structure_root}/manifests/${probe_encoder}/${probe_rate}/salami.csv
+    harmonix: ${paths.structure_root}/manifests/${probe_encoder}/${probe_rate}/harmonix.csv
   folds_csv: configs/evaluation/folds/structure_seed142.csv
   feature_root: ${paths.structure_root}/features
   annotation_root: ${paths.structure_root}/annotations
@@ -30,8 +31,7 @@ probe:
     - content_position
     - temporal_position
   salami_boundary_layers: [uppercase, lowercase]
-  frame_rate: 2.0
-  model_rate: 1.0
+  frame_rate: ${probe_rate}
   window_seconds: 30.0
   hop_seconds: 30.0
   position_dim: 32
