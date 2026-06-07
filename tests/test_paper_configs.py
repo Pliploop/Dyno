@@ -102,8 +102,14 @@ def test_paper_mspf_defaults_are_consistent():
 
     reconstruction = cfg.callbacks.trajectory_reconstruction
     geometry = cfg.callbacks.annotation_free_temporal
-    assert cfg.callbacks.mspf is None
-    assert cfg.callbacks.ssm is None
+    progress = cfg.callbacks.mspf
+    ssm = cfg.callbacks.ssm
+    assert progress.evaluation_suite == "paper.mspf_progress"
+    assert progress.every_n_epochs == 5
+    assert list(progress.stages) == ["train", "val"]
+    assert progress.normalize is True
+    assert ssm.evaluation_suite == "paper.ssm_progress"
+    assert ssm.every_n_epochs == 5
     assert reconstruction.window == 4
     assert reconstruction.power == 3.0
     assert reconstruction.sigma == 10.0
@@ -112,3 +118,7 @@ def test_paper_mspf_defaults_are_consistent():
     assert geometry.mspf_power == 3.0
     assert geometry.mspf_sigma == 10.0
     assert geometry.mspf_lam == 1.0e-3
+    assert progress.window == 4
+    assert progress.power == 3.0
+    assert progress.sigma == 10.0
+    assert progress.lam == 1.0e-3

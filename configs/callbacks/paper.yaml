@@ -47,9 +47,29 @@ trajectory_reconstruction:
     - test
   n_plot_samples: 4
 
-# Disable legacy duplicate diagnostics inherited from callbacks/dyno.
-mspf: null
-ssm: null
+# Lightweight train/validation progress panels retained for paper runs.
+mspf:
+  _target_: dyno.callbacks.dyno.MSPFCallback
+  n_samples: 4
+  every_n_epochs: 5
+  evaluation_suite: paper.mspf_progress
+  window: 4
+  sigma: 10.0
+  lam: 1.0e-3
+  power: 3.0
+  absolute: null
+  normalize: true
+  n_points: 100
+  stages:
+    - train
+    - val
+  n_plot_samples: 4
+
+ssm:
+  _target_: dyno.callbacks.dyno.SSMCallback
+  n_samples: 4
+  every_n_epochs: 5
+  evaluation_suite: paper.ssm_progress
 
 annotation_free_temporal:
   _target_: dyno.callbacks.annotation_free.AnnotationFreeTemporalCallback
