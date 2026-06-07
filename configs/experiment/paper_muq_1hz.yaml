@@ -15,9 +15,9 @@ tags: [paper, muq, 1hz, residuals]
 data:
   embedding_encoder: muq
   embedding_rate: 1hz
-  train_csv: /gpfs/scratch/acw749/datasets/dyno/mtg-jamendo/muq/1hz/manifests/train.csv
-  val_csv: /gpfs/scratch/acw749/datasets/dyno/mtg-jamendo/muq/1hz/manifests/val.csv
-  test_csv: /gpfs/scratch/acw749/datasets/dyno/mtg-jamendo/muq/1hz/manifests/test.csv
+  train_csv: /gpfs/scratch/acw749/datasets/dyno/mtg-jamendo/muq/1hz/manifests/paper_artist_2000val_2000test_seed142/train.csv
+  val_csv: /gpfs/scratch/acw749/datasets/dyno/mtg-jamendo/muq/1hz/manifests/paper_artist_2000val_2000test_seed142/val.csv
+  test_csv: /gpfs/scratch/acw749/datasets/dyno/mtg-jamendo/muq/1hz/manifests/paper_artist_2000val_2000test_seed142/test.csv
   n_frames: 60
   batch_size: 64
   num_workers: 16

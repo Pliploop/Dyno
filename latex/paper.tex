@@ -602,6 +602,10 @@ experiments use cosine distance for the content token $\zC$ and
 Euclidean distance for the temporal token $\ztau$ after
 standardisation.
 
+We use 51,701 tracks for training, 2,000 for validation, and 2,000
+for testing.  Splits are disjoint by artist and album, use all 55,701
+available extracted tracks, and are fixed across paper experiments.
+
 The evaluation contract is fixed across the suite.  Reconstruction,
 MSPF, perturbation, retrieval, and compression results use the same
 held-out split and are reported at the track level.  Controlled

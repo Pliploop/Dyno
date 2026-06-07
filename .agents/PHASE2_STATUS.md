@@ -38,6 +38,10 @@
 - Materialized the established split at 1 Hz: 32,859 train, 11,101 validation,
   and 11,565 test tracks. The source split leaves 176 extracted tracks
   unassigned, and the 1 Hz manifests preserve that decision.
+- Replaced that preliminary split for paper training with a versioned,
+  deterministic 51,701/2,000/2,000 split using all extracted tracks. The
+  paper split is disjoint by artist and album and uses seed 142. Historical
+  manifests remain untouched.
 - Added focused tests for MSPF normalization, legacy behavior, constant
   trajectories, linear CKA, standardized Euclidean distance, and DTW.
 

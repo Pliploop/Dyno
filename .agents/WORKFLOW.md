@@ -87,6 +87,9 @@ in W&B. Artifact and figure keys follow the same section prefix.
 - Keep the implementation in the existing Lightning + Hydra framework.
 - Prefer independently runnable offline evaluation configs that can also be
   attached to end-of-training test execution.
+- The authoritative MTG-Jamendo paper split contains 51,701 train, 2,000
+  validation, and 2,000 test tracks. It uses all 55,701 extracted tracks and
+  is disjoint by artist and album. The deterministic split seed is 142.
 
 ## MSPF Normalization
 
