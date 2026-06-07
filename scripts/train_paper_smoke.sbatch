@@ -45,7 +45,7 @@ export WANDB_PROJECT=dyno-paper
 
 /data/home/acw749/conda-envs/dyno/bin/python -m dyno.train \
   "experiment=${EXPERIMENT}" \
-  trainer.max_steps=200 \
+  trainer.max_steps=210 \
   trainer.devices=1 \
   trainer.strategy=auto \
   data.num_workers=8 \
