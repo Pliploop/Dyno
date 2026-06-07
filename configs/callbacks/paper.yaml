@@ -76,7 +76,7 @@ annotation_free_temporal:
 flipflop:
   _target_: dyno.callbacks.flipflop.FlipFlopCallback
   n_flips: 64
-  every_n_epochs: 1
+  every_n_epochs: 5
   evaluation_suite: paper.perturbation_sensitivity
   chunk_width_min: 1
   chunk_width_max: 4

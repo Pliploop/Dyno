@@ -21,6 +21,10 @@
   - exact order sensitivity;
   - linear CKA and CKNNA dependence references;
   - chunk-shuffle displacement and severity correlation.
+- Kept the original FlipFlop shuffle-severity flow intact for paper runs,
+  including its sampling procedure, cosine and L2 diagnostics, FlipFlop score,
+  normalized extremeness, W&B table, and Plotly scatter. Paper mode adds
+  Spearman summaries and changes only the enclosing W&B section namespace.
 - Added paper MuQ 1 Hz velocity configs for bottleneck dimensions 1, 2, 4, 8,
   16, 32, 64, 128, and 256, plus a trained content-only decoder config.
 - Set the paper default bottleneck to 32 dimensions.

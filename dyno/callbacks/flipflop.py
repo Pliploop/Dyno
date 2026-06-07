@@ -69,6 +69,24 @@ def _spearman(x: np.ndarray, y: np.ndarray) -> float:
     return float(np.corrcoef(_rankdata(x), _rankdata(y))[0, 1])
 
 
+def _summary_metrics(rows: list[dict[str, float]]) -> dict[str, float]:
+    content_cos = np.array([r["content_cosine_distance"] for r in rows], dtype=np.float32)
+    temporal_cos = np.array([r["temporal_cosine_distance"] for r in rows], dtype=np.float32)
+    content_l2 = np.array([r["content_l2_distance"] for r in rows], dtype=np.float32)
+    temporal_l2 = np.array([r["temporal_l2_distance"] for r in rows], dtype=np.float32)
+    extremeness = np.array([r["extremeness"] for r in rows], dtype=np.float32)
+    return {
+        "content_cosine_distance": float(content_cos.mean()),
+        "temporal_cosine_distance": float(temporal_cos.mean()),
+        "temporal_minus_content_cosine_distance": float((temporal_cos - content_cos).mean()),
+        "content_l2_distance": float(content_l2.mean()),
+        "temporal_l2_distance": float(temporal_l2.mean()),
+        "flip_extremeness": float(extremeness.mean()),
+        "content_shuffle_severity_spearman": _spearman(extremeness, content_l2),
+        "temporal_shuffle_severity_spearman": _spearman(extremeness, temporal_l2),
+    }
+
+
 class FlipFlopCallback(BaseCallback):
     """
     Validation-only callback that swaps chunks within embedding sequences and
@@ -275,39 +293,40 @@ class FlipFlopCallback(BaseCallback):
         content_l2 = np.array([r["content_l2_distance"] for r in rows], dtype=np.float32)
         temporal_l2 = np.array([r["temporal_l2_distance"] for r in rows], dtype=np.float32)
         extremeness = np.array([r["extremeness"] for r in rows], dtype=np.float32)
+        metrics = _summary_metrics(rows)
 
         if self.evaluation_suite.startswith("paper."):
-            pl_module.log(
-                f"{prefix}/content/shuffle_severity_spearman",
-                _spearman(extremeness, content_l2),
+            paper_metrics = {
+                f"{prefix}/content/cosine_distance": metrics["content_cosine_distance"],
+                f"{prefix}/temporal/cosine_distance": metrics["temporal_cosine_distance"],
+                f"{prefix}/temporal_minus_content_cosine_distance": metrics[
+                    "temporal_minus_content_cosine_distance"
+                ],
+                f"{prefix}/content/l2_distance": metrics["content_l2_distance"],
+                f"{prefix}/temporal/l2_distance": metrics["temporal_l2_distance"],
+                f"{prefix}/flip_extremeness": metrics["flip_extremeness"],
+                f"{prefix}/content/shuffle_severity_spearman": metrics[
+                    "content_shuffle_severity_spearman"
+                ],
+                f"{prefix}/temporal/shuffle_severity_spearman": metrics[
+                    "temporal_shuffle_severity_spearman"
+                ],
+                f"{prefix}/content/displacement/chunk_shuffle": metrics["content_l2_distance"],
+                f"{prefix}/temporal/displacement/chunk_shuffle": metrics["temporal_l2_distance"],
+            }
+            pl_module.log_dict(
+                paper_metrics,
                 on_epoch=True,
-                sync_dist=True,
-            )
-            pl_module.log(
-                f"{prefix}/temporal/shuffle_severity_spearman",
-                _spearman(extremeness, temporal_l2),
-                on_epoch=True,
-                sync_dist=True,
-            )
-            pl_module.log(
-                f"{prefix}/content/displacement/chunk_shuffle",
-                float(content_l2.mean()),
-                on_epoch=True,
-                sync_dist=True,
-            )
-            pl_module.log(
-                f"{prefix}/temporal/displacement/chunk_shuffle",
-                float(temporal_l2.mean()),
-                on_epoch=True,
+                prog_bar=False,
                 sync_dist=True,
             )
         else:
-            pl_module.log(f"{prefix}/Content cosine distance (flipped vs original)", float(content_cos.mean()), on_epoch=True, sync_dist=True)
-            pl_module.log(f"{prefix}/Temporal cosine distance (flipped vs original)", float(temporal_cos.mean()), on_epoch=True, sync_dist=True)
-            pl_module.log(f"{prefix}/FlipFlop score: temporal minus content cosine distance", float((temporal_cos - content_cos).mean()), on_epoch=True, sync_dist=True)
-            pl_module.log(f"{prefix}/Content L2 distance (flipped vs original)", float(content_l2.mean()), on_epoch=True, sync_dist=True)
-            pl_module.log(f"{prefix}/Temporal L2 distance (flipped vs original)", float(temporal_l2.mean()), on_epoch=True, sync_dist=True)
-            pl_module.log(f"{prefix}/Flip extremeness (normalized permutation displacement)", float(extremeness.mean()), on_epoch=True, sync_dist=True)
+            pl_module.log(f"{prefix}/Content cosine distance (flipped vs original)", metrics["content_cosine_distance"], on_epoch=True, sync_dist=True)
+            pl_module.log(f"{prefix}/Temporal cosine distance (flipped vs original)", metrics["temporal_cosine_distance"], on_epoch=True, sync_dist=True)
+            pl_module.log(f"{prefix}/FlipFlop score: temporal minus content cosine distance", metrics["temporal_minus_content_cosine_distance"], on_epoch=True, sync_dist=True)
+            pl_module.log(f"{prefix}/Content L2 distance (flipped vs original)", metrics["content_l2_distance"], on_epoch=True, sync_dist=True)
+            pl_module.log(f"{prefix}/Temporal L2 distance (flipped vs original)", metrics["temporal_l2_distance"], on_epoch=True, sync_dist=True)
+            pl_module.log(f"{prefix}/Flip extremeness (normalized permutation displacement)", metrics["flip_extremeness"], on_epoch=True, sync_dist=True)
 
         wandb_logger = _get_wandb_logger(trainer)
         if wandb_logger is not None:
@@ -341,19 +360,9 @@ class FlipFlopCallback(BaseCallback):
                 template="plotly_white",
                 legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="left", x=0.0),
             )
-            plot_key = (
-                "shuffle_severity_plot"
-                if self.evaluation_suite.startswith("paper.")
-                else "Cosine distance vs flip extremeness"
-            )
-            samples_key = (
-                "shuffle_severity_samples"
-                if self.evaluation_suite.startswith("paper.")
-                else "FlipFlop samples"
-            )
             wandb_logger.experiment.log({
-                f"{prefix}/{plot_key}": wandb.Plotly(fig),
-                f"{prefix}/{samples_key}": wandb.Table(
+                f"{prefix}/Cosine distance vs flip extremeness": wandb.Plotly(fig),
+                f"{prefix}/FlipFlop samples": wandb.Table(
                     columns=list(rows[0].keys()),
                     data=[[r[k] for k in rows[0].keys()] for r in rows],
                 ),
