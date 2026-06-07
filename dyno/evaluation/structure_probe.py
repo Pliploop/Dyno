@@ -23,6 +23,9 @@ PROBE_INPUTS = (
     "content",
     "temporal",
     "content_temporal",
+    "local_content",
+    "local_temporal",
+    "local_content_temporal",
 )
 HARMONIX_FUNCTIONS = ("intro", "verse", "chorus", "bridge", "inst", "outro", "silence")
 
@@ -332,6 +335,8 @@ class AdaLNProbeBlock(nn.Module):
         mask: torch.Tensor,
         condition: torch.Tensor | None,
     ) -> torch.Tensor:
+        valid = mask.unsqueeze(-1)
+        x = x.masked_fill(~valid, 0.0)
         if condition is None:
             shift_sa = scale_sa = shift_ffn = scale_ffn = 0.0
             gate_sa = gate_ffn = 1.0
@@ -356,7 +361,8 @@ class AdaLNProbeBlock(nn.Module):
         )
         x = x + gate_sa * attended
         normalized = (1.0 + scale_ffn) * self.norm2(x) + shift_ffn
-        return x + gate_ffn * self.ffn(normalized)
+        x = x + gate_ffn * self.ffn(normalized)
+        return x.masked_fill(~valid, 0.0)
 
 
 class AttentionStructureProbe(nn.Module):
@@ -384,6 +390,9 @@ class AttentionStructureProbe(nn.Module):
             "content": content_dim,
             "temporal": temporal_dim,
             "content_temporal": content_dim + temporal_dim,
+            "local_content": content_dim,
+            "local_temporal": temporal_dim,
+            "local_content_temporal": content_dim + temporal_dim,
         }[probe_input]
         self.condition_projection = (
             None if condition_dim == 0 else nn.Linear(condition_dim, model_dim)
@@ -399,23 +408,31 @@ class AttentionStructureProbe(nn.Module):
         temporal: torch.Tensor,
         mask: torch.Tensor,
     ) -> tuple[torch.Tensor, torch.Tensor]:
-        if self.probe_input == "local":
+        uses_local = self.probe_input.startswith("local")
+        if uses_local:
             x = self.local_projection(local)
-            condition = None
         else:
             x = self.mask_token.expand(local.shape[0], local.shape[1], -1)
+        if self.probe_input == "local":
+            condition = None
+        else:
             raw_condition = {
                 "content": content,
                 "temporal": temporal,
                 "content_temporal": torch.cat([content, temporal], dim=-1),
+                "local_content": content,
+                "local_temporal": temporal,
+                "local_content_temporal": torch.cat([content, temporal], dim=-1),
             }[self.probe_input]
             condition = self.condition_projection(raw_condition)
         position = torch.from_numpy(
             _position_encoding(local.shape[1], x.shape[-1])
         ).to(device=x.device, dtype=x.dtype)
         x = x + position.unsqueeze(0)
+        x = x.masked_fill(~mask.unsqueeze(-1), 0.0)
         x = self.block(x, mask, condition)
         output = self.output(self.output_norm(x))
+        output = output.masked_fill(~mask.unsqueeze(-1), 0.0)
         return output[..., 0], output[..., 1:]
 
 

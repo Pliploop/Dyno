@@ -1133,10 +1133,19 @@ The local baseline projects the complete native sequence $z_{1:T}$
 into the probe.  Token-only probes receive no local features.  Instead,
 they begin from a learned mask token repeated over the $T$ frame
 positions, add positional encodings, and condition the Transformer
-block through adaptive layer normalisation.  We compare:
+block through adaptive layer normalisation.  In the combined variants,
+the native local sequence supplies the input while the selected global
+tokens condition the same block through adaptive layer normalisation.
+Tracks are padded only for batching: padded positions are masked from
+self-attention, excluded from both losses, and removed before metric
+computation.
+We compare:
 %
 \begin{align}
-  u \in \{z_{1:T},\; \zC,\; \ztau,\; [\zC,\ztau]\}.
+  u \in \{&z_{1:T},\; \zC,\; \ztau,\; [\zC,\ztau],
+  \nonumber\\
+  &[z_{1:T},\zC],\; [z_{1:T},\ztau],\;
+  [z_{1:T},\zC,\ztau]\}.
   \label{eq:probe_inputs}
 \end{align}
 %
@@ -1183,6 +1192,10 @@ global tokens under the same low-capacity decoder.
     Content token $\zC$ & \res & \res & \res & \res \\
     Temporal token $\ztau$ & \res & \res & \res & \res \\
     $[\zC,\ztau]$ & \res & \res & \res & \res \\
+    \midrule
+    $[z_{1:T},\zC]$ & \res & \res & \res & \res \\
+    $[z_{1:T},\ztau]$ & \res & \res & \res & \res \\
+    $[z_{1:T},\zC,\ztau]$ & \res & \res & \res & \res \\
     \bottomrule
   \end{tabular}
 \end{table}

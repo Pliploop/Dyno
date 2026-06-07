@@ -14,14 +14,17 @@
   - a native full-sequence baseline;
   - token-only probes that start from learned mask tokens plus position and
     use adaLN conditioning from content, temporal, or both global tokens;
+  - padded batch positions are attention-masked, loss-masked, and removed
+    before full-track metrics;
   - AdamW at `1e-4`, weight decay `0.01`;
   - five warmup epochs and 95 cosine-decay epochs;
   - validation checkpoint selection and validation-tuned peak threshold;
   - segment-averaged function probabilities;
   - HR.5F, HR3F, and PWF through `mir_eval` defaults, plus frame ACC,
     with fold mean and standard deviation.
-- Added four directly comparable probe inputs: full local sequence, content
-  token only, temporal token only, and both global tokens.
+- Added seven directly comparable probe inputs: full local sequence; content,
+  temporal, or both global tokens alone; and the local sequence conditioned
+  on content, temporal, or both global tokens.
 - SALAMI uses first-annotator functions and uppercase/coarse boundaries as the
   primary result. Lowercase/fine boundaries are logged separately under
   `salami_fine`. Harmonix functions are collapsed to the reference

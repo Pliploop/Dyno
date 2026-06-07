@@ -28,6 +28,9 @@ probe:
     - content
     - temporal
     - content_temporal
+    - local_content
+    - local_temporal
+    - local_content_temporal
   salami_boundary_layers: [uppercase, lowercase]
   frame_rate: ${probe_rate}
   batch_size: 8

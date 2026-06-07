@@ -9,6 +9,7 @@ from dyno.evaluation.structure_probe import (
     FullTrackProbeDataset,
     ProbeTrack,
     _boundary_f1,
+    _joint_loss,
     _pairwise_f1,
     _position_encoding,
     collate_full_tracks,
@@ -75,6 +76,91 @@ def test_global_token_probe_cannot_read_local_sequence():
 
     torch.testing.assert_close(first[0], second[0])
     torch.testing.assert_close(first[1], second[1])
+
+
+def test_attention_padding_cannot_change_valid_predictions():
+    probe = AttentionStructureProbe(
+        probe_input="local_temporal",
+        local_dim=4,
+        content_dim=3,
+        temporal_dim=2,
+        n_functions=5,
+        model_dim=16,
+        num_heads=4,
+        ffn_dim=32,
+        dropout=0.0,
+    ).eval()
+    local = torch.randn(1, 8, 4)
+    changed = local.clone()
+    changed[:, 5:] = 1.0e6
+    content = torch.randn(1, 3)
+    temporal = torch.randn(1, 2)
+    mask = torch.tensor([[True, True, True, True, True, False, False, False]])
+
+    first = probe(local, content, temporal, mask)
+    second = probe(changed, content, temporal, mask)
+
+    torch.testing.assert_close(first[0][:, :5], second[0][:, :5])
+    torch.testing.assert_close(first[1][:, :5], second[1][:, :5])
+    assert torch.count_nonzero(first[0][:, 5:]) == 0
+    assert torch.count_nonzero(first[1][:, 5:]) == 0
+
+
+def test_probe_loss_ignores_padding():
+    mask = torch.tensor([[True, True, False]])
+    boundary_logits = torch.tensor([[0.2, -0.3, 1.0e6]])
+    function_logits = torch.randn(1, 3, 4)
+    boundary = torch.tensor([[1.0, 0.0, 1.0]])
+    function = torch.tensor([[2, 1, 3]])
+    first = _joint_loss(
+        boundary_logits,
+        function_logits,
+        boundary,
+        function,
+        mask,
+    )
+    boundary_logits[:, 2] = -1.0e6
+    function_logits[:, 2] = 1.0e6
+    second = _joint_loss(
+        boundary_logits,
+        function_logits,
+        boundary,
+        function,
+        mask,
+    )
+
+    torch.testing.assert_close(first, second)
+
+
+def test_all_probe_variants_produce_full_track_predictions():
+    local = torch.randn(2, 10, 4)
+    content = torch.randn(2, 3)
+    temporal = torch.randn(2, 2)
+    mask = torch.ones(2, 10, dtype=torch.bool)
+    for probe_input in (
+        "local",
+        "content",
+        "temporal",
+        "content_temporal",
+        "local_content",
+        "local_temporal",
+        "local_content_temporal",
+    ):
+        probe = AttentionStructureProbe(
+            probe_input=probe_input,
+            local_dim=4,
+            content_dim=3,
+            temporal_dim=2,
+            n_functions=5,
+            model_dim=16,
+            num_heads=4,
+            ffn_dim=32,
+            dropout=0.0,
+        )
+        boundary, function = probe(local, content, temporal, mask)
+
+        assert boundary.shape == (2, 10)
+        assert function.shape == (2, 10, 5)
 
 
 def test_embedding_rate_labels_parse_to_hz():

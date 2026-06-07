@@ -16,6 +16,9 @@ structure_probe:
     - content
     - temporal
     - content_temporal
+    - local_content
+    - local_temporal
+    - local_content_temporal
   frame_rate: ${data.embedding_rate}
   batch_size: 8
   model_dim: 128
