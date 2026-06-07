@@ -25,9 +25,10 @@
 - Frozen content and temporal tokens are extracted once over the full track at
   the checkpoint's training rate. The 30-second probe windows retain the 2 Hz
   local features and repeat the full-track globals.
-- Added both standalone Hydra execution and an opt-in Lightning test callback.
-  The callback launches the probe in a fresh process so probe optimizers and
-  data loaders do not retain training-process GPU or worker state.
+- Added both standalone Hydra execution and an opt-in Lightning callback. The
+  callback runs directly on `on_test_epoch_end` for
+  `train=false test=true run_ref=<reference>`, and can also run on
+  `on_train_end` using the best validation checkpoint.
 - Added offline temporal retrieval artifacts with exact query and neighbor
   track IDs, ranks, representation distances, and MSPF-DTW distances for
   content, temporal, and combined retrieval.
@@ -56,7 +57,7 @@ python -m dyno.evaluate_structure_probe run_ref=<reference> \
   probe.probe_inputs=[local,local_temporal] wandb.enabled=false
 ```
 
-To attach isolated structure probing after Lightning test:
+To run structure probing through the normal Lightning test path:
 
 ```text
 python -m dyno.train experiment=paper_muq_1hz \

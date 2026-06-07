@@ -4,11 +4,9 @@ from __future__ import annotations
 
 import csv
 import logging
-import os
 from pathlib import Path
-import subprocess
-import sys
 
+import torch
 from lightning import Callback
 
 from dyno.evaluation.structure_probe import run_structure_probe
@@ -41,8 +39,10 @@ class StructureProbeCallback(Callback):
         num_workers: int = 0,
         max_tracks: int | None = None,
         salami_boundary_layers: list[str] | None = None,
-        run_in_subprocess: bool = True,
-        probe_encoder: str = "muq",
+        run_on_train_end: bool = True,
+        run_on_test_end: bool = True,
+        run_once: bool = True,
+        use_best_checkpoint_on_train_end: bool = True,
     ):
         self.datasets = datasets
         self.folds_csv = folds_csv
@@ -65,45 +65,28 @@ class StructureProbeCallback(Callback):
         self.num_workers = num_workers
         self.max_tracks = max_tracks
         self.salami_boundary_layers = salami_boundary_layers or ["uppercase", "lowercase"]
-        self.run_in_subprocess = run_in_subprocess
-        self.probe_encoder = probe_encoder
+        self.run_on_train_end = run_on_train_end
+        self.run_on_test_end = run_on_test_end
+        self.run_once = run_once
+        self.use_best_checkpoint_on_train_end = use_best_checkpoint_on_train_end
+        self._has_run = False
 
-    def _checkpoint_path(self, trainer) -> str | None:
-        checkpoint_path = getattr(trainer, "ckpt_path", None)
-        if checkpoint_path:
-            return str(checkpoint_path)
+    def _load_best_checkpoint(self, trainer, pl_module) -> None:
+        if not self.use_best_checkpoint_on_train_end:
+            return
         callback = getattr(trainer, "checkpoint_callback", None)
-        if callback is not None and callback.best_model_path:
-            return str(callback.best_model_path)
-        return None
-
-    def _run_subprocess(self, trainer) -> bool:
-        checkpoint_path = self._checkpoint_path(trainer)
-        if checkpoint_path is None:
-            log.warning("Cannot launch structure probe subprocess: no checkpoint path is available")
-            return False
-        command = [
-            sys.executable,
-            "-m",
-            "dyno.evaluate_structure_probe",
-            f"run_ref={checkpoint_path}",
-            f"probe_encoder={self.probe_encoder}",
-            f"probe.epochs={self.epochs}",
-            f"probe.warmup_epochs={self.warmup_epochs}",
-            f"probe.batch_size={self.batch_size}",
-            f"probe.num_workers={self.num_workers}",
-            f"probe.max_tracks={'null' if self.max_tracks is None else self.max_tracks}",
-        ]
-        project_root = os.environ.get("PROJECT_ROOT", str(Path.cwd()))
-        log.info("Launching isolated structure probe: %s", " ".join(command))
-        subprocess.run(command, cwd=project_root, check=True)
-        return True
-
-    def on_test_epoch_end(self, trainer, pl_module) -> None:
-        if not trainer.is_global_zero:
+        checkpoint_path = callback.best_model_path if callback is not None else ""
+        if not checkpoint_path:
+            log.warning("No best checkpoint is available; probing the final in-memory weights")
             return
-        if self.run_in_subprocess and self._run_subprocess(trainer):
+        payload = torch.load(checkpoint_path, map_location=pl_module.device, weights_only=False)
+        pl_module.load_state_dict(payload["state_dict"], strict=True)
+        log.info("Loaded best checkpoint for end-of-training structure probe: %s", checkpoint_path)
+
+    def _run(self, stage: str, trainer, pl_module) -> None:
+        if not trainer.is_global_zero or (self.run_once and self._has_run):
             return
+        self._has_run = True
         all_metrics: dict[str, float] = {}
         all_rows: list[dict] = []
         for dataset, manifest_csv in self.datasets.items():
@@ -142,13 +125,28 @@ class StructureProbeCallback(Callback):
                 all_metrics.update(metrics)
                 all_rows.extend(rows)
 
-        pl_module.log_dict(all_metrics, on_epoch=True, sync_dist=False)
+        if stage == "test":
+            pl_module.log_dict(all_metrics, on_epoch=True, sync_dist=False)
+        loggers = getattr(trainer, "loggers", None) or [getattr(trainer, "logger", None)]
+        for logger in loggers:
+            if logger is not None:
+                logger.log_metrics(all_metrics, step=trainer.global_step)
         output_dir = Path(self.output_dir)
         output_dir.mkdir(parents=True, exist_ok=True)
-        output_path = output_dir / "structure_probe_folds.csv"
+        output_path = output_dir / f"structure_probe_{stage}_folds.csv"
         if all_rows:
             with output_path.open("w", newline="", encoding="utf-8") as handle:
                 writer = csv.DictWriter(handle, fieldnames=list(all_rows[0]))
                 writer.writeheader()
                 writer.writerows(all_rows)
         log.info("Wrote structure-probe fold results to %s", output_path)
+
+    def on_train_end(self, trainer, pl_module) -> None:
+        if not self.run_on_train_end:
+            return
+        self._load_best_checkpoint(trainer, pl_module)
+        self._run("train_end", trainer, pl_module)
+
+    def on_test_epoch_end(self, trainer, pl_module) -> None:
+        if self.run_on_test_end:
+            self._run("test", trainer, pl_module)

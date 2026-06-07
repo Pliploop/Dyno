@@ -73,6 +73,10 @@ def test_structure_probe_callback_is_opt_in_and_uses_reference_protocol():
     assert probe.learning_rate == 1.0e-4
     assert probe.weight_decay == 0.01
     assert len(probe.probe_inputs) == 6
+    assert probe.run_on_train_end is True
+    assert probe.run_on_test_end is True
+    assert probe.run_once is True
+    assert "run_in_subprocess" not in probe
 
 
 def test_paper_flipflop_uses_512_samples():

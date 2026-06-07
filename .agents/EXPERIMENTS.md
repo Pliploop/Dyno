@@ -6,6 +6,7 @@ evaluation and diffusion child runs.
 | Alias | Date | Status | Phase | Paper section | Kind | Parent | W&B | Local checkpoint or artifact | Launch/config | Notes |
 |---|---|---|---|---|---|---|---|---|---|---|
 
+
 ## Status Values
 
 - `planned`: specified but not launched

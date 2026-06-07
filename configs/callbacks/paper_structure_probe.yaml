@@ -33,5 +33,7 @@ structure_probe:
   num_workers: 4
   max_tracks: null
   salami_boundary_layers: [uppercase, lowercase]
-  run_in_subprocess: true
-  probe_encoder: ${data.embedding_encoder}
+  run_on_train_end: true
+  run_on_test_end: true
+  run_once: true
+  use_best_checkpoint_on_train_end: true
