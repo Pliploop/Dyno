@@ -1,0 +1,47 @@
+defaults:
+  - _self_
+  - model: dyno
+  - paths: default
+
+run_ref: ???
+experiment_registry: .agents/EXPERIMENTS.md
+checkpoint_preference: best
+use_checkpoint_config: true
+device: cuda
+seed: 142
+tags: [paper, phase3, audio_perturbation]
+
+trainer:
+  max_steps: 200000
+
+audio_encoder:
+  _target_: dyno.models.encoders.muq.MuQEncoder
+  model_name: OpenMuQ/MuQ-MuLan-large
+  freeze: true
+
+evaluation:
+  manifest_csv: ${paths.structure_root}/manifests/muq/1hz/salami.csv
+  conditions:
+    - gain
+    - pitch_shift
+    - time_stretch
+    - chunk_shuffle
+    - reverse
+    - section_delete
+  max_tracks: 32
+  sample_rate: 24000
+  window_seconds: 10.0
+  hop_seconds: 1.0
+  batch_size: 32
+  mspf_points: 100
+  mspf_max_frames: 256
+
+wandb:
+  enabled: true
+  project: dyno-paper
+  entity: jul-guinot
+  name: paper/audio_perturbation/${run_ref}
+
+hydra:
+  run:
+    dir: logs/audio_perturbation/${now:%Y-%m-%d}/${now:%H-%M-%S}

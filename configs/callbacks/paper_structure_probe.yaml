@@ -1,0 +1,37 @@
+defaults:
+  - paper
+  - _self_
+
+structure_probe:
+  _target_: dyno.callbacks.structure_probe.StructureProbeCallback
+  datasets:
+    salami: ${paths.structure_root}/manifests/${data.embedding_encoder}/2hz/salami.csv
+    harmonix: ${paths.structure_root}/manifests/${data.embedding_encoder}/2hz/harmonix.csv
+  folds_csv: configs/evaluation/folds/structure_seed142.csv
+  feature_root: ${paths.structure_root}/features
+  annotation_root: ${paths.structure_root}/annotations
+  output_dir: ${paths.output_dir}/structure_probe
+  probe_inputs:
+    - local
+    - local_content
+    - local_temporal
+    - local_content_temporal
+    - content_position
+    - temporal_position
+  frame_rate: 2.0
+  model_rate: 1.0
+  window_seconds: 30.0
+  hop_seconds: 30.0
+  position_dim: 32
+  batch_size: 8
+  epochs: 100
+  warmup_epochs: 5
+  learning_rate: 0.0001
+  weight_decay: 0.01
+  threshold_grid: [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9]
+  num_folds: 8
+  num_workers: 4
+  max_tracks: null
+  salami_boundary_layers: [uppercase, lowercase]
+  run_in_subprocess: true
+  probe_encoder: ${data.embedding_encoder}

@@ -146,6 +146,9 @@ in W&B. Artifact and figure keys follow the same section prefix.
    diffusion or flow matching, token swapping, and distributional evaluation,
    with explicit provenance back to the encoder checkpoint.
 
+Phase 3 implementation and launch commands are tracked in
+`.agents/PHASE3_STATUS.md`.
+
 ## Change Discipline
 
 - Keep changes backward compatible and scoped.

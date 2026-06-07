@@ -1,0 +1,41 @@
+defaults:
+  - _self_
+  - model: dyno
+  - paths: default
+
+run_ref: ???
+experiment_registry: .agents/EXPERIMENTS.md
+checkpoint_preference: best
+use_checkpoint_config: true
+device: cuda
+seed: 142
+tags: [paper, phase3, offline_temporal]
+
+trainer:
+  max_steps: 200000
+
+evaluation:
+  manifests:
+    muq: ${paths.structure_root}/manifests/muq/2hz/salami.csv
+    mert: ${paths.structure_root}/manifests/mert/2hz/salami.csv
+    music2latent: ${paths.structure_root}/manifests/music2latent/2hz/salami.csv
+  feature_root: ${paths.structure_root}/features
+  token_encoder: muq
+  source_rate: 2.0
+  model_rate: 1.0
+  max_tracks: 128
+  max_pairs: 10000
+  mspf_points: 100
+  mspf_max_frames: 256
+  top_k: 5
+  n_queries: 8
+
+wandb:
+  enabled: true
+  project: dyno-paper
+  entity: jul-guinot
+  name: paper/offline_temporal/${run_ref}
+
+hydra:
+  run:
+    dir: logs/offline_temporal/${now:%Y-%m-%d}/${now:%H-%M-%S}

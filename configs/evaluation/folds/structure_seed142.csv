@@ -1,0 +1,751 @@
+dataset,track_id,group,fold
+harmonix,0001_12step,harmonix:ciara,0
+harmonix,0003_6foot7foot,harmonix:lil wayne,4
+harmonix,0004_abc,harmonix:the jackson 5,4
+harmonix,0005_again,harmonix:flyleaf,5
+harmonix,0006_aint2proud2beg,harmonix:tlc,1
+harmonix,0008_america,harmonix:spın̈al tap,2
+harmonix,0009_americanmusic,harmonix:violent femmes,1
+harmonix,0011_areyouexperienced,harmonix:the jimi hendrix experience,5
+harmonix,0012_aroundtheworld,harmonix:daft punk,3
+harmonix,0014_babaoriley,harmonix:the who,5
+harmonix,0015_babygotback,harmonix:sir mix-a-lot,0
+harmonix,0017_badromance,harmonix:lady gaga,2
+harmonix,0018_bassdownlow,harmonix:dev,6
+harmonix,0020_becauseofyou,harmonix:ne-yo,7
+harmonix,0021_better,harmonix:guns n' roses,1
+harmonix,0022_betteroffalone,harmonix:alice deejay,2
+harmonix,0023_bewareoftheboys,harmonix:panjabi mc,3
+harmonix,0024_billionaire,harmonix:travie mccoy,0
+harmonix,0026_blackandyellow,harmonix:wiz khalifa,3
+harmonix,0027_blackened,harmonix:metallica,6
+harmonix,0028_blackmagic,harmonix:baboon,2
+harmonix,0032_boomboompow,harmonix:the bravery,0
+harmonix,0035_boyfriend,harmonix:justin bieber,6
+harmonix,0036_breakingthegirl,harmonix:red hot chili peppers,5
+harmonix,0037_breakyourheart,harmonix:taio cruz,0
+harmonix,0038_bringmetolife,harmonix:evanescence,1
+harmonix,0039_bulletproof,harmonix:la roux,4
+harmonix,0040_bustamove,harmonix:young mc,1
+harmonix,0041_calabria,harmonix:enur,2
+harmonix,0042_callme,harmonix:the wolf banes,5
+harmonix,0043_callmemaybe,harmonix:carly rae jepsen,5
+harmonix,0044_cameraeye,harmonix:rush,1
+harmonix,0045_cantgetyou,harmonix:kylie minogue,7
+harmonix,0046_castlesmadeofsand,harmonix:the jimi hendrix experience,5
+harmonix,0047_chinacatsunflower,harmonix:grateful dead,5
+harmonix,0048_chingaling,harmonix:missy elliott,5
+harmonix,0049_closer,harmonix:ne‐yo,4
+harmonix,0050_clubcanthandleme,harmonix:flo rida,6
+harmonix,0053_commander,harmonix:kelly rowland,3
+harmonix,0054_conceited,harmonix:remy ma,5
+harmonix,0055_constantmotion,harmonix:dream theater,5
+harmonix,0056_control,harmonix:janet jackson,5
+harmonix,0057_crankthat,harmonix:soulja boy tell ’em,3
+harmonix,0058_criticalacclaim,harmonix:avenged sevenfold,7
+harmonix,0062_dance,harmonix:justice,1
+harmonix,0063_daysgoby,harmonix:dirty vegas,6
+harmonix,0065_deadandbloated,harmonix:stone temple pilots,5
+harmonix,0066_decentdaysandnights,harmonix:the futureheads,6
+harmonix,0067_deep,harmonix:pearl jam,6
+harmonix,0068_devilsisland,harmonix:megadeth,3
+harmonix,0069_digginmedown,harmonix:ozzy osbourne,3
+harmonix,0070_dipitlow,harmonix:christina milian,5
+harmonix,0071_dirtypool,harmonix:stevie ray vaughan and double trouble,1
+harmonix,0072_discoinferno,harmonix:the trammps,3
+harmonix,0073_disturbia,harmonix:rihanna,1
+harmonix,0074_djgotusfallininlove,harmonix:usher,7
+harmonix,0075_dontcha,harmonix:the pussycat dolls,4
+harmonix,0077_dontsweat,harmonix:eric b. & rakim,3
+harmonix,0078_donttouchme,harmonix:the game,5
+harmonix,0079_dontyouwantme,harmonix:the human league,5
+harmonix,0080_down,harmonix:jay sean,5
+harmonix,0081_downonme,harmonix:jeremih,5
+harmonix,0082_dragosteadintei,harmonix:o-zone,3
+harmonix,0083_dragthewaters,harmonix:pantera,2
+harmonix,0084_dropitlikeitshot,harmonix:snoop dogg,4
+harmonix,0085_electricboogie,harmonix:marcia griffiths,7
+harmonix,0086_escapade,harmonix:janet jackson,5
+harmonix,0087_evacuate,harmonix:cascada,7
+harmonix,0088_everybody,harmonix:backstreet boys,7
+harmonix,0091_fellonblackdays,harmonix:soundgarden,2
+harmonix,0092_fergalicious,harmonix:fergie,0
+harmonix,0093_fireburning,harmonix:sean kingston,5
+harmonix,0094_fireflies,harmonix:owl city,6
+harmonix,0095_firework,harmonix:katy perry,4
+harmonix,0096_fivemagics,harmonix:megadeth,3
+harmonix,0098_floods,harmonix:pantera,2
+harmonix,0099_forgetyou,harmonix:ceelo green,5
+harmonix,0100_futureperfecttense,harmonix:sweet billy pilgrim,1
+harmonix,0102_gangstaluv,harmonix:snoop dogg feat. the-dream,4
+harmonix,0104_getbusy,harmonix:sean paul,1
+harmonix,0105_getdownonit,harmonix:kool & the gang,7
+harmonix,0106_getitshawty,harmonix:lloyd,2
+harmonix,0109_geturfreakon,harmonix:missy elliott,5
+harmonix,0110_girlsandboys,harmonix:blur,5
+harmonix,0111_girlsonfilm,harmonix:duran duran,1
+harmonix,0112_giveitup,harmonix:datarock,4
+harmonix,0113_giveituptome,harmonix:sean paul,1
+harmonix,0114_givemeeverything,harmonix:pitbull,3
+harmonix,0115_gonnamakeyousweat,harmonix:c+c music factory,7
+harmonix,0116_goodies,harmonix:ciara,0
+harmonix,0117_goodmorningblackfriday,harmonix:megadeth,3
+harmonix,0118_grenade,harmonix:bruno mars,4
+harmonix,0119_gunpowderandlead,harmonix:miranda lambert,3
+harmonix,0122_heardemall,harmonix:amerie,0
+harmonix,0123_heavyduty,harmonix:spın̈al tap,2
+harmonix,0124_hello,harmonix:martin solveig,6
+harmonix,0125_hellogoodmorning,harmonix:diddy - dirty money,2
+harmonix,0126_heymami,harmonix:fannypack,0
+harmonix,0127_hollabackgirl,harmonix:gwen stefani,5
+harmonix,0128_homecoming,harmonix:green day,2
+harmonix,0129_hotinherre,harmonix:nelly,7
+harmonix,0130_hotstuff,harmonix:donna summer,5
+harmonix,0131_iamthebest,harmonix:2ne1,1
+harmonix,0132_iceicebaby,harmonix:vanilla ice,5
+harmonix,0135_igottafeeling,harmonix:the black eyed peas,7
+harmonix,0137_iknowyouwantme,harmonix:pitbull,3
+harmonix,0138_ilikeit,harmonix:enrique iglesias,6
+harmonix,0140_impacto,harmonix:daddy yankee,7
+harmonix,0141_indaclub,harmonix:50 cent,2
+harmonix,0142_indestructible,harmonix:disturbed,1
+harmonix,0143_informer,harmonix:snow,2
+harmonix,0145_iwantyouback,harmonix:the jackson 5,4
+harmonix,0148_jesusofsuburbia,harmonix:green day,2
+harmonix,0149_johnnyguitar,harmonix:pearl jam,6
+harmonix,0150_justdance,harmonix:lady gaga,2
+harmonix,0151_kingofdancehall,harmonix:beenie man,2
+harmonix,0152_kingofrock,harmonix:run‐d.m.c.,4
+harmonix,0153_lalaland,harmonix:demi lovato,3
+harmonix,0155_lapdance,harmonix:n*e*r*d,4
+harmonix,0156_lastnight,harmonix:diddy,2
+harmonix,0157_leanwitit,harmonix:dem franchize boyz,2
+harmonix,0158_letitrock,harmonix:kevin rudolf,0
+harmonix,0159_letthemusicplay,harmonix:shannon,3
+harmonix,0160_likeag6,harmonix:far east movement,5
+harmonix,0161_limelight,harmonix:rush,1
+harmonix,0162_lobotomy,harmonix:green day,2
+harmonix,0164_low,harmonix:flo rida,6
+harmonix,0165_lucretia,harmonix:megadeth,3
+harmonix,0166_macarena,harmonix:los del río,0
+harmonix,0167_makesomenoise,harmonix:beastie boys,0
+harmonix,0168_maneater,harmonix:nelly furtado,4
+harmonix,0169_manicdepression,harmonix:the jimi hendrix experience,5
+harmonix,0172_marrythenight,harmonix:lady gaga,2
+harmonix,0173_massiveattack,harmonix:nicki minaj,3
+harmonix,0174_maythisbelove,harmonix:the jimi hendrix experience,5
+harmonix,0176_megasus,harmonix:megasus,3
+harmonix,0178_mountainman,harmonix:crash kings,2
+harmonix,0179_moveslikejagger,harmonix:maroon 5 feat. christina aguilera,6
+harmonix,0181_mrsaxobeat,harmonix:alexandra stan,7
+harmonix,0182_mycurse,harmonix:killswitch engage,0
+harmonix,0183_mynameisjonas,harmonix:weezer,0
+harmonix,0184_myprerogative,harmonix:bobby brown,7
+harmonix,0186_nearlylostyou,harmonix:screaming trees,1
+harmonix,0189_neversaynever,harmonix:justin bieber,6
+harmonix,0190_newfang,harmonix:them crooked vultures,6
+harmonix,0191_newslang,harmonix:the shins,2
+harmonix,0195_nookie,harmonix:jazz pistols,1
+harmonix,0197_nothinonyou,harmonix:b.o.b,6
+harmonix,0198_nowthatwefoundlove,harmonix:heavy d. & the boyz,2
+harmonix,0199_numberofthebeast2,harmonix:iron maiden,5
+harmonix,0200_oceansize,harmonix:jane's addiction,0
+harmonix,0201_oh,harmonix:girls’ generation,2
+harmonix,0204_onlyamemory,harmonix:tom snare,5
+harmonix,0208_opp,harmonix:naughty by nature,0
+harmonix,0209_paparazzi,harmonix:lady gaga,2
+harmonix,0212_peoplegotalotofnerve,harmonix:neko case,5
+harmonix,0214_planetrock,harmonix:afrika bambaataa & soulsonic force,6
+harmonix,0215_pointofknowreturn,harmonix:kansas,1
+harmonix,0217_pokerface,harmonix:lady gaga,2
+harmonix,0219_pondereplay,harmonix:rihanna,1
+harmonix,0220_promiscuous,harmonix:nelly furtado,4
+harmonix,0223_reallove,harmonix:mary j. blige,5
+harmonix,0227_replay,harmonix:iyaz,7
+harmonix,0231_rightthurr,harmonix:chingy,5
+harmonix,0233_rocknrollnightmare,harmonix:spın̈al tap,2
+harmonix,0234_roundandround,harmonix:selena gomez & the scene,3
+harmonix,0235_rudeboy,harmonix:rihanna,1
+harmonix,0236_rumpshaker,harmonix:wreckx‐n‐effect,4
+harmonix,0237_run,harmonix:gnarls barkley,2
+harmonix,0239_sandm,harmonix:rihanna,1
+harmonix,0240_sandstorm,harmonix:darude,7
+harmonix,0241_satellite,harmonix:lena meyer-landrut,7
+harmonix,0242_satisfaction,harmonix:benny benassi,6
+harmonix,0243_saucyjack,harmonix:spın̈al tap,2
+harmonix,0244_sayaah,harmonix:trey songz,0
+harmonix,0246_scenario,harmonix:a tribe called quest,1
+harmonix,0248_screamingfor,harmonix:judas priest,2
+harmonix,0249_sensualseduction,harmonix:snoop dogg,4
+harmonix,0250_sexyandiknowit,harmonix:lmfao,1
+harmonix,0251_sexychick,harmonix:david guetta,0
+harmonix,0254_sixsixsix,harmonix:anvil,0
+harmonix,0255_sleepwalker,harmonix:megadeth,3
+harmonix,0257_somebodytolove,harmonix:justin bieber,6
+harmonix,0258_sorry,harmonix:guns n' roses,1
+harmonix,0259_spiceupyourlife,harmonix:spice girls,1
+harmonix,0261_starships,harmonix:nicki minaj,3
+harmonix,0264_stereolove,harmonix:edward maya,1
+harmonix,0265_straightlines,harmonix:silverchair,4
+harmonix,0266_straightup,harmonix:paula abdul,6
+harmonix,0267_superfreak,harmonix:rick james,0
+harmonix,0270_takeovercontrol,harmonix:afrojack,1
+harmonix,0272_teachmehowtojerk,harmonix:audio push,0
+harmonix,0273_technologic,harmonix:daft punk,3
+harmonix,0274_temperature,harmonix:sean paul,1
+harmonix,0276_texasflood,harmonix:stevie ray vaughan and double trouble,1
+harmonix,0278_thatsthahomie,harmonix:snoop dogg,4
+harmonix,0279_thebreaks,harmonix:kurtis blow,5
+harmonix,0280_thedayitriedtolive,harmonix:soundgarden,2
+harmonix,0281_theedgeofglory,harmonix:kelly marie,7
+harmonix,0282_thegreatsatan,harmonix:ministry,2
+harmonix,0283_thehumptydance,harmonix:digital underground,7
+harmonix,0284_thehustle,harmonix:van mccoy,0
+harmonix,0285_thekill,harmonix:thirty seconds to mars,6
+harmonix,0286_theragelive,harmonix:judas priest,2
+harmonix,0287_therewasatime,harmonix:guns n' roses,1
+harmonix,0288_thewayiare,harmonix:timbaland,6
+harmonix,0289_thisisexile,harmonix:whitechapel,1
+harmonix,0290_thisishowwedoit,harmonix:montell jordan,4
+harmonix,0291_thrasher,harmonix:evile,3
+harmonix,0292_timeslikethese,harmonix:foo fighters,4
+harmonix,0293_tomsawyer2,harmonix:rush,1
+harmonix,0294_tonighttonight,harmonix:hot chelle rae,6
+harmonix,0295_toxic,harmonix:britney spears,7
+harmonix,0296_transmaniaconmc,harmonix:blue öyster cult,4
+harmonix,0297_troublecomesrunning,harmonix:spoon,5
+harmonix,0298_turnmeon,harmonix:kevin lyttle,3
+harmonix,0299_turnthebeataround,harmonix:vicki sue robinson,6
+harmonix,0301_unclejohnsband,harmonix:grateful dead,5
+harmonix,0302_venus,harmonix:bananarama,0
+harmonix,0303_wakeupdead,harmonix:megadeth,3
+harmonix,0304_weaponofchoice,harmonix:fatboy slim,2
+harmonix,0305_wenospeakamericano,harmonix:yolanda be cool & dcup,1
+harmonix,0306_werunthis,harmonix:missy elliott,5
+harmonix,0307_whatdoesntkillyou,harmonix:kelly clarkson,0
+harmonix,0308_whatislove,harmonix:haddaway,0
+harmonix,0309_whatsmyname,harmonix:rihanna,1
+harmonix,0310_whineup,harmonix:kat deluna,1
+harmonix,0311_whipmyhair,harmonix:willow,2
+harmonix,0312_whitefalconfuzz,harmonix:the mother hips,5
+harmonix,0314_whoomp,harmonix:tag team,7
+harmonix,0315_whygo,harmonix:pearl jam,6
+harmonix,0316_wildones,harmonix:flo rida,6
+harmonix,0318_windup,harmonix:various production,6
+harmonix,0321_wonderwall,harmonix:oasis,1
+harmonix,0322_wordup,harmonix:cameo,7
+harmonix,0323_yeah,harmonix:lil jon & the east side boyz,5
+harmonix,0324_yeah3x,harmonix:chris brown,3
+harmonix,0325_ymca,harmonix:village people,7
+harmonix,0326_yougotittherightstuff,harmonix:new kids on the block,3
+harmonix,0327_youmakemefeel,harmonix:cobra starship feat. sabi,2
+harmonix,0328_youmakemefeeldc,harmonix:cobra starship,0
+harmonix,0329_youreajerk,harmonix:new boyz,5
+harmonix,0330_50waystosaygoodbye,harmonix:train,6
+harmonix,0331_againstallodds,harmonix:phil collins,0
+harmonix,0332_alejandro,harmonix:lady gaga,2
+harmonix,0333_allday,harmonix:cody simpson,7
+harmonix,0334_alltherightplaces,harmonix:zach heckendorf,5
+harmonix,0335_allyourlife,harmonix:the band perry,3
+harmonix,0336_alonewithyou,harmonix:jake owen,3
+harmonix,0337_alwayssomethingthere,harmonix:naked eyes,1
+harmonix,0338_animal,harmonix:neon trees,3
+harmonix,0339_aslongasyouloveme,harmonix:justin bieber feat. big sean,1
+harmonix,0340_backintime,harmonix:pitbull,3
+harmonix,0341_baggageclaim,harmonix:miranda lambert,3
+harmonix,0342_bangpop,harmonix:free energy,2
+harmonix,0343_banjo,harmonix:rascal flatts,3
+harmonix,0344_beautifullife,harmonix:ace of base,0
+harmonix,0345_beinlovetonight,harmonix:toy connor,4
+harmonix,0346_birthdaydress,harmonix:lil playy feat. matthew koma,5
+harmonix,0347_bitch,harmonix:meredith brooks,6
+harmonix,0348_blackout,harmonix:breathe carolina,3
+harmonix,0349_blow,harmonix:ke$ha,1
+harmonix,0350_blowme,harmonix:p!nk,7
+harmonix,0351_blowup,harmonix:sammy adams,4
+harmonix,0352_boogiewonderland,"harmonix:earth, wind & fire",3
+harmonix,0353_bottomsup,harmonix:trey songz feat. nicki minaj,4
+harmonix,0354_brandnewday,harmonix:trevor hall,5
+harmonix,0355_brokenhearted,harmonix:karmin,4
+harmonix,0356_californiagurls,harmonix:katy perry,4
+harmonix,0357_cheers,harmonix:rihanna,1
+harmonix,0360_coolerthanme,harmonix:mike posner,0
+harmonix,0361_countrymustbecountrywide,harmonix:brantley gilbert,2
+harmonix,0362_crazygirl,harmonix:eli young band,4
+harmonix,0363_darkside,harmonix:kelly clarkson,0
+harmonix,0364_deuces,harmonix:chris brown feat. tyga & kevin mccall,7
+harmonix,0365_dirtroadanthem,harmonix:jason aldean,1
+harmonix,0366_domino,harmonix:jessie j,4
+harmonix,0367_dontdreamitsover,harmonix:crowded house,1
+harmonix,0368_dontwakemeup,harmonix:chris brown,3
+harmonix,0369_dontyouworrychild,harmonix:swedish house mafia feat. john martin,0
+harmonix,0370_downonme,harmonix:jeremih feat. 50 cent,3
+harmonix,0371_downunder,harmonix:men at work,6
+harmonix,0372_drinkinmyhand,harmonix:eric church,5
+harmonix,0373_driveby,harmonix:train,6
+harmonix,0374_drunkonyou,harmonix:luke bryan,0
+harmonix,0375_dynamite,harmonix:taio cruz,0
+harmonix,0376_earthquake,harmonix:labrinth feat. busta rhymes,2
+harmonix,0377_eatdirt,harmonix:susan justice,1
+harmonix,0378_effinperfect,harmonix:p!nk,7
+harmonix,0379_et,harmonix:katy perry feat. kanye west,0
+harmonix,0380_everybodytalks,harmonix:neon trees,3
+harmonix,0382_fatherofmine,harmonix:everclear,2
+harmonix,0383_feelsoclose,harmonix:calvin harris,1
+harmonix,0384_finally,harmonix:cece peniston,5
+harmonix,0385_fiveoclock,harmonix:t-pain feat. lily allen,6
+harmonix,0387_free,harmonix:graffiti6,4
+harmonix,0388_gangnamstyle,harmonix:psy,1
+harmonix,0389_gettinoveryou,harmonix:david guetta & chris willis,0
+harmonix,0390_getyourselfbackhome,harmonix:gym class heroes feat. neon hitch,1
+harmonix,0391_givemeallyourluvin,harmonix:madonna feat. nicki minaj & m.i.a.,6
+harmonix,0392_givemeyourhand,harmonix:the ready set,2
+harmonix,0393_giveyourheartabreak,harmonix:demi lovato,3
+harmonix,0394_godgavemetoyou,harmonix:blake shelton,7
+harmonix,0395_gold,harmonix:britt nicole,7
+harmonix,0396_goodfeeling,harmonix:flo rida,6
+harmonix,0397_goodlife,harmonix:onerepublic,0
+harmonix,0398_goodtime,harmonix:owl city feat. carly rae jepsen,0
+harmonix,0399_gotmygirls,harmonix:tiffany dunn,4
+harmonix,0400_heatofthemoment,harmonix:asia,1
+harmonix,0401_hello,harmonix:lionel richie with jennifer nettles,4
+harmonix,0402_herestous,harmonix:halestorm,7
+harmonix,0404_holditagainstme,harmonix:britney spears,7
+harmonix,0405_home,harmonix:dierks bentley,4
+harmonix,0406_honeybee,harmonix:blake shelton,7
+harmonix,0407_humpinaround,harmonix:bobby brown,7
+harmonix,0408_icanonlyimagine,harmonix:david guetta feat. chris brown & lil wayne,4
+harmonix,0409_idontlikeyou,harmonix:eva simons,0
+harmonix,0410_idontwantthisnighttoend,harmonix:luke bryan,0
+harmonix,0411_ifihadyou,harmonix:adam lambert,4
+harmonix,0412_ifitmakesyouhappy,harmonix:sheryl crow,0
+harmonix,0413_ifyoucouldonlysee,harmonix:tonic,6
+harmonix,0414_illbe,harmonix:edwin mccain,1
+harmonix,0415_illbewaiting,harmonix:michael franti & spearhead,0
+harmonix,0416_impossible,harmonix:shontelle,2
+harmonix,0417_imtoosexy,harmonix:right said fred,0
+harmonix,0418_inthedark,harmonix:dev,6
+harmonix,0419_itgirl,harmonix:jason derulo,7
+harmonix,0420_itsrainingmen,harmonix:the weather girls,2
+harmonix,0421_ittakestwo,harmonix:rob base & dj e-z rock,2
+harmonix,0422_itwillrain,harmonix:bruno mars,4
+harmonix,0423_iwannago,harmonix:britney spears,7
+harmonix,0424_justadream,harmonix:nelly,7
+harmonix,0425_justakiss,harmonix:lady antebellum,1
+harmonix,0426_justcantgetenough,harmonix:the black eyed peas,7
+harmonix,0427_justthewayyouare,harmonix:bruno mars,4
+harmonix,0428_kingofanything,harmonix:sara bareilles,3
+harmonix,0431_letitrain,harmonix:david nail,7
+harmonix,0432_letsgo,harmonix:calvin harris feat. ne-yo,7
+harmonix,0433_lighters,harmonix:bad meets evil feat. bruno mars,2
+harmonix,0434_lights,harmonix:ellie goulding,0
+harmonix,0435_lookatmenow,harmonix:chris brown feat. lil wayne & busta rhymes,5
+harmonix,0436_loveactually,harmonix:cady groves,2
+harmonix,0437_lovelikewoe,harmonix:the ready set,2
+harmonix,0438_loverlover,harmonix:jerrod niemann,5
+harmonix,0439_lovethewayyoulie,harmonix:eminem feat. rihanna,4
+harmonix,0440_loveyoulikealovesong,harmonix:selena gomez & the scene,3
+harmonix,0441_lovingyoutonight,harmonix:andrew allen,0
+harmonix,0442_lullaby,harmonix:shawn mullins,2
+harmonix,0443_magic,harmonix:b.o.b feat. rivers cuomo,1
+harmonix,0444_maybe,harmonix:sick puppies,1
+harmonix,0445_memories,harmonix:david guetta feat. kid cudi,0
+harmonix,0446_midnightcity,harmonix:m83,5
+harmonix,0447_mindyourmanners,harmonix:chiddy bang,4
+harmonix,0448_mine,harmonix:taylor swift,2
+harmonix,0449_misery,harmonix:maroon 5,7
+harmonix,0450_more,harmonix:usher,7
+harmonix,0451_mrknowitall,harmonix:kelly clarkson,0
+harmonix,0452_myfirstkiss,harmonix:3oh!3 feat. ke$ha,1
+harmonix,0453_mygirl,harmonix:mindless behavior,3
+harmonix,0454_myohmy,harmonix:tristan prettyman,4
+harmonix,0455_nevertearusapart,harmonix:inxs,3
+harmonix,0456_nohands,harmonix:waka flocka flame feat. roscoe dash & wale,2
+harmonix,0457_nothing,harmonix:the script,7
+harmonix,0458_notorious,harmonix:duran duran,1
+harmonix,0459_notoveryou,harmonix:gavin degraw,4
+harmonix,0460_numb,harmonix:usher,7
+harmonix,0462_oldalabama,harmonix:brad paisley,1
+harmonix,0463_onemorenight,harmonix:maroon 5,7
+harmonix,0465_onething,harmonix:one direction,6
+harmonix,0466_onthedarkside,harmonix:beaver brown,0
+harmonix,0467_onthefloor,harmonix:jennifer lopez,6
+harmonix,0470_ours,harmonix:taylor swift,2
+harmonix,0471_paradise,harmonix:coldplay,2
+harmonix,0472_partofme,harmonix:katy perry,4
+harmonix,0475_poisonedwithlove,harmonix:neon hitch,6
+harmonix,0476_pontoon,harmonix:little big town,7
+harmonix,0477_poundthealarm,harmonix:nicki minaj,3
+harmonix,0478_prayforyou,harmonix:jaron and the long road to love,7
+harmonix,0479_pricetag,harmonix:jessie j,4
+harmonix,0480_raiseyourglass,harmonix:p!nk,7
+harmonix,0481_reallove,harmonix:jody watley,2
+harmonix,0482_redsolocup,harmonix:toby keith,0
+harmonix,0483_ridinsolo,harmonix:jason derülo,7
+harmonix,0484_rockthatbody,harmonix:the black eyed peas,7
+harmonix,0485_rollinginthedeep,harmonix:adele,3
+harmonix,0487_secrets,harmonix:onerepublic,0
+harmonix,0488_september,harmonix:daughtry,4
+harmonix,0489_shakeyourbody,harmonix:the jacksons,0
+harmonix,0490_showme,harmonix:jessica sutta,6
+harmonix,0491_skyscraper,harmonix:demi lovato,3
+harmonix,0492_sm,harmonix:rihanna,1
+harmonix,0493_somebodysheartbreak,harmonix:hunter hayes,6
+harmonix,0494_somebodythatiusedtoknow,harmonix:gotye feat. kimbra,7
+harmonix,0495_someonelikeyou,harmonix:adele,3
+harmonix,0496_sparksfly,harmonix:taylor swift,2
+harmonix,0497_speakers,harmonix:days difference,6
+harmonix,0498_springsteen,harmonix:eric church,5
+harmonix,0499_starbuckssmile,harmonix:maria k.,6
+harmonix,0500_stay,harmonix:lisa loeb,6
+harmonix,0501_stayawhile,harmonix:ryan star,6
+harmonix,0502_stronger,harmonix:jennette mccurdy,3
+harmonix,0503_stucklikeglue,harmonix:sugarland,2
+harmonix,0504_suspiciousminds,harmonix:elvis presley,0
+harmonix,0505_takeitoff,harmonix:ke$ha,1
+harmonix,0506_takemehometonight,harmonix:eddie money,6
+harmonix,0507_teenagedream,harmonix:katy perry,4
+harmonix,0508_tennesseeme,harmonix:the secret sisters,7
+harmonix,0509_thelazysong,harmonix:bruno mars,4
+harmonix,0510_theonethatgotaway,harmonix:katy perry,4
+harmonix,0511_theonlyexception,harmonix:paramore,1
+harmonix,0512_theshowgoeson,harmonix:lupe fiasco,2
+harmonix,0515_thisafternoon,harmonix:nickelback,7
+harmonix,0517_tilltheworldends,harmonix:britney spears,7
+harmonix,0518_timeaftertime,harmonix:cyndi lauper,7
+harmonix,0520_tonight,harmonix:enrique iglesias feat. ludacris & dj frank e,5
+harmonix,0525_venus,harmonix:bananarama,0
+harmonix,0526_waitingoutsidethelines,harmonix:greyson chance,3
+harmonix,0527_wantuback,harmonix:cher lloyd,4
+harmonix,0554_allalright,harmonix:fun.,2
+harmonix,0568_apologize,harmonix:timbaland feat. onerepublic,6
+harmonix,0570_aslongasyouloveme,harmonix:justin bieber feat. big sean,1
+harmonix,0625_complicated,harmonix:avril lavigne,1
+harmonix,0627_cowboyboots,harmonix:macklemore & ryan lewis,1
+harmonix,0631_curiosity,harmonix:carly rae jepsen,5
+salami,10,salami:the cure,6
+salami,101,salami:gidon kremer & yo-yo ma,3
+salami,107,"salami:jaap schroder, marilyn mcdonald, kenneth slowik, konrad junhanel & james weaver",5
+salami,108,salami:jordi saval,6
+salami,11,salami:sugarcubes,7
+salami,111,salami:raphael wallfisch &  city of london sinfonia - nicolas kraemer,2
+salami,112,salami:anner bylsma,4
+salami,114,salami:vladimir horowitz,6
+salami,116,salami:the gabrielli consort and players - paul mccreesh,4
+salami,12,salami:sarah mclachlan,4
+salami,120,salami:jordi saval,6
+salami,122,salami:lars ulrik mortensen,7
+salami,124,salami:jordi saval,6
+salami,128,salami:track:128,4
+salami,13,salami:natalie merchant,3
+salami,131,salami:track:131,5
+salami,135,salami:carole bogard & universsity of california orchestra - lawrence moe,1
+salami,139,salami:janine micheau & froment chamber orchestra - louis de froment,0
+salami,14,salami:bif naked,0
+salami,140,salami:track:140,2
+salami,141,salami:sarah chang,4
+salami,148,salami:emma kirby & capella coloniensis - william christie,2
+salami,152,salami:nobuko imai & roland pöntinen,6
+salami,154,salami:glenn gould,4
+salami,155,salami:jordi saval,6
+salami,156,salami:capella istropolitana - barry wordsworth,3
+salami,158,salami:kodály quartet,0
+salami,1603,salami:track:1603,5
+salami,1618,salami:track:1618,1
+salami,162,salami:lucia popp & tom krause,1
+salami,164,salami:nove filarmonia portuguesa - alvaro cassuto,2
+salami,166,salami:i giovani di nuova cameristica - daniele ferrari,4
+salami,170,salami:mstislav rostropovich,1
+salami,173,salami:the amadeus ensemble,1
+salami,176,salami:english chamber orchestra - murray perahia,3
+salami,183,salami:tom krause,7
+salami,186,salami:guarneri quartet,1
+salami,19,salami:otis rush,3
+salami,192,"salami:mirella freni,renata scotto",0
+salami,197,salami:cecilia bartoli,2
+salami,198,salami:thomas allen,6
+salami,200,salami:liszt ferenc chamber orchestra - janos rolla,4
+salami,203,salami:tafelmusik,7
+salami,204,salami:sofia chamber choir,2
+salami,21,salami:stevie ray vaughan,4
+salami,213,salami:benedictine monks of santo domingo de silos,0
+salami,215,salami:ars nova - bo holten,1
+salami,216,salami:ensemble unicorn,1
+salami,218,salami:a sei voci,3
+salami,22,salami:b.b. king,2
+salami,223,salami:benedictine monks of santo domingo de silos,0
+salami,227,salami:laurence cummings,5
+salami,228,salami:benedictine monks of santo domingo de silos,0
+salami,229,salami:benedictine monks of santo domingo de silos,0
+salami,23,salami:the black keys,6
+salami,231,salami:benedictine monks of santo domingo de silos,0
+salami,236,salami:ensemble projects ars nova,3
+salami,237,salami:sequentia,7
+salami,24,salami:s-word,4
+salami,244,salami:the medieval ensemble of london,7
+salami,245,salami:nova schola gregoriana - alberto turco,7
+salami,250,salami:benedictine monks of santo domingo de silos,0
+salami,252,salami:benedictine monks of santo domingo de silos,0
+salami,254,salami:strada & ensemble anonymus,6
+salami,26,salami:jimmy rogers & ronnie earl,1
+salami,261,salami:royal liverpool philharmonic orchestra,0
+salami,264,salami:maurizio pollini,3
+salami,268,salami:vladimir ashkenazy,6
+salami,27,salami:the derek trucks band,0
+salami,272,salami:glenn gould,4
+salami,274,salami:nobuko imai & roland pöntinen,6
+salami,275,salami:daniel adni,2
+salami,276,salami:mstislav rostropovich,1
+salami,277,salami:choir of king's college & new philharmonia orchestra - david willcocks,0
+salami,280,salami:plácido domingo,3
+salami,282,salami:czech philharmonic,1
+salami,283,salami:franco corelli,2
+salami,285,salami:john o'conor,6
+salami,291,salami:nathan milstein & st. loius symphony orchestra - vladimir golschmann,3
+salami,293,salami:lubomir maly & czech philharmonic orchestra - frantisek jilek,7
+salami,294,salami:pepe romero,6
+salami,298,salami:sviatoslav richter,3
+salami,299,salami:new york philharmonic - leonard bernstein,5
+salami,3,salami:beck,5
+salami,302,salami:nobuko imai & roland pöntinen,6
+salami,303,"salami:joan sutherland, luciano pavarotti",1
+salami,307,salami:gillian welch,6
+salami,308,salami:nathan,1
+salami,309,salami:slim whitman,4
+salami,31,salami:robert johnson,2
+salami,310,salami:kim beggs,1
+salami,311,salami:neil young,1
+salami,312,salami:lz love,1
+salami,315,salami:buck owens,7
+salami,316,salami:the holy modal rounders,5
+salami,317,salami:eilen jewell,2
+salami,318,salami:cowboy jazz,0
+salami,32,salami:brownie mcghee & sonny terry,5
+salami,320,salami:emmylou harris,7
+salami,324,salami:britney spears,6
+salami,325,salami:shakira,3
+salami,326,salami:natasha bedingfield,6
+salami,327,salami:pink,1
+salami,328,salami:christina aguilera,4
+salami,330,salami:fergie,4
+salami,332,salami:justin timberlake,0
+salami,333,salami:jewel,5
+salami,334,salami:rihanna,6
+salami,335,salami:paris hilton,3
+salami,338,salami:tricky,7
+salami,339,salami:jaga jazzist,1
+salami,340,salami:amon tobin,7
+salami,342,salami:tortoise,5
+salami,343,salami:culprit 1,4
+salami,347,salami:lesbians on ecstasy,4
+salami,348,salami:bonobo,6
+salami,349,salami:david bickley,5
+salami,352,salami:gnarls barkley,6
+salami,354,salami:deltron,5
+salami,355,salami:gnarls barkley,6
+salami,356,salami:lil jon & the east side boyz featuring ying yang twins,7
+salami,359,salami:missy elliott,0
+salami,360,salami:a tribe called quest,7
+salami,362,salami:public enemy,5
+salami,363,salami:timbaland,0
+salami,364,salami:k'naan,4
+salami,365,salami:eminem,3
+salami,37,salami:kelly joe phelps,7
+salami,374,salami:the wapl morning crew,4
+salami,376,salami:monty python,7
+salami,378,salami:monty python,7
+salami,379,salami:the arrogant worms,5
+salami,38,salami:son house,4
+salami,380,salami:monty python,7
+salami,382,salami:the arrogant worms,5
+salami,383,salami:monty python,7
+salami,384,salami:the arrogant worms,5
+salami,386,salami:jackie davis,2
+salami,388,salami:rza,5
+salami,389,"salami:john mclaughlin, paco de lucia, al di meola",3
+salami,39,salami:eric clapton,1
+salami,390,salami:renzo cesana,6
+salami,394,salami:herb alpert & the tijuana brass,3
+salami,396,salami:david grisman quintet,4
+salami,397,salami:dean martin,3
+salami,398,salami:pino donaggio,2
+salami,399,salami:isaac hayes,4
+salami,40,salami:samuel l. jackson,5
+salami,400,salami:laurindo almeida and the danzaneros,3
+salami,402,salami:charlie hunter,5
+salami,404,salami:erik truffaz,6
+salami,405,salami:john medeski,0
+salami,407,salami:us3,6
+salami,408,salami:charlie hunter,5
+salami,412,salami:soweto kinch,2
+salami,413,salami:erik truffaz,6
+salami,414,salami:charlie hunter,5
+salami,415,salami:ornette coleman,1
+salami,416,salami:charles mingus,3
+salami,422,salami:ethio jazz,6
+salami,424,salami:john coltrane,2
+salami,426,salami:grachan moneur iii,0
+salami,427,salami:bob belden & tim hagans,7
+salami,428,salami:bud powell,6
+salami,429,salami:charlie parker,2
+salami,431,salami:thelonious monk,3
+salami,432,salami:coleman hawkins,5
+salami,434,salami:art blakey,0
+salami,436,salami:kenny dorham,2
+salami,438,salami:clifford brown,0
+salami,439,salami:james moody,6
+salami,444,salami:stan getz & j. j. johnson,7
+salami,445,salami:iva bittova,1
+salami,446,salami:billie holiday,4
+salami,447,salami:johnny hartman,4
+salami,448,salami:coleman hawkins,5
+salami,451,salami:lester young,1
+salami,452,salami:clifford brown,0
+salami,453,salami:gerry mulligan and the concert jazz band,1
+salami,455,salami:louis armstrong,5
+salami,460,salami:jimmie noone and his new orleans band,4
+salami,463,salami:sam morgan's jazz band,2
+salami,464,salami:willie jackson,5
+salami,466,salami:bob crosby's bob cats,6
+salami,467,salami:horace silver,2
+salami,468,salami:john coltrane,2
+salami,469,salami:cannonball adderley,0
+salami,472,salami:art blakey,0
+salami,474,salami:dexter gordon,2
+salami,476,salami:miles davis,4
+salami,477,salami:hank mobley,5
+salami,478,salami:herbie hancock,6
+salami,480,salami:chucho valdés,2
+salami,482,salami:marc ribot & los cubanos postizos,7
+salami,483,salami:dizzy gillespie,2
+salami,484,salami:antônio carlos jobim,7
+salami,485,salami:grant green,6
+salami,486,salami:stan getz & charlie byrd,7
+salami,490,salami:eliane elías,0
+salami,491,salami:stan getz & luiz bonfa,3
+salami,492,salami:stan getz & astrud gilberto,0
+salami,493,salami:oliver jones,3
+salami,494,salami:the derek trucks band,0
+salami,495,salami:wynton marsalis,4
+salami,496,salami:charlie hunter,5
+salami,5,salami:the beastie boys,3
+salami,50,salami:texas johnny brown,3
+salami,502,salami:oliver jones & clark terry,6
+salami,503,salami:charlie hunter,5
+salami,507,salami:donald byrd,5
+salami,508,salami:soulive,3
+salami,509,salami:jimmy smith,2
+salami,51,salami:buddy guy,1
+salami,510,salami:grant green,6
+salami,512,salami:horace silver,2
+salami,514,salami:art blakey,0
+salami,515,salami:lee morgan,0
+salami,517,salami:bobby hutcherson,3
+salami,518,salami:wynton marsalis,4
+salami,520,"salami:meade ""lux"" lewis",7
+salami,522,salami:art tatum,2
+salami,524,salami:billie holiday,4
+salami,528,salami:count basie & sarah vaughan,0
+salami,53,salami:paul butterfield blues band,4
+salami,531,salami:louis armstrong & duke ellington,1
+salami,532,salami:ani difranco,5
+salami,533,salami:kinnie starr,2
+salami,534,salami:the velvet underground,1
+salami,535,salami:martha wainwright,5
+salami,538,salami:kimya dawson,0
+salami,539,salami:sarah harmer,7
+salami,54,"salami:luther ""guitar junior"" johnson",3
+salami,542,salami:the last town chorus,7
+salami,543,salami:kaki king,0
+salami,548,salami:tracy chapman,3
+salami,549,salami:leonard cohen,7
+salami,550,salami:tom waits,1
+salami,551,salami:tori amos,5
+salami,555,salami:nellie mckay,4
+salami,557,salami:norah jones,3
+salami,559,salami:rickie lee jones,7
+salami,56,salami:sarah chang,4
+salami,563,salami:great lake swimmers,0
+salami,564,salami:mary j. blige,1
+salami,565,salami:macy gray,5
+salami,566,salami:jamelia,6
+salami,567,salami:sade,6
+salami,568,salami:erykah badu,2
+salami,570,salami:joss stone,7
+salami,572,salami:me'shell ndegéocello,7
+salami,573,salami:joy denalane,4
+salami,574,salami:cassie,4
+salami,575,salami:heather headley,6
+salami,576,salami:kelis,5
+salami,578,salami:jamiroquai,3
+salami,579,salami:the derek trucks band,0
+salami,580,salami:james brown,3
+salami,581,salami:greyboy,3
+salami,582,salami:liquid soul,2
+salami,583,salami:donald byrd,5
+salami,584,salami:maceo parker,0
+salami,587,salami:the meters,4
+salami,59,salami:lorraine mcaslan & john blakely,7
+salami,590,salami:mahalia jackson,4
+salami,592,salami:golden gate jubilee quartet,0
+salami,594,salami:lyle lovett,7
+salami,595,salami:james taylor,4
+salami,596,salami:mahalia jackson,4
+salami,597,salami:the staple singers,7
+salami,599,salami:lyle lovett,7
+salami,60,salami:orchestre de paris - seiji ozawa,3
+salami,600,salami:mahalia jackson,4
+salami,604,salami:the everly brothers,6
+salami,605,salami:elvis presley,5
+salami,607,salami:stray cats,6
+salami,608,salami:the 5.6.7.8.'s,5
+salami,610,salami:t rex,4
+salami,611,salami:sleepy labeef,2
+salami,612,salami:huey 'piano' smith & the clowns,5
+salami,613,salami:the revels,0
+salami,614,salami:little richard,4
+salami,615,salami:ricky nelson,6
+salami,619,salami:wilson pickett,1
+salami,620,salami:otis redding,5
+salami,624,salami:the temptations,2
+salami,626,salami:vaya con dios,4
+salami,628,salami:drifters,1
+salami,629,salami:peter tosh,2
+salami,63,salami:bournemouth symphony orchestra - paavo berglund,1
+salami,630,salami:tiken jah fakoly,6
+salami,634,salami:matisyahu,4
+salami,636,salami:jessy moss,6
+salami,637,salami:burning spear,6
+salami,638,salami:buju banton,5
+salami,64,salami:alban berg quartet,3
+salami,642,salami:inner circle,3
+salami,655,salami:pearl jam,3
+salami,658,salami:evanescence,0
+salami,659,salami:red hot chili peppers,0
+salami,660,salami:foo fighters,2
+salami,663,salami:flamin' groovies,7
+salami,668,salami:derek and the dominos,5
+salami,672,salami:johnny winter,6
+salami,674,salami:van morrison,2
+salami,678,salami:guns n' roses,7
+salami,680,salami:nadja,3
+salami,683,salami:bon jovi,3
+salami,684,salami:twisted sister,6
+salami,686,salami:danzig,4
+salami,688,salami:anthrax & public enemy,0
+salami,690,salami:robert rodriguez,3
+salami,694,salami:the rolling stones,3
+salami,695,salami:neil young,1
+salami,7,salami:calla,0
+salami,724,salami:track:724,3
+salami,736,salami:waza ensemble,1
+salami,75,salami:city of birmingham symphony orchestra - simon rattle,7
+salami,786,salami:track:786,3
+salami,79,salami:vlado perlemuter & concerts colonne orchestra,7
+salami,808,salami:têtes raides,2
+salami,82,salami:igor kipnis,6
+salami,86,salami:borodin string quartet,4
+salami,943,salami:doc watson,4
+salami,95,salami:kronos quartet,5
+salami,951,salami:dry branch fire squad,4
+salami,99,salami:maurizio pollini,3

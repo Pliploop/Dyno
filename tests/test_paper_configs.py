@@ -57,6 +57,24 @@ def test_ready_encoder_ablation_configs_use_matching_dimensions():
     assert music2latent.model.embedding_dim == 64
 
 
+def test_structure_probe_callback_is_opt_in_and_uses_reference_protocol():
+    config_dir = str((Path(__file__).parents[1] / "configs").resolve())
+    with initialize_config_dir(config_dir=config_dir, version_base="1.3"):
+        cfg = compose(
+            config_name="train",
+            overrides=["experiment=paper_muq_1hz", "callbacks=paper_structure_probe"],
+        )
+
+    probe = cfg.callbacks.structure_probe
+    assert probe.frame_rate == 2.0
+    assert probe.window_seconds == 30.0
+    assert probe.epochs == 100
+    assert probe.warmup_epochs == 5
+    assert probe.learning_rate == 1.0e-4
+    assert probe.weight_decay == 0.01
+    assert len(probe.probe_inputs) == 6
+
+
 def test_paper_flipflop_uses_512_samples():
     cfg = _compose("paper_muq_1hz")
 
