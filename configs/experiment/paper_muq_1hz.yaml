@@ -1,0 +1,58 @@
+# @package _global_
+
+defaults:
+  - override /data: dyno
+  - override /model: dyno
+  - override /model/bottleneck: default
+  - override /callbacks: paper
+  - override /logger: paper
+  - override /trainer: paper
+
+task_name: paper_muq_1hz_residuals
+name: paper/muq/1hz/residuals/d=${model.latent_dim}/seed=${seed}
+tags: [paper, muq, 1hz, residuals]
+
+data:
+  embedding_encoder: muq
+  embedding_rate: 1hz
+  train_csv: /gpfs/scratch/acw749/datasets/dyno/mtg-jamendo/muq/1hz/manifests/train.csv
+  val_csv: /gpfs/scratch/acw749/datasets/dyno/mtg-jamendo/muq/1hz/manifests/val.csv
+  test_csv: /gpfs/scratch/acw749/datasets/dyno/mtg-jamendo/muq/1hz/manifests/test.csv
+  n_frames: 60
+  batch_size: 64
+  num_workers: 16
+  random_crop: true
+
+model:
+  embedding_dim: 512
+  aggregator_model_dim: 768
+  predictor_model_dim: 512
+  latent_dim: 32
+  content_token: mean
+  output_mode: centered_residuals
+  condition_z_tau: true
+  condition_zc: false
+  temporal_only_conditioning: false
+  input_norm: dataset_stats
+  beta: 0.01
+  recon_loss: l2
+  aggregator:
+    num_heads: 12
+    num_layers: 6
+    ffn_dim: 3072
+  predictor:
+    num_heads: 8
+    num_layers: 4
+    ffn_dim: 2048
+    conditioning_type: adaLN_zero
+    condition_z_tau: ${..condition_z_tau}
+    condition_zc: ${..condition_zc}
+    temporal_only_conditioning: ${..temporal_only_conditioning}
+    direct_z_tau_conditioning: true
+  optimizer:
+    lr: 0.0001
+  scheduler:
+    warmup_steps: 5000
+    max_steps: ${trainer.max_steps}
+    base_lr: 0.0001
+    final_lr: 0.00001

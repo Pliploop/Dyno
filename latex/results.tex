@@ -25,8 +25,8 @@
   Content-only trained decoder & \res & \res \\
   \midrule
   $\ztau$, $d=1$ & \res & \res \\
-  $\ztau$, $d=4$ & \res & \res \\
   $\ztau$, $d=16$ & \res & \res \\
+  $\ztau$, $d=32$ & \res & \res \\
   $\ztau$, $d=64$ & \res & \res \\
   \bottomrule
 \end{tabular}
@@ -108,8 +108,8 @@
   $\zC$ & \res & \res & \res & \res & \res \\
   MSPF feat. & \res & \res & \res & \res & \res \\
   $\ztau$, $d=1$ & \res & \res & \res & \res & \res \\
-  $\ztau$, $d=4$ & \res & \res & \res & \res & \res \\
   $\ztau$, $d=16$ & \res & \res & \res & \res & \res \\
+  $\ztau$, $d=32$ & \res & \res & \res & \res & \res \\
   $\ztau$, $d=64$ & \res & \res & \res & \res & \res \\
   \bottomrule
 \end{tabular}
@@ -122,8 +122,8 @@
   $\zC$ & \res \\
   MSPF feat. & \res \\
   $\ztau$, $d=1$ & \res \\
-  $\ztau$, $d=4$ & \res \\
   $\ztau$, $d=16$ & \res \\
+  $\ztau$, $d=32$ & \res \\
   $\ztau$, $d=64$ & \res \\
   \bottomrule
 \end{tabular}
@@ -215,21 +215,20 @@
 % Compression Summary
 % Paper table: tab:compression
 % ============================================================
-\begin{tabular}{cccccccc}
+\begin{tabular}{cccccc}
   \toprule
   $d$ & CR
   & $\mathcal{E}_{\mathrm{rec}}\downarrow$
   & MSPF $R^2\uparrow$
   & $\rho_{\mathrm{sep}}\uparrow$
-  & CKA$(\ztau,\zC)\downarrow$
-  & Fixed upd.$\uparrow$
-  & Fixed time$\uparrow$ \\
+  & CKA$(\ztau,\zC)\downarrow$ \\
   \midrule
-  1 & \res & \res & \res & \res & \res & \res & \res \\
-  4 & \res & \res & \res & \res & \res & \res & \res \\
-  16 & \res & \res & \res & \res & \res & \res & \res \\
-  64 & \res & \res & \res & \res & \res & \res & \res \\
-  256 & \res & \res & \res & \res & \res & \res & \res \\
+  1 & \res & \res & \res & \res & \res \\
+  4 & \res & \res & \res & \res & \res \\
+  16 & \res & \res & \res & \res & \res \\
+  32 & \res & \res & \res & \res & \res \\
+  64 & \res & \res & \res & \res & \res \\
+  256 & \res & \res & \res & \res & \res \\
   \bottomrule
 \end{tabular}
 

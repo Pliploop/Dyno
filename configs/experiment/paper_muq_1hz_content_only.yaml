@@ -1,7 +1,7 @@
 # @package _global_
 
 defaults:
-  - paper_muq_1hz_velocity
+  - paper_muq_1hz
 
 task_name: paper_muq_1hz_content_only
 name: paper/muq/1hz/content_only/seed=${seed}

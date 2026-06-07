@@ -24,7 +24,7 @@
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\enc}{\mathcal{E}}          % audio encoder
 \newcommand{\agg}{\mathcal{A}}          % temporal aggregator
-\newcommand{\pred}{\mathcal{P}}         % velocity predictor
+\newcommand{\pred}{\mathcal{P}}         % trajectory predictor
 
 %% ---- Additional notation macros -----------------------------
 \newcommand{\dec}{\mathcal{D}}          % temporal decoder
@@ -237,9 +237,10 @@ that captures the temporal evolution of the embedding trajectory
 while remaining complementary to the content token $\zC$.  We train
 a self-supervised autoencoder over frozen embedding trajectories:
 an aggregator compresses $\zseq$ into $\ztau$, and a conditional
-Transformer decoder reconstructs the original residual or velocity
-trajectory from $\ztau$, positional decoder inputs, and an anchor
-embedding $\za$.
+Transformer decoder reconstructs the embedding trajectory through
+residual prediction from $\ztau$, positional decoder inputs, and the
+content anchor $\zC$.  Velocity prediction is retained as an
+alternative training objective.
 
 \subsection{Content Anchor and Reconstruction Targets}
 \label{ssec:targets}
@@ -258,7 +259,8 @@ embedding $\za$.  We consider two anchors:
 \end{equation}
 %
 The anchor defines the content coordinate system in which the
-temporal token describes a trajectory.
+temporal token describes a trajectory.  Unless otherwise stated, we
+use the mean content anchor $\za=\zC$.
 
 We train the model to reconstruct either residuals or velocities.
 The residual target is
@@ -453,20 +455,20 @@ trajectory, including masked regions.
 \subsection{Training Objective}
 \label{ssec:train}
 
-The default training objective combines velocity reconstruction and
+The default training objective combines residual reconstruction and
 KL regularisation:
 %
 \begin{align}
   \mathcal{L}
   &=
-  \lambda_v
+  \lambda_r
   \underbrace{
-    \frac{1}{T-1}
-    \sum_{t=1}^{T-1}
+    \frac{1}{T}
+    \sum_{t=1}^{T}
     \left\|
-    \hat{v}_t - (z_{t+1}-z_t)
+    \hat{r}_t - (z_t-\zC)
     \right\|_2^2
-  }_{\mathcal{L}_{\mathrm{vel}}}
+  }_{\mathcal{L}_{\mathrm{res}}}
   \nonumber\\
   &\quad
   + \beta
@@ -479,18 +481,18 @@ KL regularisation:
   \label{eq:default_loss}
 \end{align}
 %
-When training residual-prediction models, we replace
-$\mathcal{L}_{\mathrm{vel}}$ with
+For the velocity-prediction ablation, we replace
+$\mathcal{L}_{\mathrm{res}}$ with
 %
 \begin{equation}
-  \mathcal{L}_{\mathrm{res}}
+  \mathcal{L}_{\mathrm{vel}}
   =
-  \frac{1}{T}
-  \sum_{t=1}^{T}
+  \frac{1}{T-1}
+  \sum_{t=1}^{T-1}
   \left\|
-  \hat{r}_t - (z_t-\za)
+  \hat{v}_t - (z_{t+1}-z_t)
   \right\|_2^2.
-  \label{eq:res_loss}
+  \label{eq:vel_loss}
 \end{equation}
 %
 For direct frame prediction, we use
@@ -553,8 +555,8 @@ For direct frame prediction, we use
 %   \label{eq:full_loss}
 % \end{equation}
 %
-The default model uses velocity prediction with
-$\lambda_v=1$, $\lambda_r=\lambda_m=\lambda_{\mathrm{dis}}=0$,
+The default model uses residual prediction with
+$\lambda_r=1$, $\lambda_v=\lambda_m=\lambda_{\mathrm{dis}}=0$,
 and $\beta=0.01$.
 
 \subsection{Training Details}
@@ -563,13 +565,16 @@ and $\beta=0.01$.
 Unless otherwise stated, models are trained on MTG-Jamendo
 \cite{bogdanov2019mtg} using frozen MuQ embeddings
 \cite{muq2025} extracted at 1\,Hz.  We use AdamW with learning rate
-$10^{-4}$, cosine decay, 5\,000 warmup steps, batch size 64, and
-train for 100 epochs.  The default aggregator is a 4-layer
-Transformer encoder with 8 attention heads and feed-forward
-dimension 2048.  The default decoder is a RoPE-indexed Transformer
-decoder with AdaLN conditioning from $\ztau$.  Unless otherwise
-specified, $d=4$, $\beta=0.01$, $\Delta=1$\,s, and the start-frame
-anchor $\za=z_1$ are used.
+$10^{-4}$, cosine decay, 5\,000 warmup steps, batch size 64, and a
+maximum of 200\,000 optimisation steps.  We retain the checkpoint
+with lowest full-validation loss and stop after 10 validation checks
+without improvement.  The default aggregator is a 6-layer
+Transformer encoder with width 768, 12 attention heads, and
+feed-forward dimension 3072.  The decoder has 4 layers, width 512,
+8 attention heads, and feed-forward dimension 2048, with AdaLN
+conditioning from $\ztau$.  Unless otherwise specified, $d=32$,
+$\beta=0.01$, $\Delta=1$\,s, residual prediction, and the content
+anchor $\za=\zC$ are used.
 
 \begin{figure*}[t]
   \centering
@@ -722,8 +727,8 @@ bottleneck dimensions.
     Content-only trained decoder & \res & \res \\
     \midrule
     $\ztau$, $d=1$ & \res & \res \\
-    $\ztau$, $d=4$ & \res & \res \\
     $\ztau$, $d=16$ & \res & \res \\
+    $\ztau$, $d=32$ & \res & \res \\
     $\ztau$, $d=64$ & \res & \res \\
     \bottomrule
   \end{tabular}
@@ -1022,8 +1027,8 @@ reports the shuffle-severity correlation.
     $\zC$ & \res & \res & \res & \res & \res \\
     MSPF feat. & \res & \res & \res & \res & \res \\
     $\ztau$, $d=1$ & \res & \res & \res & \res & \res \\
-    $\ztau$, $d=4$ & \res & \res & \res & \res & \res \\
     $\ztau$, $d=16$ & \res & \res & \res & \res & \res \\
+    $\ztau$, $d=32$ & \res & \res & \res & \res & \res \\
     $\ztau$, $d=64$ & \res & \res & \res & \res & \res \\
     \bottomrule
   \end{tabular}
@@ -1044,7 +1049,7 @@ reports the shuffle-severity correlation.
   \begin{minipage}{0.48\linewidth}
     \centering
     \figbox{Scatter: severity vs. displacement\\
-      $d=4$, CR=\res\\
+      $d=32$, CR=\res\\
     $\rho_s=\res$}{3.55}{2.35}
     \vspace{-0.5em}
     {\scriptsize (b) Default bottleneck}
@@ -1094,8 +1099,8 @@ reports the shuffle-severity correlation.
     $\zC$ & \res \\
     MSPF feat. & \res \\
     $\ztau$, $d=1$ & \res \\
-    $\ztau$, $d=4$ & \res \\
     $\ztau$, $d=16$ & \res \\
+    $\ztau$, $d=32$ & \res \\
     $\ztau$, $d=64$ & \res \\
     \bottomrule
   \end{tabular}
@@ -1360,38 +1365,34 @@ temporal token.  The compression ratio is
 \end{equation}
 %
 Table~\ref{tab:compression} summarises the trade-off between
-trajectory fidelity, temporal utility, and content leakage.  To make
-the compression comparison independent of optimisation budget, we
-also report a compute-matched sweep in which each bottleneck is
-trained under both a fixed-update budget and a fixed wall-clock
-budget.  The training-objective, anchor/target, masking, and multi-token
-capacity ablations are reported in the appendix because they refine
-the design rather than establish the core claim that a single $\ztau$
-can encode track-level temporal evolution.
+trajectory fidelity, temporal utility, and content leakage.  All
+variants use the same 200\,000-step ceiling and validation-loss
+early-stopping rule.  The training-objective, anchor/target, masking,
+and multi-token capacity ablations are reported in the appendix
+because they refine the design rather than establish the core claim
+that a single $\ztau$ can encode track-level temporal evolution.
 
 \begin{table*}[t]
   \centering
   \setlength{\tabcolsep}{3.0pt}
   \caption{Single-token compression sweep.  The default model uses
-    $d=4$, selected to balance temporal utility and separation from the
-    content token.  Fixed-update and fixed-time columns provide
-  compute-matched checks for the compression trend.}
+    $d=32$ as a stable middle-capacity operating point for the main
+    experiments.}
   \label{tab:compression}
-  \begin{tabular}{cccccccc}
+  \begin{tabular}{cccccc}
     \toprule
     $d$ & CR
     & $\mathcal{E}_{\mathrm{rec}}\downarrow$
     & MSPF $R^2\uparrow$
     & $\rho_{\mathrm{sep}}\uparrow$
-    & CKA$(\ztau,\zC)\downarrow$
-    & Fixed upd.$\uparrow$
-    & Fixed time$\uparrow$ \\
+    & CKA$(\ztau,\zC)\downarrow$ \\
     \midrule
-    1 & \res & \res & \res & \res & \res & \res & \res \\
-    4 & \res & \res & \res & \res & \res & \res & \res \\
-    16 & \res & \res & \res & \res & \res & \res & \res \\
-    64 & \res & \res & \res & \res & \res & \res & \res \\
-    256 & \res & \res & \res & \res & \res & \res & \res \\
+    1 & \res & \res & \res & \res & \res \\
+    4 & \res & \res & \res & \res & \res \\
+    16 & \res & \res & \res & \res & \res \\
+    32 & \res & \res & \res & \res & \res \\
+    64 & \res & \res & \res & \res & \res \\
+    256 & \res & \res & \res & \res & \res \\
     \bottomrule
   \end{tabular}
 \end{table*}

@@ -25,8 +25,10 @@
   including its sampling procedure, cosine and L2 diagnostics, FlipFlop score,
   normalized extremeness, W&B table, and Plotly scatter. Paper mode adds
   Spearman summaries and changes only the enclosing W&B section namespace.
-- Added paper MuQ 1 Hz velocity configs for bottleneck dimensions 1, 2, 4, 8,
+- Added paper MuQ 1 Hz residual configs for bottleneck dimensions 1, 2, 4, 8,
   16, 32, 64, 128, and 256, plus a trained content-only decoder config.
+- Residual prediction around the mean content token is the authoritative paper
+  default. Velocity configs remain available as explicit ablations.
 - Set the paper default bottleneck to 32 dimensions.
 - Set the paper encoder to width 768, 12 heads, and 6 layers, and the smaller
   predictor to width 512, 8 heads, and 4 layers.
@@ -49,7 +51,7 @@ after any extraction change. Do not silently reuse validation as test data.
 Example:
 
 ```text
-python -m dyno.train experiment=paper_muq_1hz_velocity_d32
+python -m dyno.train experiment=paper_muq_1hz_residuals_d32
 ```
 
 ## Remaining Phase 2 Work
