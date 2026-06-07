@@ -13,6 +13,8 @@
   - one `normalize` toggle;
   - compatibility for explicit legacy `absolute` callers;
   - deterministic zero output for constant semantic trajectories.
+- Standardized the default MSPF parameters at window 4, contrast exponent 3,
+  sigma 10, and lambda `1e-3` across the API and paper callbacks.
 - Added streamed full-split reconstruction metrics and the content-mean
   baseline without retaining the full validation set in memory.
 - Added paper metric names for:
@@ -38,10 +40,9 @@
 - Verified all 55,701 MuQ 1 Hz arrays against the complete MuQ 0.1 Hz
   extraction. Every file has a readable 2D float32 header with width 512 and
   the track-ID sets match exactly.
-- Materialized the established split at 1 Hz: 32,859 train, 11,101 validation,
-  and 11,565 test tracks. The source split leaves 176 extracted tracks
-  unassigned, and the 1 Hz manifests preserve that decision.
-- Replaced that preliminary split for paper training with a versioned,
+- Audited the original 32,859/11,101/11,565 split and a random-track
+  51,701/2,000/2,000 candidate before selecting the paper split.
+- Materialized a versioned,
   deterministic 51,701/2,000/2,000 split using all extracted tracks. The
   paper split is disjoint by artist and album and uses seed 142. Historical
   manifests remain untouched.
@@ -67,10 +68,9 @@ python -m dyno.train experiment=paper_muq_1hz_residuals_d32
   ablation config.
 - Add paper configs for the non-MuQ encoder sweep once each authoritative
   embedding rate, width, and manifest path is fixed.
-- Decide whether online paper callbacks should run every validation epoch or
-  at a wider interval for production runs. Offline best-checkpoint evaluation
-  remains authoritative for final tables.
 - Add a standalone alias/checkpoint resolver, shared with Phase 3 evaluation.
+- Add the remaining aggregate experiment configs for deterministic AE versus
+  VAE bottlenecks after the default bottleneck protocol is fixed.
 
 Audio-domain perturbations, cross-encoder MSPF scoring, retrieval artifacts,
 and structure probing remain Phase 3 work.

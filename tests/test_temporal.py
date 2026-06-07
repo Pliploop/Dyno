@@ -1,5 +1,6 @@
 import numpy as np
 import torch
+import inspect
 
 from dyno.evaluation.temporal import compute_mspf
 
@@ -14,6 +15,15 @@ def _sequence() -> torch.Tensor:
         ],
         dtype=torch.float32,
     )
+
+
+def test_compute_mspf_uses_paper_contrast_defaults():
+    defaults = inspect.signature(compute_mspf).parameters
+
+    assert defaults["window"].default == 4
+    assert defaults["power"].default == 3.0
+    assert defaults["sigma"].default == 10.0
+    assert defaults["lam"].default == 1e-3
 
 
 def test_compute_mspf_normalizes_time_and_values_by_default():

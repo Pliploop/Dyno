@@ -32,3 +32,18 @@ def test_paper_flipflop_uses_512_samples():
 
     assert cfg.callbacks.flipflop.n_flips == 512
     assert cfg.callbacks.flipflop.every_n_epochs == 5
+
+
+def test_paper_mspf_defaults_are_consistent():
+    cfg = _compose("paper_muq_1hz")
+
+    reconstruction = cfg.callbacks.trajectory_reconstruction
+    geometry = cfg.callbacks.annotation_free_temporal
+    assert reconstruction.window == 4
+    assert reconstruction.power == 3.0
+    assert reconstruction.sigma == 10.0
+    assert reconstruction.lam == 1.0e-3
+    assert geometry.mspf_window == 4
+    assert geometry.mspf_power == 3.0
+    assert geometry.mspf_sigma == 10.0
+    assert geometry.mspf_lam == 1.0e-3

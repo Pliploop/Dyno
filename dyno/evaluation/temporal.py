@@ -18,10 +18,10 @@ import torch.nn.functional as F
 
 def compute_mspf(
     z: torch.Tensor,
-    window: int = 30,
+    window: int = 4,
     sigma: float = 10.0,
     lam: float = 1e-3,
-    power: float = 1.0,
+    power: float = 3.0,
     absolute: bool | None = None,
     n_points: int = 100,
     normalize: bool = True,
@@ -37,10 +37,10 @@ def compute_mspf(
 
     Args:
         z:        (T, D) tensor of embeddings (will be L2-normalised internally)
-        window:   maximum frame-distance to include in pairs (default 30)
+        window:   maximum frame-distance to include in pairs (default 4)
         sigma:    temporal Gaussian bandwidth in frames (default 10)
         lam:      L2 regularisation weight (default 1e-3)
-        power:    angular distance exponent p; p>1 boosts contrast (default 1)
+        power:    angular distance exponent p; p>1 boosts contrast (default 3)
         absolute: legacy time-axis option. When explicitly set, True returns
                   raw values at the original frame resolution and False
                   returns raw values interpolated to ``n_points``. This

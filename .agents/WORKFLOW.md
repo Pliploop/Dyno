@@ -94,6 +94,8 @@ in W&B. Artifact and figure keys follow the same section prefix.
 ## MSPF Normalization
 
 - Paper MSPFs use normalized time and normalized values by default.
+- The default MSPF parameters are window 4, contrast exponent 3, sigma 10,
+  and regularization lambda `1e-3`.
 - Normalized time means interpolation onto a fixed grid over `[0, 1]`.
 - Normalized values means per-curve min-max scaling to `[0, 1]`, with a
   constant curve mapped deterministically to zeros.

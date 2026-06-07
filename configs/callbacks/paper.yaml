@@ -35,10 +35,10 @@ trajectory_reconstruction:
   n_samples: null
   every_n_epochs: 1
   evaluation_suite: paper.trajectory_reconstruction
-  window: 30
+  window: 4
   sigma: 10.0
   lam: 1.0e-3
-  power: 1.0
+  power: 3.0
   absolute: null
   normalize: true
   n_points: 100
@@ -52,10 +52,10 @@ annotation_free_temporal:
   every_n_epochs: 1
   n_samples: 500
   evaluation_suite: paper
-  mspf_window: 30
+  mspf_window: 4
   mspf_sigma: 10.0
   mspf_lam: 1.0e-3
-  mspf_power: 1.0
+  mspf_power: 3.0
   mspf_points: 100
   mspf_normalize: true
   transform_agreement:

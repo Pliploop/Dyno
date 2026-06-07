@@ -127,10 +127,10 @@ class StructVizCallback(BaseCallback):
         evaluation_suite: str = "Structure visualization",
         clean_labels: str = "dataset",
         seed: int = 0,
-        mspf_window: int = 30,
+        mspf_window: int = 4,
         mspf_sigma: float = 10.0,
         mspf_lam: float = 1e-3,
-        mspf_power: float = 1.4,
+        mspf_power: float = 3.0,
         mspf_points: int = 256,
     ):
         super().__init__(every_n_epochs=every_n_epochs)
