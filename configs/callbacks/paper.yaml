@@ -1,0 +1,86 @@
+defaults:
+  - _self_
+
+model_summary:
+  _target_: lightning.pytorch.callbacks.RichModelSummary
+  max_depth: 1
+
+progress:
+  _target_: lightning.pytorch.callbacks.progress.RichProgressBar
+  refresh_rate: 1
+
+model_checkpoint:
+  _target_: lightning.pytorch.callbacks.ModelCheckpoint
+  dirpath: ${paths.ckpt_dir}
+  filename: "best-step={step}-val_loss={val/loss:.6f}"
+  monitor: val/loss
+  mode: min
+  save_top_k: 1
+  save_last: true
+  auto_insert_metric_name: false
+  save_weights_only: false
+
+early_stopping:
+  _target_: lightning.pytorch.callbacks.EarlyStopping
+  monitor: val/loss
+  min_delta: 0.0
+  patience: 10
+  verbose: true
+  mode: min
+  strict: true
+  check_finite: true
+
+trajectory_reconstruction:
+  _target_: dyno.callbacks.dyno.MSPFCallback
+  n_samples: null
+  every_n_epochs: 1
+  evaluation_suite: paper.trajectory_reconstruction
+  window: 30
+  sigma: 10.0
+  lam: 1.0e-3
+  power: 1.0
+  absolute: null
+  normalize: true
+  n_points: 100
+  stages:
+    - val
+    - test
+  n_plot_samples: 4
+
+annotation_free_temporal:
+  _target_: dyno.callbacks.annotation_free.AnnotationFreeTemporalCallback
+  every_n_epochs: 1
+  n_samples: 500
+  evaluation_suite: paper
+  mspf_window: 30
+  mspf_sigma: 10.0
+  mspf_lam: 1.0e-3
+  mspf_power: 1.0
+  mspf_points: 100
+  mspf_normalize: true
+  transform_agreement:
+    - shuffle
+    - reverse
+    - splice
+  order_transforms:
+    - shuffle
+    - reverse
+    - half_swap
+    - circular_shift
+    - local_shuffle
+  random_dim: ${model.latent_dim}
+  seed: ${seed}
+  estimate_mi: false
+  latent_swapping: false
+
+flipflop:
+  _target_: dyno.callbacks.flipflop.FlipFlopCallback
+  n_flips: 64
+  every_n_epochs: 1
+  evaluation_suite: paper.perturbation_sensitivity
+  chunk_width_min: 1
+  chunk_width_max: 4
+  distance_min: 1
+  distance_max: 20
+  n_chunks_min: 1
+  n_chunks_max: 4

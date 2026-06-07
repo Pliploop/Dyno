@@ -1,0 +1,16 @@
+# @package _global_
+
+defaults:
+  - paper_muq_1hz_velocity
+
+task_name: paper_muq_1hz_content_only
+name: paper/muq/1hz/content_only/seed=${seed}
+tags: [paper, muq, 1hz, content_only]
+
+model:
+  condition_z_tau: false
+  condition_zc: true
+  beta: 0.0
+  predictor:
+    condition_z_tau: ${..condition_z_tau}
+    condition_zc: ${..condition_zc}

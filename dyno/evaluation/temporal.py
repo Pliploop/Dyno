@@ -22,8 +22,9 @@ def compute_mspf(
     sigma: float = 10.0,
     lam: float = 1e-3,
     power: float = 1.0,
-    absolute: bool = True,
+    absolute: bool | None = None,
     n_points: int = 100,
+    normalize: bool = True,
 ) -> np.ndarray:
     """
     Compute the Music Semantic Progress Function for a sequence of embeddings.
@@ -40,21 +41,28 @@ def compute_mspf(
         sigma:    temporal Gaussian bandwidth in frames (default 10)
         lam:      L2 regularisation weight (default 1e-3)
         power:    angular distance exponent p; p>1 boosts contrast (default 1)
-        absolute: when True (default), return S at original resolution — the
-                  x-axis is in frames, so the same song time-stretched gives
-                  different SPF curves.  When False, interpolate S onto
-                  ``n_points`` uniformly-spaced points on a normalised [0, 1]
-                  time axis, making SPFs comparable across sequences of
-                  different lengths or tempos.
-        n_points: number of output points when absolute=False (default 100)
+        absolute: legacy time-axis option. When explicitly set, True returns
+                  raw values at the original frame resolution and False
+                  returns raw values interpolated to ``n_points``. This
+                  overrides ``normalize`` to preserve existing callers.
+        n_points: number of output points for normalized/interpolated curves.
+        normalize: when True (default), interpolate time to ``n_points`` over
+                   [0, 1] and min-max scale MSPF values to [0, 1]. Constant
+                   curves are mapped to zeros. When False, return raw values
+                   at the original frame resolution.
 
     Returns:
-        absolute=True  → float32 array of shape (T,), anchored at S[0] = 0
-        absolute=False → float32 array of shape (n_points,), time axis [0, 1]
+        float32 MSPF curve, anchored at zero before optional normalization.
     """
+    normalize_time = normalize
+    normalize_values = normalize
+    if absolute is not None:
+        normalize_time = not absolute
+        normalize_values = False
+
     T = z.shape[0]
     if T < 2:
-        out_len = T if absolute else n_points
+        out_len = n_points if normalize_time else T
         return np.zeros(out_len, dtype=np.float32)
 
     z_np = F.normalize(z.float(), dim=-1).detach().cpu().numpy()  # (T, D)
@@ -71,7 +79,11 @@ def compute_mspf(
     w = np.zeros(n_pairs, dtype=np.float32)
 
     for k, (i, j) in enumerate(pairs):
-        cos = float(np.clip(np.dot(z_np[i], z_np[j]), -1 + 1e-7, 1 - 1e-7))
+        cos = float(np.clip(np.dot(z_np[i], z_np[j]), -1.0, 1.0))
+        if cos > 1.0 - 1e-6:
+            cos = 1.0
+        elif cos < -1.0 + 1e-6:
+            cos = -1.0
         d = math.acos(cos)
         A[k, i] = -1.0
         A[k, j] = 1.0
@@ -85,13 +97,19 @@ def compute_mspf(
     S = np.linalg.solve(lhs, rhs).astype(np.float32)
     S -= S[0]  # anchor: S[0] = 0
 
-    if absolute:
-        return S
+    if normalize_time:
+        t_orig = np.linspace(0.0, 1.0, T)
+        t_norm = np.linspace(0.0, 1.0, n_points)
+        S = np.interp(t_norm, t_orig, S).astype(np.float32)
 
-    # Relative mode: interpolate onto a fixed-length normalized time grid
-    t_orig = np.linspace(0.0, 1.0, T)
-    t_norm = np.linspace(0.0, 1.0, n_points)
-    return np.interp(t_norm, t_orig, S).astype(np.float32)
+    if normalize_values:
+        lo = float(np.min(S))
+        scale = float(np.max(S) - lo)
+        if scale <= 1e-12:
+            return np.zeros_like(S, dtype=np.float32)
+        S = (S - lo) / scale
+
+    return S.astype(np.float32)
 
 
 def compute_ssm(z: torch.Tensor) -> np.ndarray:

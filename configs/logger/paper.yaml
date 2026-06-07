@@ -1,0 +1,13 @@
+wandb:
+  _target_: lightning.pytorch.loggers.wandb.WandbLogger
+  name: ${name}
+  save_dir: ${paths.output_dir}
+  offline: false
+  id: ${dora:xp.sig}
+  project: dyno-paper
+  entity: jul-guinot
+  log_model: false
+  save_code: true
+  prefix: ""
+  tags: ${tags}
+  job_type: paper-training

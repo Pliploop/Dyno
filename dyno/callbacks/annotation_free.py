@@ -98,8 +98,37 @@ def _euclidean_distance_matrix(x: np.ndarray) -> np.ndarray:
     return d.astype(np.float32)
 
 
-def _mspf_shape_distance_matrix(mspf: np.ndarray) -> np.ndarray:
-    return _euclidean_distance_matrix(_minmax_rows(mspf))
+def _standardized_euclidean_distance_matrix(x: np.ndarray, eps: float = 1e-8) -> np.ndarray:
+    x = np.asarray(x, dtype=np.float32)
+    scale = np.std(x, axis=0, keepdims=True)
+    standardized = (x - np.mean(x, axis=0, keepdims=True)) / np.maximum(scale, eps)
+    return _euclidean_distance_matrix(standardized)
+
+
+def _dtw_distance(x: np.ndarray, y: np.ndarray) -> float:
+    x = np.asarray(x, dtype=np.float32)
+    y = np.asarray(y, dtype=np.float32)
+    costs = np.full((len(x) + 1, len(y) + 1), np.inf, dtype=np.float64)
+    costs[0, 0] = 0.0
+    for i in range(1, len(x) + 1):
+        for j in range(1, len(y) + 1):
+            costs[i, j] = abs(float(x[i - 1] - y[j - 1])) + min(
+                costs[i - 1, j],
+                costs[i, j - 1],
+                costs[i - 1, j - 1],
+            )
+    return float(costs[-1, -1] / max(len(x) + len(y), 1))
+
+
+def _mspf_dtw_distance_matrix(mspf: np.ndarray) -> np.ndarray:
+    mspf = np.asarray(mspf, dtype=np.float32)
+    n = len(mspf)
+    distances = np.zeros((n, n), dtype=np.float32)
+    for i in range(n):
+        for j in range(i + 1, n):
+            distances[i, j] = distances[j, i] = _dtw_distance(mspf[i], mspf[j])
+    np.fill_diagonal(distances, np.inf)
+    return distances
 
 
 def _mean_mutual_info(x: np.ndarray, y: np.ndarray, seed: int = 0) -> float:
@@ -190,6 +219,21 @@ def _cknna(
     return float((sim_kl / (torch.sqrt((sim_kk * sim_ll).clamp_min(0.0)) + 1e-6)).item())
 
 
+def _linear_cka(feats_A: np.ndarray, feats_B: np.ndarray, eps: float = 1e-12) -> float:
+    if feats_A.shape[0] != feats_B.shape[0] or feats_A.shape[0] < 2:
+        return float("nan")
+    A = np.asarray(feats_A, dtype=np.float64)
+    B = np.asarray(feats_B, dtype=np.float64)
+    A = A - A.mean(axis=0, keepdims=True)
+    B = B - B.mean(axis=0, keepdims=True)
+    cross = A.T @ B
+    numerator = float(np.sum(cross * cross))
+    denominator = float(
+        np.sqrt(np.sum((A.T @ A) ** 2) * np.sum((B.T @ B) ** 2))
+    )
+    return numerator / denominator if denominator > eps else float("nan")
+
+
 def _transform_sequence(seq: torch.Tensor, name: str, partner: torch.Tensor | None = None) -> torch.Tensor:
     T = seq.shape[0]
     if T < 2:
@@ -238,6 +282,7 @@ class AnnotationFreeTemporalCallback(BaseCallback):
         mspf_lam: float = 1e-3,
         mspf_power: float = 1.0,
         mspf_points: int = 64,
+        mspf_normalize: bool | None = None,
         transform_agreement: tuple[str, ...] = ("shuffle", "reverse", "splice"),
         order_transforms: tuple[str, ...] = (
             "shuffle",
@@ -260,9 +305,12 @@ class AnnotationFreeTemporalCallback(BaseCallback):
             sigma=mspf_sigma,
             lam=mspf_lam,
             power=mspf_power,
-            absolute=False,
             n_points=mspf_points,
         )
+        if mspf_normalize is None:
+            self.mspf_kw["absolute"] = False
+        else:
+            self.mspf_kw["normalize"] = mspf_normalize
         self.transform_agreement = tuple(transform_agreement)
         self.order_transforms = tuple(order_transforms)
         self.random_dim = random_dim
@@ -385,11 +433,31 @@ class AnnotationFreeTemporalCallback(BaseCallback):
             metrics[f"MSPF R2 after {transform} (transformed vs original)"] = float(np.nanmean(r2s))
 
         reps = self._model_reps(pl_module, seqs)
-        mspf_distance = _mspf_shape_distance_matrix(reps["MSPF_feat"])
+        paper_mode = self.evaluation_suite == "paper"
+        mspf_distance = (
+            _mspf_dtw_distance_matrix(reps["MSPF_feat"])
+            if paper_mode
+            else _euclidean_distance_matrix(_minmax_rows(reps["MSPF_feat"]))
+        )
         content_distance = cosine_distance_matrix(reps["zC"])
-        for name in ("Random", "zC", "z_tau", "zC_z_tau"):
+        representation_names = (
+            ("Random", "zC", "MSPF_feat", "z_tau", "zC_z_tau")
+            if paper_mode
+            else ("Random", "zC", "z_tau", "zC_z_tau")
+        )
+        for name in representation_names:
             rep = reps[name]
-            rep_distance = cosine_distance_matrix(rep)
+            if paper_mode and name == "MSPF_feat":
+                rep_distance = mspf_distance
+            elif paper_mode and name == "z_tau":
+                rep_distance = _standardized_euclidean_distance_matrix(rep)
+            elif paper_mode and name == "zC_z_tau":
+                rep_distance = 0.5 * (
+                    content_distance
+                    + _standardized_euclidean_distance_matrix(reps["z_tau"])
+                )
+            else:
+                rep_distance = cosine_distance_matrix(rep)
             metrics[f"Spearman rho: {name} distances vs MSPF distances"] = spearman_from_distance_matrices(
                 rep_distance,
                 mspf_distance,
@@ -414,6 +482,26 @@ class AnnotationFreeTemporalCallback(BaseCallback):
                 reps["z_tau"],
                 topk=self.cknna_topk,
             )
+        rng = np.random.default_rng(self.seed)
+        shuffled_content = reps["zC"][rng.permutation(len(seqs))]
+        metrics["Linear CKA: zC vs zC"] = _linear_cka(reps["zC"], reps["zC"])
+        metrics["Linear CKA: z_tau vs shuffled zC"] = _linear_cka(reps["z_tau"], shuffled_content)
+        metrics["Linear CKA: z_tau vs zC"] = _linear_cka(reps["z_tau"], reps["zC"])
+        metrics["CKNNA: zC vs zC"] = _cknna(
+            reps["zC"],
+            reps["zC"],
+            topk=self.cknna_topk,
+        )
+        metrics["CKNNA: z_tau vs shuffled zC"] = _cknna(
+            reps["z_tau"],
+            shuffled_content,
+            topk=self.cknna_topk,
+        )
+        metrics["CKNNA: z_tau vs zC"] = _cknna(
+            reps["z_tau"],
+            reps["zC"],
+            topk=self.cknna_topk,
+        )
 
         device = pl_module.device
         was_training = pl_module.training
@@ -454,6 +542,7 @@ class AnnotationFreeTemporalCallback(BaseCallback):
                 content_new = content_new.detach().cpu()
                 temporal_new = temporal_new.detach().cpu()
                 temporal_l2 = torch.linalg.vector_norm(temporal_orig - temporal_new, dim=-1)
+                content_l2 = torch.linalg.vector_norm(content_orig - content_new, dim=-1)
                 metrics[f"Content cosine distance after {transform} (transformed vs original)"] = float(
                     _cosine_distance(content_orig, content_new).mean().item()
                 )
@@ -463,6 +552,8 @@ class AnnotationFreeTemporalCallback(BaseCallback):
                 metrics[f"Normalized temporal displacement after {transform}"] = float(
                     temporal_l2.mean().item() / temporal_scale
                 )
+                metrics[f"Content L2 displacement after {transform}"] = float(content_l2.mean().item())
+                metrics[f"Temporal L2 displacement after {transform}"] = float(temporal_l2.mean().item())
 
             if self.latent_swapping and len(seqs) >= 2 and hasattr(pl_module, "decode"):
                 content_correct = []
@@ -501,10 +592,49 @@ class AnnotationFreeTemporalCallback(BaseCallback):
         if was_training:
             pl_module.train()
 
-        pl_module.log_dict(
-            {f"{prefix}/{key}": value for key, value in metrics.items()},
-            on_epoch=True,
-            prog_bar=False,
-            sync_dist=True,
-        )
+        if paper_mode:
+            paper_metrics: dict[str, float] = {}
+            rep_names = {
+                "Random": "random",
+                "zC": "content",
+                "MSPF_feat": "mspf_feature",
+                "z_tau": "temporal",
+                "zC_z_tau": "combined",
+            }
+            for name, slug in rep_names.items():
+                paper_metrics[f"paper.mspf_geometry/{stage}/spearman/{slug}"] = metrics[
+                    f"Spearman rho: {name} distances vs MSPF distances"
+                ]
+                paper_metrics[f"paper.mspf_geometry/{stage}/partial_spearman/{slug}"] = metrics[
+                    f"Partial Spearman rho: {name} distances vs MSPF distances, controlling content"
+                ]
+            for transform in self.order_transforms:
+                paper_metrics[f"paper.order_sensitivity/{stage}/{transform}/content_l2"] = metrics[
+                    f"Content L2 displacement after {transform}"
+                ]
+                paper_metrics[f"paper.order_sensitivity/{stage}/{transform}/temporal_l2"] = metrics[
+                    f"Temporal L2 displacement after {transform}"
+                ]
+                paper_metrics[f"paper.order_sensitivity/{stage}/{transform}/temporal_l2_normalized"] = metrics[
+                    f"Normalized temporal displacement after {transform}"
+                ]
+            dependence = {
+                "content_self": ("Linear CKA: zC vs zC", "CKNNA: zC vs zC"),
+                "shuffled_content": (
+                    "Linear CKA: z_tau vs shuffled zC",
+                    "CKNNA: z_tau vs shuffled zC",
+                ),
+                "default": ("Linear CKA: z_tau vs zC", "CKNNA: z_tau vs zC"),
+            }
+            for comparison, (cka_key, cknna_key) in dependence.items():
+                paper_metrics[f"paper.representation_dependence/{stage}/{comparison}/linear_cka"] = metrics[cka_key]
+                paper_metrics[f"paper.representation_dependence/{stage}/{comparison}/cknna"] = metrics[cknna_key]
+            pl_module.log_dict(paper_metrics, on_epoch=True, prog_bar=False, sync_dist=True)
+        else:
+            pl_module.log_dict(
+                {f"{prefix}/{key}": value for key, value in metrics.items()},
+                on_epoch=True,
+                prog_bar=False,
+                sync_dist=True,
+            )
         self._samples[stage] = []

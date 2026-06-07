@@ -78,9 +78,27 @@ in W&B. Artifact and figure keys follow the same section prefix.
 - New paper training runs enable checkpointing and early stopping on validation
   loss. The checkpoint policy must retain the best validation-loss checkpoint
   and the last checkpoint.
+- Paper training runs use the full validation loader, monitor `val/loss`, use
+  an early-stopping patience of 10 validation checks, and set
+  `trainer.max_steps=200000`.
+- Do not create a separate fixed-wall-clock or fixed-update comparison
+  protocol. Paper variants share the 200,000-step ceiling and may stop earlier
+  according to the same validation-loss rule.
 - Keep the implementation in the existing Lightning + Hydra framework.
 - Prefer independently runnable offline evaluation configs that can also be
   attached to end-of-training test execution.
+
+## MSPF Normalization
+
+- Paper MSPFs use normalized time and normalized values by default.
+- Normalized time means interpolation onto a fixed grid over `[0, 1]`.
+- Normalized values means per-curve min-max scaling to `[0, 1]`, with a
+  constant curve mapped deterministically to zeros.
+- Expose this behavior through one toggle, `normalize=true`, in the shared
+  MSPF API/config. Setting it to false preserves native temporal resolution
+  and raw MSPF values.
+- Keep compatibility for existing callers of the current `absolute` option
+  while migrating paper callbacks to the explicit normalization toggle.
 
 ## Structure Probing Protocol
 
@@ -91,6 +109,16 @@ in W&B. Artifact and figure keys follow the same section prefix.
   joint boundary/function training, HR.5F, HR3F, PWF, and ACC.
 - Use dataset-appropriate folds without mixing tracks across train,
   validation, and test. Harmonix uses the reported 8-fold 6/1/1 protocol.
+- For SALAMI, report coarse/uppercase boundaries as the primary HR.5F/HR3F
+  result and fine/lowercase boundaries as an additional diagnostic.
+- Use SALAMI's native semantic function vocabulary for PWF/ACC. Do not map it
+  to the Harmonix vocabulary; comparisons of interest are between probe inputs
+  such as content and temporal tokens within each dataset.
+- Use the first SALAMI annotation for maximum coverage. Do not add a separate
+  double-annotator agreement evaluation.
+- SALAMI has no official packaged split, so create and check in a deterministic
+  grouped 8-fold manifest. Keep each track wholly within one fold and use the
+  same 6/1/1 train/validation/test rotation as Harmonix.
 - The unsupervised boundary protocol from Marmoret,
   arXiv:2603.27218v1, is a separate optional diagnostic and does not replace
   the required frame-level function probe.

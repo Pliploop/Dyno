@@ -49,6 +49,26 @@ def _temporal_token(pl_module, x: torch.Tensor, mask: torch.Tensor | None = None
     return pl_module.encode(x, mask=mask)[2]
 
 
+def _rankdata(x: np.ndarray) -> np.ndarray:
+    order = np.argsort(x, kind="mergesort")
+    sorted_x = x[order]
+    ranks = np.empty(len(x), dtype=np.float64)
+    start = 0
+    while start < len(x):
+        end = start + 1
+        while end < len(x) and sorted_x[end] == sorted_x[start]:
+            end += 1
+        ranks[order[start:end]] = 0.5 * (start + end - 1)
+        start = end
+    return ranks
+
+
+def _spearman(x: np.ndarray, y: np.ndarray) -> float:
+    if len(x) < 3 or np.std(x) <= 1e-12 or np.std(y) <= 1e-12:
+        return float("nan")
+    return float(np.corrcoef(_rankdata(x), _rankdata(y))[0, 1])
+
+
 class FlipFlopCallback(BaseCallback):
     """
     Validation-only callback that swaps chunks within embedding sequences and
@@ -256,12 +276,38 @@ class FlipFlopCallback(BaseCallback):
         temporal_l2 = np.array([r["temporal_l2_distance"] for r in rows], dtype=np.float32)
         extremeness = np.array([r["extremeness"] for r in rows], dtype=np.float32)
 
-        pl_module.log(f"{prefix}/Content cosine distance (flipped vs original)", float(content_cos.mean()), on_epoch=True, sync_dist=True)
-        pl_module.log(f"{prefix}/Temporal cosine distance (flipped vs original)", float(temporal_cos.mean()), on_epoch=True, sync_dist=True)
-        pl_module.log(f"{prefix}/FlipFlop score: temporal minus content cosine distance", float((temporal_cos - content_cos).mean()), on_epoch=True, sync_dist=True)
-        pl_module.log(f"{prefix}/Content L2 distance (flipped vs original)", float(content_l2.mean()), on_epoch=True, sync_dist=True)
-        pl_module.log(f"{prefix}/Temporal L2 distance (flipped vs original)", float(temporal_l2.mean()), on_epoch=True, sync_dist=True)
-        pl_module.log(f"{prefix}/Flip extremeness (normalized permutation displacement)", float(extremeness.mean()), on_epoch=True, sync_dist=True)
+        if self.evaluation_suite.startswith("paper."):
+            pl_module.log(
+                f"{prefix}/content/shuffle_severity_spearman",
+                _spearman(extremeness, content_l2),
+                on_epoch=True,
+                sync_dist=True,
+            )
+            pl_module.log(
+                f"{prefix}/temporal/shuffle_severity_spearman",
+                _spearman(extremeness, temporal_l2),
+                on_epoch=True,
+                sync_dist=True,
+            )
+            pl_module.log(
+                f"{prefix}/content/displacement/chunk_shuffle",
+                float(content_l2.mean()),
+                on_epoch=True,
+                sync_dist=True,
+            )
+            pl_module.log(
+                f"{prefix}/temporal/displacement/chunk_shuffle",
+                float(temporal_l2.mean()),
+                on_epoch=True,
+                sync_dist=True,
+            )
+        else:
+            pl_module.log(f"{prefix}/Content cosine distance (flipped vs original)", float(content_cos.mean()), on_epoch=True, sync_dist=True)
+            pl_module.log(f"{prefix}/Temporal cosine distance (flipped vs original)", float(temporal_cos.mean()), on_epoch=True, sync_dist=True)
+            pl_module.log(f"{prefix}/FlipFlop score: temporal minus content cosine distance", float((temporal_cos - content_cos).mean()), on_epoch=True, sync_dist=True)
+            pl_module.log(f"{prefix}/Content L2 distance (flipped vs original)", float(content_l2.mean()), on_epoch=True, sync_dist=True)
+            pl_module.log(f"{prefix}/Temporal L2 distance (flipped vs original)", float(temporal_l2.mean()), on_epoch=True, sync_dist=True)
+            pl_module.log(f"{prefix}/Flip extremeness (normalized permutation displacement)", float(extremeness.mean()), on_epoch=True, sync_dist=True)
 
         wandb_logger = _get_wandb_logger(trainer)
         if wandb_logger is not None:
@@ -295,9 +341,19 @@ class FlipFlopCallback(BaseCallback):
                 template="plotly_white",
                 legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="left", x=0.0),
             )
+            plot_key = (
+                "shuffle_severity_plot"
+                if self.evaluation_suite.startswith("paper.")
+                else "Cosine distance vs flip extremeness"
+            )
+            samples_key = (
+                "shuffle_severity_samples"
+                if self.evaluation_suite.startswith("paper.")
+                else "FlipFlop samples"
+            )
             wandb_logger.experiment.log({
-                f"{prefix}/Cosine distance vs flip extremeness": wandb.Plotly(fig),
-                f"{prefix}/FlipFlop samples": wandb.Table(
+                f"{prefix}/{plot_key}": wandb.Plotly(fig),
+                f"{prefix}/{samples_key}": wandb.Table(
                     columns=list(rows[0].keys()),
                     data=[[r[k] for k in rows[0].keys()] for r in rows],
                 ),
