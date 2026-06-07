@@ -15,6 +15,9 @@ tags: [paper, muq, 1hz, velocity]
 data:
   embedding_encoder: muq
   embedding_rate: 1hz
+  train_csv: /gpfs/scratch/acw749/datasets/dyno/mtg-jamendo/muq/1hz/manifests/train.csv
+  val_csv: /gpfs/scratch/acw749/datasets/dyno/mtg-jamendo/muq/1hz/manifests/val.csv
+  test_csv: /gpfs/scratch/acw749/datasets/dyno/mtg-jamendo/muq/1hz/manifests/test.csv
   n_frames: 60
   batch_size: 64
   num_workers: 16
@@ -22,9 +25,9 @@ data:
 
 model:
   embedding_dim: 512
-  aggregator_model_dim: 512
+  aggregator_model_dim: 768
   predictor_model_dim: 512
-  latent_dim: 4
+  latent_dim: 32
   content_token: first
   output_mode: velocity
   condition_z_tau: true
@@ -34,9 +37,9 @@ model:
   beta: 0.01
   recon_loss: l2
   aggregator:
-    num_heads: 8
-    num_layers: 4
-    ffn_dim: 2048
+    num_heads: 12
+    num_layers: 6
+    ffn_dim: 3072
   predictor:
     num_heads: 8
     num_layers: 4

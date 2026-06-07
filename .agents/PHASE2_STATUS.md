@@ -21,24 +21,31 @@
   - exact order sensitivity;
   - linear CKA and CKNNA dependence references;
   - chunk-shuffle displacement and severity correlation.
-- Added paper MuQ 1 Hz velocity configs for bottleneck dimensions 1, 4, 16,
-  and 64, plus a trained content-only decoder config.
+- Added paper MuQ 1 Hz velocity configs for bottleneck dimensions 1, 2, 4, 8,
+  16, 32, 64, 128, and 256, plus a trained content-only decoder config.
+- Set the paper default bottleneck to 32 dimensions.
+- Set the paper encoder to width 768, 12 heads, and 6 layers, and the smaller
+  predictor to width 512, 8 heads, and 4 layers.
+- Verified all 55,701 MuQ 1 Hz arrays against the complete MuQ 0.1 Hz
+  extraction. Every file has a readable 2D float32 header with width 512 and
+  the track-ID sets match exactly.
+- Materialized the established split at 1 Hz: 32,859 train, 11,101 validation,
+  and 11,565 test tracks. The source split leaves 176 extracted tracks
+  unassigned, and the 1 Hz manifests preserve that decision.
 - Added focused tests for MSPF normalization, legacy behavior, constant
   trajectories, linear CKA, standardized Euclidean distance, and DTW.
 
 ## Launch Contract
 
-Paper training configs intentionally leave `data.train_csv`, `data.val_csv`,
-and `data.test_csv` unset. Supply the authoritative MTG-Jamendo manifests at
-launch time; do not silently reuse validation as test data.
+The MuQ 1 Hz paper config uses the checked MTG-Jamendo manifests under
+`/gpfs/scratch/acw749/datasets/dyno/mtg-jamendo/muq/1hz/manifests`.
+Regenerate and validate them with `scripts/prepare_embedding_manifests.py`
+after any extraction change. Do not silently reuse validation as test data.
 
 Example:
 
 ```text
-python -m dyno.train experiment=paper_muq_1hz_velocity_d4 \
-  data.train_csv=/path/to/train.csv \
-  data.val_csv=/path/to/val.csv \
-  data.test_csv=/path/to/test.csv
+python -m dyno.train experiment=paper_muq_1hz_velocity_d32
 ```
 
 ## Remaining Phase 2 Work
