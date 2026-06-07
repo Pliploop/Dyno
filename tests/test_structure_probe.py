@@ -2,13 +2,16 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
+import torch
 
 from dyno.evaluation.structure_probe import (
+    AttentionStructureProbe,
+    FullTrackProbeDataset,
     ProbeTrack,
-    ProbeWindowDataset,
     _boundary_f1,
     _pairwise_f1,
     _position_encoding,
+    collate_full_tracks,
     normalize_harmonix_function,
     parse_frame_rate,
 )
@@ -28,46 +31,50 @@ def _track() -> ProbeTrack:
     )
 
 
-def test_probe_window_variants_have_expected_dimensions():
+def test_full_track_dataset_preserves_native_sequence():
     vocabulary = {"intro": 0, "verse": 1, "chorus": 2, "outro": 3, "unknown": 4}
-    expected = {
-        "local": 4,
-        "local_content": 7,
-        "local_temporal": 6,
-        "local_content_temporal": 9,
-        "content_position": 11,
-        "temporal_position": 10,
-    }
-    for probe_input, dimension in expected.items():
-        dataset = ProbeWindowDataset(
-            [_track()],
-            [0],
-            vocabulary,
-            probe_input,
-            frame_rate=2.0,
-            window_seconds=30.0,
-            hop_seconds=30.0,
-            position_dim=8,
-        )
-        item = dataset[0]
-        assert item["x"].shape == (60, dimension)
-        assert item["mask"].sum() == 60
+    dataset = FullTrackProbeDataset([_track()], [0], vocabulary, frame_rate=2.0)
+    item = dataset[0]
+
+    assert item["local"].shape == (80, 4)
+    assert item["boundary"].shape == (80,)
+    assert item["function"].shape == (80,)
 
 
-def test_probe_windows_follow_native_training_rate():
+def test_full_track_collation_only_pads_batch():
     vocabulary = {"intro": 0, "verse": 1, "chorus": 2, "outro": 3, "unknown": 4}
-    dataset = ProbeWindowDataset(
-        [_track()],
-        [0],
-        vocabulary,
-        "local_temporal",
-        frame_rate=0.1,
-        window_seconds=30.0,
-        hop_seconds=30.0,
-        position_dim=8,
-    )
+    short = _track()
+    short.features = short.features[:30]
+    items = FullTrackProbeDataset([_track(), short], [0, 1], vocabulary, frame_rate=1.0)
+    batch = collate_full_tracks([items[0], items[1]])
 
-    assert dataset[0]["x"].shape == (3, 6)
+    assert batch["local"].shape == (2, 80, 4)
+    assert batch["mask"][0].sum() == 80
+    assert batch["mask"][1].sum() == 30
+
+
+def test_global_token_probe_cannot_read_local_sequence():
+    probe = AttentionStructureProbe(
+        probe_input="temporal",
+        local_dim=4,
+        content_dim=3,
+        temporal_dim=2,
+        n_functions=5,
+        model_dim=16,
+        num_heads=4,
+        ffn_dim=32,
+        dropout=0.0,
+    ).eval()
+    local = torch.randn(1, 12, 4)
+    content = torch.randn(1, 3)
+    temporal = torch.randn(1, 2)
+    mask = torch.ones(1, 12, dtype=torch.bool)
+
+    first = probe(local, content, temporal, mask)
+    second = probe(local + 100.0, content, temporal, mask)
+
+    torch.testing.assert_close(first[0], second[0])
+    torch.testing.assert_close(first[1], second[1])
 
 
 def test_embedding_rate_labels_parse_to_hz():

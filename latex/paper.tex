@@ -1122,36 +1122,30 @@ tracks with similar symbolic form, which can be sparse and
 ill-defined for small annotated datasets, we evaluate boundary
 detection and function prediction using lightweight probes.
 
-The probing setup follows Toyama et al.: we freeze all representations
-and use a single linear frame-level head.  Unlike their common 2\,Hz
-benchmark grid, each of our probes uses the exact encoder and feature
-rate used to train the evaluated checkpoint.  The local input is
-therefore the checkpoint's native $z_t$ sequence, and $\zC$ and $\ztau$
-are extracted from that same full-track sequence without probe-time
-resampling.  Toyama et al. probe the framewise encoder sequence; our
-global-token inputs are controlled extensions evaluated with the same
-folds, optimisation, head, and post-processing.
-For boundary
-detection, the head predicts whether each frame corresponds to a
-section change.  For function prediction, it predicts one of the
-structural function labels.  The probe receives local frame
-features, global tokens, or their concatenation:
+Inspired by Toyama et al., we freeze all representations and jointly
+predict boundaries and structural functions.  We replace their
+framewise linear head with a deliberately small, one-layer Transformer
+probe that observes the complete track.  Each probe uses the exact
+encoder and feature rate used to train the evaluated checkpoint, with
+no probe-time resampling.
+
+The local baseline projects the complete native sequence $z_{1:T}$
+into the probe.  Token-only probes receive no local features.  Instead,
+they begin from a learned mask token repeated over the $T$ frame
+positions, add positional encodings, and condition the Transformer
+block through adaptive layer normalisation.  We compare:
 %
 \begin{align}
-  u_t \in \{&z_t,\; [z_t,\zC],\; [z_t,\ztau],
-    \nonumber\\
-    &[z_t,\zC,\ztau],\; [\ztau,\mathrm{PE}(t)],\;
-  [\zC,\mathrm{PE}(t)]\}.
+  u \in \{z_{1:T},\; \zC,\; \ztau,\; [\zC,\ztau]\}.
   \label{eq:probe_inputs}
 \end{align}
 %
-Full-track global tokens are repeated at every frame in the 30-second
-window.  Including positional encoding allows global tokens to be used
-for frame-level prediction.  Comparing $[z_t,\ztau]$ to $z_t$ tests
-whether the temporal token provides global form information beyond
-local frame features.  Comparing $\ztau$ to $\zC$ tests whether the
-temporal token is more informative than order-invariant content for
-structure-related prediction.
+This design asks whether a global token can reconstruct a framewise
+structural labelling when given only position and the token itself.
+Comparing $\ztau$ with $z_{1:T}$ measures how much of the full
+sequence's structural information survives temporal compression;
+comparing $\ztau$ with $\zC$ tests whether that information depends on
+temporal order.
 
 Boundary detection is evaluated with HR.5F and HR3F.  Function
 prediction is evaluated with PWF and ACC:
@@ -1166,16 +1160,14 @@ prediction is evaluated with PWF and ACC:
 \end{equation}
 %
 The probe is not intended to establish state-of-the-art music
-structure analysis.  Its purpose is to test whether the frozen
-representations linearly expose information about structural
-boundaries and functions.  Table~\ref{tab:structure_probe} reports
-the probing results for local features, global content and temporal
-tokens, and their concatenations.
+structure analysis.  Its purpose is to compare how much structural
+information is recoverable from the frozen sequence and its compressed
+global tokens under the same low-capacity decoder.
 
 \begin{table}[t]
   \centering
   \setlength{\tabcolsep}{3.0pt}
-  \caption{Linear probing for music structure analysis.  Boundary
+  \caption{Full-track attention probing for music structure analysis.  Boundary
     detection is evaluated using HR.5F and HR3F; function prediction is
   evaluated using PWF and ACC.}
   \label{tab:structure_probe}
@@ -1187,13 +1179,10 @@ tokens, and their concatenations.
     & PWF$\uparrow$
     & ACC$\uparrow$ \\
     \midrule
-    Local sequence $z_t$ & \res & \res & \res & \res \\
-    $[z_t,\zC]$ & \res & \res & \res & \res \\
-    $[z_t,\ztau]$ & \res & \res & \res & \res \\
-    $[z_t,\zC,\ztau]$ & \res & \res & \res & \res \\
-    \midrule
-    $[\zC,\mathrm{PE}(t)]$ & \res & \res & \res & \res \\
-    $[\ztau,\mathrm{PE}(t)]$ & \res & \res & \res & \res \\
+    Full sequence $z_{1:T}$ & \res & \res & \res & \res \\
+    Content token $\zC$ & \res & \res & \res & \res \\
+    Temporal token $\ztau$ & \res & \res & \res & \res \\
+    $[\zC,\ztau]$ & \res & \res & \res & \res \\
     \bottomrule
   \end{tabular}
 \end{table}

@@ -25,17 +25,16 @@ probe:
   annotation_root: ${paths.structure_root}/annotations
   probe_inputs:
     - local
-    - local_content
-    - local_temporal
-    - local_content_temporal
-    - content_position
-    - temporal_position
+    - content
+    - temporal
+    - content_temporal
   salami_boundary_layers: [uppercase, lowercase]
   frame_rate: ${probe_rate}
-  window_seconds: 30.0
-  hop_seconds: 30.0
-  position_dim: 32
   batch_size: 8
+  model_dim: 128
+  num_heads: 4
+  ffn_dim: 256
+  dropout: 0.1
   epochs: 100
   warmup_epochs: 5
   learning_rate: 0.0001

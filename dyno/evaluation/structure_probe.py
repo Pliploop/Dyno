@@ -20,11 +20,9 @@ from torch.utils.data import DataLoader, Dataset
 
 PROBE_INPUTS = (
     "local",
-    "local_content",
-    "local_temporal",
-    "local_content_temporal",
-    "content_position",
-    "temporal_position",
+    "content",
+    "temporal",
+    "content_temporal",
 )
 HARMONIX_FUNCTIONS = ("intro", "verse", "chorus", "bridge", "inst", "outro", "silence")
 
@@ -227,97 +225,197 @@ def load_probe_tracks(
     return tracks
 
 
-class ProbeWindowDataset(Dataset):
+class FullTrackProbeDataset(Dataset):
     def __init__(
         self,
         tracks: list[ProbeTrack],
         track_indices: list[int],
         label_to_index: dict[str, int],
-        probe_input: str,
         frame_rate: float = 1.0,
-        window_seconds: float = 30.0,
-        hop_seconds: float = 30.0,
-        position_dim: int = 32,
     ):
-        if probe_input not in PROBE_INPUTS:
-            raise ValueError(f"Unknown probe input {probe_input!r}")
         self.tracks = tracks
+        self.track_indices = track_indices
         self.label_to_index = label_to_index
-        self.probe_input = probe_input
         self.frame_rate = frame_rate
-        self.window_frames = int(round(window_seconds * frame_rate))
-        self.hop_frames = int(round(hop_seconds * frame_rate))
-        self.position_dim = position_dim
-        self.windows: list[tuple[int, int]] = []
-        for track_index in track_indices:
-            n_frames = tracks[track_index].features.shape[0]
-            starts = list(range(0, max(n_frames - self.window_frames + 1, 1), self.hop_frames))
-            final_start = max(0, n_frames - self.window_frames)
-            if not starts or starts[-1] != final_start:
-                starts.append(final_start)
-            self.windows.extend((track_index, start) for start in starts)
 
     def __len__(self) -> int:
-        return len(self.windows)
-
-    def _input(self, track: ProbeTrack, start: int, stop: int) -> np.ndarray:
-        local = track.features[start:stop]
-        n_frames = local.shape[0]
-        content = np.repeat(track.content[None, :], n_frames, axis=0)
-        temporal = np.repeat(track.temporal[None, :], n_frames, axis=0)
-        position = _position_encoding(n_frames, self.position_dim)
-        parts = {
-            "local": (local,),
-            "local_content": (local, content),
-            "local_temporal": (local, temporal),
-            "local_content_temporal": (local, content, temporal),
-            "content_position": (content, position),
-            "temporal_position": (temporal, position),
-        }[self.probe_input]
-        return np.concatenate(parts, axis=-1).astype(np.float32, copy=False)
+        return len(self.track_indices)
 
     def __getitem__(self, index: int) -> dict[str, torch.Tensor]:
-        track_index, start = self.windows[index]
+        track_index = self.track_indices[index]
         track = self.tracks[track_index]
-        stop = min(start + self.window_frames, track.features.shape[0])
-        x = self._input(track, start, stop)
+        n_frames = track.features.shape[0]
         labels = _segment_labels(
             track.function_times,
             track.function_labels,
-            track.features.shape[0],
+            n_frames,
             self.frame_rate,
-        )[start:stop]
+        )
         y_function = np.asarray(
             [self.label_to_index.get(str(label), self.label_to_index["unknown"]) for label in labels],
             dtype=np.int64,
         )
         y_boundary = _boundary_targets(
             track.boundary_times,
-            track.features.shape[0],
+            n_frames,
             self.frame_rate,
-        )[start:stop]
-        valid = x.shape[0]
-        if valid < self.window_frames:
-            x = np.pad(x, ((0, self.window_frames - valid), (0, 0)))
-            y_function = np.pad(y_function, (0, self.window_frames - valid))
-            y_boundary = np.pad(y_boundary, (0, self.window_frames - valid))
+        )
         return {
-            "x": torch.from_numpy(x),
+            "local": torch.from_numpy(track.features),
+            "content": torch.from_numpy(track.content),
+            "temporal": torch.from_numpy(track.temporal),
             "boundary": torch.from_numpy(y_boundary),
             "function": torch.from_numpy(y_function),
-            "mask": torch.arange(self.window_frames) < valid,
             "track_index": torch.tensor(track_index),
-            "start": torch.tensor(start),
         }
 
 
-class LinearStructureProbe(nn.Module):
-    def __init__(self, input_dim: int, n_functions: int):
-        super().__init__()
-        self.linear = nn.Linear(input_dim, n_functions + 1)
+def collate_full_tracks(items: list[dict[str, torch.Tensor]]) -> dict[str, torch.Tensor]:
+    max_frames = max(item["local"].shape[0] for item in items)
+    batch_size = len(items)
+    feature_dim = items[0]["local"].shape[-1]
+    local = torch.zeros(batch_size, max_frames, feature_dim, dtype=torch.float32)
+    boundary = torch.zeros(batch_size, max_frames, dtype=torch.float32)
+    function = torch.zeros(batch_size, max_frames, dtype=torch.long)
+    mask = torch.zeros(batch_size, max_frames, dtype=torch.bool)
+    for row, item in enumerate(items):
+        n_frames = item["local"].shape[0]
+        local[row, :n_frames] = item["local"]
+        boundary[row, :n_frames] = item["boundary"]
+        function[row, :n_frames] = item["function"]
+        mask[row, :n_frames] = True
+    return {
+        "local": local,
+        "content": torch.stack([item["content"] for item in items]),
+        "temporal": torch.stack([item["temporal"] for item in items]),
+        "boundary": boundary,
+        "function": function,
+        "mask": mask,
+        "track_index": torch.stack([item["track_index"] for item in items]),
+    }
 
-    def forward(self, x: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
-        output = self.linear(x)
+
+class AdaLNProbeBlock(nn.Module):
+    def __init__(
+        self,
+        model_dim: int,
+        num_heads: int,
+        ffn_dim: int,
+        dropout: float,
+    ):
+        super().__init__()
+        self.norm1 = nn.LayerNorm(model_dim, elementwise_affine=False)
+        self.attention = nn.MultiheadAttention(
+            model_dim,
+            num_heads,
+            dropout=dropout,
+            batch_first=True,
+        )
+        self.norm2 = nn.LayerNorm(model_dim, elementwise_affine=False)
+        self.ffn = nn.Sequential(
+            nn.Linear(model_dim, ffn_dim),
+            nn.GELU(),
+            nn.Dropout(dropout),
+            nn.Linear(ffn_dim, model_dim),
+            nn.Dropout(dropout),
+        )
+        self.modulation = nn.Sequential(
+            nn.SiLU(),
+            nn.Linear(model_dim, 6 * model_dim),
+        )
+        nn.init.zeros_(self.modulation[-1].weight)
+        nn.init.zeros_(self.modulation[-1].bias)
+
+    def forward(
+        self,
+        x: torch.Tensor,
+        mask: torch.Tensor,
+        condition: torch.Tensor | None,
+    ) -> torch.Tensor:
+        if condition is None:
+            shift_sa = scale_sa = shift_ffn = scale_ffn = 0.0
+            gate_sa = gate_ffn = 1.0
+        else:
+            shift_sa, scale_sa, gate_sa, shift_ffn, scale_ffn, gate_ffn = (
+                self.modulation(condition).chunk(6, dim=-1)
+            )
+            shift_sa = shift_sa.unsqueeze(1)
+            scale_sa = scale_sa.unsqueeze(1)
+            gate_sa = gate_sa.unsqueeze(1)
+            shift_ffn = shift_ffn.unsqueeze(1)
+            scale_ffn = scale_ffn.unsqueeze(1)
+            gate_ffn = gate_ffn.unsqueeze(1)
+
+        normalized = (1.0 + scale_sa) * self.norm1(x) + shift_sa
+        attended, _ = self.attention(
+            normalized,
+            normalized,
+            normalized,
+            key_padding_mask=~mask,
+            need_weights=False,
+        )
+        x = x + gate_sa * attended
+        normalized = (1.0 + scale_ffn) * self.norm2(x) + shift_ffn
+        return x + gate_ffn * self.ffn(normalized)
+
+
+class AttentionStructureProbe(nn.Module):
+    def __init__(
+        self,
+        probe_input: str,
+        local_dim: int,
+        content_dim: int,
+        temporal_dim: int,
+        n_functions: int,
+        model_dim: int = 128,
+        num_heads: int = 4,
+        ffn_dim: int = 256,
+        dropout: float = 0.1,
+    ):
+        super().__init__()
+        if probe_input not in PROBE_INPUTS:
+            raise ValueError(f"Unknown probe input {probe_input!r}")
+        self.probe_input = probe_input
+        self.local_projection = nn.Linear(local_dim, model_dim)
+        self.mask_token = nn.Parameter(torch.zeros(1, 1, model_dim))
+        nn.init.normal_(self.mask_token, std=0.02)
+        condition_dim = {
+            "local": 0,
+            "content": content_dim,
+            "temporal": temporal_dim,
+            "content_temporal": content_dim + temporal_dim,
+        }[probe_input]
+        self.condition_projection = (
+            None if condition_dim == 0 else nn.Linear(condition_dim, model_dim)
+        )
+        self.block = AdaLNProbeBlock(model_dim, num_heads, ffn_dim, dropout)
+        self.output_norm = nn.LayerNorm(model_dim)
+        self.output = nn.Linear(model_dim, n_functions + 1)
+
+    def forward(
+        self,
+        local: torch.Tensor,
+        content: torch.Tensor,
+        temporal: torch.Tensor,
+        mask: torch.Tensor,
+    ) -> tuple[torch.Tensor, torch.Tensor]:
+        if self.probe_input == "local":
+            x = self.local_projection(local)
+            condition = None
+        else:
+            x = self.mask_token.expand(local.shape[0], local.shape[1], -1)
+            raw_condition = {
+                "content": content,
+                "temporal": temporal,
+                "content_temporal": torch.cat([content, temporal], dim=-1),
+            }[self.probe_input]
+            condition = self.condition_projection(raw_condition)
+        position = torch.from_numpy(
+            _position_encoding(local.shape[1], x.shape[-1])
+        ).to(device=x.device, dtype=x.dtype)
+        x = x + position.unsqueeze(0)
+        x = self.block(x, mask, condition)
+        output = self.output(self.output_norm(x))
         return output[..., 0], output[..., 1:]
 
 
@@ -357,37 +455,30 @@ def _train_one_fold(
     val_indices: list[int],
     probe_input: str,
     frame_rate: float,
-    window_seconds: float,
-    hop_seconds: float,
-    position_dim: int,
     batch_size: int,
     epochs: int,
     warmup_epochs: int,
     learning_rate: float,
     weight_decay: float,
+    model_dim: int,
+    num_heads: int,
+    ffn_dim: int,
+    dropout: float,
     device: torch.device,
     num_workers: int,
-) -> tuple[LinearStructureProbe, dict[str, int]]:
+) -> tuple[AttentionStructureProbe, dict[str, int]]:
     vocabulary = _function_vocabulary(tracks, train_indices)
-    train_data = ProbeWindowDataset(
+    train_data = FullTrackProbeDataset(
         tracks,
         train_indices,
         vocabulary,
-        probe_input,
         frame_rate,
-        window_seconds,
-        hop_seconds,
-        position_dim,
     )
-    val_data = ProbeWindowDataset(
+    val_data = FullTrackProbeDataset(
         tracks,
         val_indices,
         vocabulary,
-        probe_input,
         frame_rate,
-        window_seconds,
-        hop_seconds,
-        position_dim,
     )
     train_loader = DataLoader(
         train_data,
@@ -395,6 +486,7 @@ def _train_one_fold(
         shuffle=True,
         num_workers=num_workers,
         pin_memory=device.type == "cuda",
+        collate_fn=collate_full_tracks,
     )
     val_loader = DataLoader(
         val_data,
@@ -402,9 +494,20 @@ def _train_one_fold(
         shuffle=False,
         num_workers=num_workers,
         pin_memory=device.type == "cuda",
+        collate_fn=collate_full_tracks,
     )
-    input_dim = train_data[0]["x"].shape[-1]
-    probe = LinearStructureProbe(input_dim, len(vocabulary)).to(device)
+    example = train_data[0]
+    probe = AttentionStructureProbe(
+        probe_input=probe_input,
+        local_dim=example["local"].shape[-1],
+        content_dim=example["content"].shape[-1],
+        temporal_dim=example["temporal"].shape[-1],
+        n_functions=len(vocabulary),
+        model_dim=model_dim,
+        num_heads=num_heads,
+        ffn_dim=ffn_dim,
+        dropout=dropout,
+    ).to(device)
     optimizer = torch.optim.AdamW(
         probe.parameters(),
         lr=learning_rate,
@@ -425,7 +528,12 @@ def _train_one_fold(
         for batch in train_loader:
             batch = {key: value.to(device, non_blocking=True) for key, value in batch.items()}
             optimizer.zero_grad(set_to_none=True)
-            boundary_logits, function_logits = probe(batch["x"])
+            boundary_logits, function_logits = probe(
+                batch["local"],
+                batch["content"],
+                batch["temporal"],
+                batch["mask"],
+            )
             loss = _joint_loss(
                 boundary_logits,
                 function_logits,
@@ -443,7 +551,12 @@ def _train_one_fold(
         with torch.inference_mode():
             for batch in val_loader:
                 batch = {key: value.to(device, non_blocking=True) for key, value in batch.items()}
-                boundary_logits, function_logits = probe(batch["x"])
+                boundary_logits, function_logits = probe(
+                    batch["local"],
+                    batch["content"],
+                    batch["temporal"],
+                    batch["mask"],
+                )
                 loss = _joint_loss(
                     boundary_logits,
                     function_logits,
@@ -462,61 +575,49 @@ def _train_one_fold(
 
 
 def _predict_tracks(
-    probe: LinearStructureProbe,
+    probe: AttentionStructureProbe,
     tracks: list[ProbeTrack],
     indices: list[int],
     vocabulary: dict[str, int],
-    probe_input: str,
     frame_rate: float,
-    window_seconds: float,
-    hop_seconds: float,
-    position_dim: int,
     batch_size: int,
     device: torch.device,
     num_workers: int,
 ) -> dict[int, tuple[np.ndarray, np.ndarray]]:
-    data = ProbeWindowDataset(
+    data = FullTrackProbeDataset(
         tracks,
         indices,
         vocabulary,
-        probe_input,
         frame_rate,
-        window_seconds,
-        hop_seconds,
-        position_dim,
     )
-    loader = DataLoader(data, batch_size=batch_size, shuffle=False, num_workers=num_workers)
-    sums: dict[int, tuple[np.ndarray, np.ndarray, np.ndarray]] = {}
+    loader = DataLoader(
+        data,
+        batch_size=batch_size,
+        shuffle=False,
+        num_workers=num_workers,
+        collate_fn=collate_full_tracks,
+    )
+    predictions: dict[int, tuple[np.ndarray, np.ndarray]] = {}
     probe.eval()
     with torch.inference_mode():
         for batch in loader:
-            boundary_logits, function_logits = probe(batch["x"].to(device))
+            batch = {key: value.to(device, non_blocking=True) for key, value in batch.items()}
+            boundary_logits, function_logits = probe(
+                batch["local"],
+                batch["content"],
+                batch["temporal"],
+                batch["mask"],
+            )
             boundary = torch.sigmoid(boundary_logits).cpu().numpy()
             function = torch.softmax(function_logits, dim=-1).cpu().numpy()
             for row in range(boundary.shape[0]):
                 track_index = int(batch["track_index"][row])
-                start = int(batch["start"][row])
                 valid = int(batch["mask"][row].sum())
-                n_frames = tracks[track_index].features.shape[0]
-                if track_index not in sums:
-                    sums[track_index] = (
-                        np.zeros(n_frames, dtype=np.float64),
-                        np.zeros((n_frames, function.shape[-1]), dtype=np.float64),
-                        np.zeros(n_frames, dtype=np.float64),
-                    )
-                boundary_sum, function_sum, count = sums[track_index]
-                stop = min(start + valid, n_frames)
-                width = stop - start
-                boundary_sum[start:stop] += boundary[row, :width]
-                function_sum[start:stop] += function[row, :width]
-                count[start:stop] += 1.0
-    return {
-        index: (
-            boundary_sum / np.maximum(count, 1.0),
-            function_sum / np.maximum(count[:, None], 1.0),
-        )
-        for index, (boundary_sum, function_sum, count) in sums.items()
-    }
+                predictions[track_index] = (
+                    boundary[row, :valid],
+                    function[row, :valid],
+                )
+    return predictions
 
 
 def _peak_times(
@@ -698,14 +799,15 @@ def run_structure_probe(
     dataset: str,
     probe_inputs: Iterable[str] = PROBE_INPUTS,
     frame_rate: float = 1.0,
-    window_seconds: float = 30.0,
-    hop_seconds: float = 30.0,
-    position_dim: int = 32,
     batch_size: int = 8,
     epochs: int = 100,
     warmup_epochs: int = 5,
     learning_rate: float = 1e-4,
     weight_decay: float = 0.01,
+    model_dim: int = 128,
+    num_heads: int = 4,
+    ffn_dim: int = 256,
+    dropout: float = 0.1,
     threshold_grid: Iterable[float] = tuple(np.linspace(0.1, 0.9, 9)),
     num_folds: int = 8,
     num_workers: int = 0,
@@ -747,14 +849,15 @@ def run_structure_probe(
                 val_indices,
                 probe_input,
                 frame_rate,
-                window_seconds,
-                hop_seconds,
-                position_dim,
                 batch_size,
                 epochs,
                 warmup_epochs,
                 learning_rate,
                 weight_decay,
+                model_dim,
+                num_heads,
+                ffn_dim,
+                dropout,
                 device,
                 num_workers,
             )
@@ -763,11 +866,7 @@ def run_structure_probe(
                 tracks,
                 val_indices,
                 vocabulary,
-                probe_input,
                 frame_rate,
-                window_seconds,
-                hop_seconds,
-                position_dim,
                 batch_size,
                 device,
                 num_workers,
@@ -784,11 +883,7 @@ def run_structure_probe(
                 tracks,
                 test_indices,
                 vocabulary,
-                probe_input,
                 frame_rate,
-                window_seconds,
-                hop_seconds,
-                position_dim,
                 batch_size,
                 device,
                 num_workers,
@@ -804,8 +899,16 @@ def run_structure_probe(
             fold_rows.append(
                 {
                     "dataset": dataset.lower(),
-                    "boundary_layer": salami_boundary_layer if dataset.lower() == "salami" else "functions",
+                    "boundary_layer": (
+                        salami_boundary_layer
+                        if dataset.lower() == "salami"
+                        else "functions"
+                    ),
+                    "probe_type": "full_track_attention",
                     "probe_input": probe_input,
+                    "model_dim": model_dim,
+                    "num_heads": num_heads,
+                    "ffn_dim": ffn_dim,
                     "fold": test_fold,
                     "threshold": threshold,
                     "train_tracks": len(train_indices),

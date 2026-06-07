@@ -57,7 +57,7 @@ def test_ready_encoder_ablation_configs_use_matching_dimensions():
     assert music2latent.model.embedding_dim == 64
 
 
-def test_structure_probe_callback_is_opt_in_and_uses_reference_protocol():
+def test_structure_probe_callback_is_opt_in_and_uses_full_track_attention():
     config_dir = str((Path(__file__).parents[1] / "configs").resolve())
     with initialize_config_dir(config_dir=config_dir, version_base="1.3"):
         cfg = compose(
@@ -68,12 +68,14 @@ def test_structure_probe_callback_is_opt_in_and_uses_reference_protocol():
     probe = cfg.callbacks.structure_probe
     assert probe.frame_rate == "1hz"
     assert "/muq/1hz/" in probe.datasets.salami
-    assert probe.window_seconds == 30.0
+    assert probe.model_dim == 128
+    assert probe.num_heads == 4
+    assert probe.ffn_dim == 256
     assert probe.epochs == 100
     assert probe.warmup_epochs == 5
     assert probe.learning_rate == 1.0e-4
     assert probe.weight_decay == 0.01
-    assert len(probe.probe_inputs) == 6
+    assert list(probe.probe_inputs) == ["local", "content", "temporal", "content_temporal"]
     assert probe.run_on_train_end is True
     assert probe.run_on_test_end is True
     assert probe.run_once is True

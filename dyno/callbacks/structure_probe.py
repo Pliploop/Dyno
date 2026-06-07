@@ -25,14 +25,15 @@ class StructureProbeCallback(Callback):
         output_dir: str,
         probe_inputs: list[str],
         frame_rate: str | float = 1.0,
-        window_seconds: float = 30.0,
-        hop_seconds: float = 30.0,
-        position_dim: int = 32,
         batch_size: int = 8,
         epochs: int = 100,
         warmup_epochs: int = 5,
         learning_rate: float = 1e-4,
         weight_decay: float = 0.01,
+        model_dim: int = 128,
+        num_heads: int = 4,
+        ffn_dim: int = 256,
+        dropout: float = 0.1,
         threshold_grid: list[float] | None = None,
         num_folds: int = 8,
         num_workers: int = 0,
@@ -51,14 +52,15 @@ class StructureProbeCallback(Callback):
         self.output_dir = output_dir
         self.probe_inputs = probe_inputs
         self.frame_rate = frame_rate
-        self.window_seconds = window_seconds
-        self.hop_seconds = hop_seconds
-        self.position_dim = position_dim
         self.batch_size = batch_size
         self.epochs = epochs
         self.warmup_epochs = warmup_epochs
         self.learning_rate = learning_rate
         self.weight_decay = weight_decay
+        self.model_dim = model_dim
+        self.num_heads = num_heads
+        self.ffn_dim = ffn_dim
+        self.dropout = dropout
         self.threshold_grid = threshold_grid or [index / 10 for index in range(1, 10)]
         self.num_folds = num_folds
         self.num_workers = num_workers
@@ -101,14 +103,15 @@ class StructureProbeCallback(Callback):
                     dataset=dataset,
                     probe_inputs=self.probe_inputs,
                     frame_rate=self.frame_rate,
-                    window_seconds=self.window_seconds,
-                    hop_seconds=self.hop_seconds,
-                    position_dim=self.position_dim,
                     batch_size=self.batch_size,
                     epochs=self.epochs,
                     warmup_epochs=self.warmup_epochs,
                     learning_rate=self.learning_rate,
                     weight_decay=self.weight_decay,
+                    model_dim=self.model_dim,
+                    num_heads=self.num_heads,
+                    ffn_dim=self.ffn_dim,
+                    dropout=self.dropout,
                     threshold_grid=self.threshold_grid,
                     num_folds=self.num_folds,
                     num_workers=self.num_workers,
