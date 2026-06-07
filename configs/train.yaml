@@ -51,6 +51,12 @@ test: false
 # simply provide checkpoint path to resume training
 ckpt_path: null
 
+# Resolve an experiment ledger alias, W&B run ID/URL, or checkpoint path.
+# This is especially useful with train=false test=true for offline callbacks.
+run_ref: null
+experiment_registry: .agents/EXPERIMENTS.md
+checkpoint_preference: best
+
 # seed for random number generators in pytorch, numpy and python.random
 seed: 0
 

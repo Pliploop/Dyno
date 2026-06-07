@@ -56,8 +56,8 @@ class Dyno(BaseModule):
     Conditioning
     ------------
     condition_z_tau and condition_zc control which tokens the predictor receives.
-    Disabling condition_zc is valid only for output modes where content is supplied
-    outside the predictor: velocity and centered_residuals.
+    With output_mode="embeddings", disabling condition_zc gives the no-anchor
+    ablation: the temporal token must reconstruct absolute embeddings directly.
 
     Loss
     ----
@@ -116,11 +116,6 @@ class Dyno(BaseModule):
             raise ValueError(
                 "Dyno condition_z_tau/condition_zc must match "
                 "predictor.condition_z_tau/predictor.condition_zc."
-            )
-        if not condition_zc and output_mode == "embeddings":
-            raise ValueError(
-                "condition_zc=False is only available with "
-                "output_mode='velocity' or output_mode='centered_residuals'."
             )
         super().__init__(ckpt_path=ckpt_path, freeze=freeze)
         self.aggregator = aggregator

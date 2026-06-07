@@ -48,6 +48,20 @@
   manifests remain untouched.
 - Added focused tests for MSPF normalization, legacy behavior, constant
   trajectories, linear CKA, standardized Euclidean distance, and DTW.
+- Added the no-anchor ablation as direct absolute-embedding reconstruction
+  conditioned only on the temporal token. No content token is passed to the
+  predictor or added to its output.
+- Added explicit deterministic AE (`beta=0`) and VAE (`beta=0.01`) paper
+  configs. The canonical paper config remains the VAE protocol.
+- Validated all 55,701 MERT 1 Hz arrays at width 1024 and all 55,701
+  Music2Latent 1 Hz arrays at width 64. Both are readable float32 arrays with
+  exact track-ID parity against MuQ, and both use translated copies of the
+  authoritative artist/album-disjoint paper split.
+- Added launchable MERT and Music2Latent encoder-ablation configs. MATPAC and
+  USAD remain unavailable because no complete 1 Hz extraction exists.
+- Added a shared experiment resolver for registry aliases, W&B run IDs/URLs,
+  direct checkpoint files, and checkpoint directories. Hydra runs accept the
+  same references through `run_ref`.
 
 ## Launch Contract
 
@@ -60,17 +74,16 @@ Example:
 
 ```text
 python -m dyno.train experiment=paper_muq_1hz_residuals_d32
+python -m dyno.train experiment=paper_muq_1hz_no_anchor
+python -m dyno.train experiment=paper_mert_1hz
+python -m dyno.train experiment=paper_music2latent_1hz
+python -m dyno.train experiment=paper_muq_1hz_ae
 ```
 
 ## Remaining Phase 2 Work
 
-- Confirm and encode the no-anchor model definition before adding that
-  ablation config.
-- Add paper configs for the non-MuQ encoder sweep once each authoritative
-  embedding rate, width, and manifest path is fixed.
-- Add a standalone alias/checkpoint resolver, shared with Phase 3 evaluation.
-- Add the remaining aggregate experiment configs for deterministic AE versus
-  VAE bottlenecks after the default bottleneck protocol is fixed.
+- Extract and validate MATPAC and USAD at the authoritative paper rate before
+  adding their encoder-ablation configs.
 
 Audio-domain perturbations, cross-encoder MSPF scoring, retrieval artifacts,
 and structure probing remain Phase 3 work.

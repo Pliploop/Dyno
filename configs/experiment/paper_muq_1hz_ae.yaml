@@ -1,0 +1,12 @@
+# @package _global_
+
+defaults:
+  - paper_muq_1hz
+  - override /model/bottleneck: ae
+
+task_name: paper_muq_1hz_ae
+name: paper/muq/1hz/residuals/ae/d=${model.latent_dim}/seed=${seed}
+tags: [paper, muq, 1hz, residuals, ae]
+
+model:
+  beta: 0.0

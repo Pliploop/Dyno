@@ -27,6 +27,36 @@ def test_velocity_remains_an_explicit_ablation():
     assert cfg.model.content_token == "first"
 
 
+def test_no_anchor_predicts_absolute_embeddings_from_temporal_token_only():
+    cfg = _compose("paper_muq_1hz_no_anchor")
+
+    assert cfg.model.output_mode == "embeddings"
+    assert cfg.model.condition_z_tau is True
+    assert cfg.model.condition_zc is False
+    assert cfg.model.predictor.condition_z_tau is True
+    assert cfg.model.predictor.condition_zc is False
+
+
+def test_paper_autoencoder_and_vae_are_explicit():
+    ae = _compose("paper_muq_1hz_ae")
+    vae = _compose("paper_muq_1hz_vae")
+
+    assert ae.model.bottleneck._target_.endswith("DynoAutoEncoder")
+    assert ae.model.beta == 0.0
+    assert vae.model.bottleneck._target_.endswith("DynoBetaVAE")
+    assert vae.model.beta == 0.01
+
+
+def test_ready_encoder_ablation_configs_use_matching_dimensions():
+    mert = _compose("paper_mert_1hz")
+    music2latent = _compose("paper_music2latent_1hz")
+
+    assert mert.data.embedding_encoder == "mert"
+    assert mert.model.embedding_dim == 1024
+    assert music2latent.data.embedding_encoder == "music2latent"
+    assert music2latent.model.embedding_dim == 64
+
+
 def test_paper_flipflop_uses_512_samples():
     cfg = _compose("paper_muq_1hz")
 

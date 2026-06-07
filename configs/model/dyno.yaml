@@ -25,13 +25,13 @@ content_token: mean
 
 # What the predictor outputs
 #   "velocity"   — T-1 frame-difference vectors; integrated from first frame; requires content_token=first
-#   "embeddings" — T full embedding predictions; conditioned on content_token (first or mean)
+#   "embeddings" — T full embedding predictions; supports z_tau-only no-anchor reconstruction
 #   "centered_residuals" — T residual predictions against x - mean; requires content_token=mean
 output_mode: centered_residuals
 
 # Which tokens the predictor receives as conditioning. At least one must be true.
-# condition_zc=false is valid only with velocity/centered_residuals, where the
-# content token is still used outside the predictor as the reconstruction anchor.
+# With embeddings and condition_zc=false, the decoder reconstructs absolute
+# embeddings from z_tau alone (the no-anchor ablation).
 condition_z_tau: true
 condition_zc: true
 

@@ -36,6 +36,11 @@ The preferred offline interface accepts a ledger alias or W&B run name and
 resolves both W&B metadata and the local checkpoint. A direct checkpoint path
 must remain supported.
 
+Use `python scripts/resolve_paper_run.py <reference>` to inspect the selected
+checkpoint. Training and evaluation configs accept the same reference through
+`run_ref=<reference>`; selection defaults to the best validation checkpoint
+and can be changed with `checkpoint_preference=last|newest`.
+
 ## Results Ingestion
 
 When asked to ingest metrics:

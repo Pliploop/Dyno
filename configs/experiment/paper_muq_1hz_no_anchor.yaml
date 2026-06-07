@@ -1,0 +1,17 @@
+# @package _global_
+
+defaults:
+  - paper_muq_1hz
+
+task_name: paper_muq_1hz_no_anchor
+name: paper/muq/1hz/no_anchor/d=${model.latent_dim}/seed=${seed}
+tags: [paper, muq, 1hz, no_anchor]
+
+model:
+  output_mode: embeddings
+  content_token: mean
+  condition_z_tau: true
+  condition_zc: false
+  predictor:
+    condition_z_tau: ${..condition_z_tau}
+    condition_zc: ${..condition_zc}
