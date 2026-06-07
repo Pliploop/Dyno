@@ -249,8 +249,12 @@ class AudioDataset(Dataset):
                     print(f"Extracted features for {file_path}, shape: {audio_features.shape}") if verbose else None
                     yield audio_features, file_path
             except Exception as e:
-                print(f"Error extracting batched features: {e}") if verbose else None
-                continue
+                logging.exception(
+                    "Feature extraction failed for a batch with %s files and %s chunks",
+                    len(batch.get('file_paths', [])),
+                    batch.get('audio').shape[0] if batch.get('audio') is not None else "unknown",
+                )
+                raise
 
     def extract_and_save_features(self, model, save_dir=None, extract_method='extract_features', extract_kwargs={}, out_key='embedding', hop=None, return_full_audio=True, limit_n=None, save=False, verbose=True, root_path=None, done_ids=None, batch_size=1, num_workers=0, max_batch_chunks=200):
         print(self.__len__())
@@ -279,6 +283,8 @@ class AudioDataset(Dataset):
                 new_annotations.append(annot)
 
         self.annotations = new_annotations
+        remaining_count = len(self.annotations)
+        skipped_count = len(done_ids)
 
         def _shape_str(features):
             return "x".join(str(dim) for dim in features.shape)
@@ -298,6 +304,7 @@ class AudioDataset(Dataset):
             ),
             desc="Extracting features",
             unit="file",
+            total=remaining_count,
             dynamic_ncols=True,
             leave=True,
         )

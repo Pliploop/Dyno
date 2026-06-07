@@ -1,0 +1,254 @@
+% Canonical Dyno paper results ledger.
+%
+% Workflow:
+%   1. Record observed metrics here with a source alias from
+%      .agents/EXPERIMENTS.md.
+%   2. Keep unavailable values as \res.
+%   3. Copy values into paper.tex only when explicitly requested.
+%
+% Provenance comments should include:
+%   source alias, checkpoint, dataset/split, seeds or folds, and aggregation.
+
+\providecommand{\res}{\texttt{--}}
+
+% ============================================================
+% Trajectory Reconstruction
+% Paper table: tab:reconstruction
+% ============================================================
+\begin{tabular}{lcc}
+  \toprule
+  \textbf{Model}
+  & $\mathcal{E}_{\mathrm{rec}}\downarrow$
+  & MSPF $R^2\uparrow$ \\
+  \midrule
+  Content mean $\zC$ & \res & \res \\
+  Content-only trained decoder & \res & \res \\
+  \midrule
+  $\ztau$, $d=1$ & \res & \res \\
+  $\ztau$, $d=4$ & \res & \res \\
+  $\ztau$, $d=16$ & \res & \res \\
+  $\ztau$, $d=64$ & \res & \res \\
+  \bottomrule
+\end{tabular}
+
+% ============================================================
+% MSPF Validation
+% Paper tables: tab:mspf_validation, tab:mspf_geometry,
+%               tab:mspf_cross_encoder
+% ============================================================
+\begin{tabular}{lc}
+  \toprule
+  \textbf{Condition} & MSPF DTW \\
+  \midrule
+  Cover version & \res \\
+  Pitch shift & \res \\
+  Moderate time stretch & \res \\
+  Gain change & \res \\
+  Chunk shuffle & \res \\
+  Reverse & \res \\
+  Section deletion & \res \\
+  \bottomrule
+\end{tabular}
+
+\begin{tabular}{lc}
+  \toprule
+  \textbf{Representation}
+  & Spearman $\rho_{\tau,\mathrm{MSPF}}\uparrow$ \\
+  \midrule
+  Random & \res \\
+  Content token $\zC$ & \res \\
+  MSPF feature baseline & \res \\
+  Temporal token $\ztau$ & \res \\
+  $[\zC,\ztau]$ & \res \\
+  \bottomrule
+\end{tabular}
+
+\begin{tabular}{lccc}
+  \toprule
+  \textbf{MSPF encoder}
+  & MSPF $R^2\uparrow$
+  & $\rho_{\tau,\mathrm{MSPF}}\uparrow$
+  & $\rho_{\mathrm{sep}}\uparrow$ \\
+  \midrule
+  MuQ & \res & \res & \res \\
+  MERT & \res & \res & \res \\
+  USAD & \res & \res & \res \\
+  Music2Latent & \res & \res & \res \\
+  \bottomrule
+\end{tabular}
+
+% ============================================================
+% Temporal Retrieval
+% Paper table: tab:temporal_retrieval
+% ============================================================
+\begin{tabular}{llll}
+  \toprule
+  \textbf{Query} & $\zC$ NN & $\ztau$ NN & $[\zC,\ztau]$ NN \\
+  \midrule
+  Gradual build & \res & \res & \res \\
+  Verse--chorus & \res & \res & \res \\
+  Drop--return & \res & \res & \res \\
+  Sparse outro & \res & \res & \res \\
+  \bottomrule
+\end{tabular}
+
+% ============================================================
+% Perturbation Sensitivity
+% Paper tables: tab:perturbations, tab:shuffle_severity
+% ============================================================
+\begin{tabular}{lccccc}
+  \toprule
+  \textbf{Rep.}
+  & Pitch$\downarrow$
+  & Stretch$\downarrow$
+  & Gain$\downarrow$
+  & Disrupt$\uparrow$
+  & $\rho_{\mathrm{sep}}\uparrow$ \\
+  \midrule
+  $\zC$ & \res & \res & \res & \res & \res \\
+  MSPF feat. & \res & \res & \res & \res & \res \\
+  $\ztau$, $d=1$ & \res & \res & \res & \res & \res \\
+  $\ztau$, $d=4$ & \res & \res & \res & \res & \res \\
+  $\ztau$, $d=16$ & \res & \res & \res & \res & \res \\
+  $\ztau$, $d=64$ & \res & \res & \res & \res & \res \\
+  \bottomrule
+\end{tabular}
+
+\begin{tabular}{lc}
+  \toprule
+  \textbf{Representation}
+  & Spearman $\rho(s,\delta_\tau)\uparrow$ \\
+  \midrule
+  $\zC$ & \res \\
+  MSPF feat. & \res \\
+  $\ztau$, $d=1$ & \res \\
+  $\ztau$, $d=4$ & \res \\
+  $\ztau$, $d=16$ & \res \\
+  $\ztau$, $d=64$ & \res \\
+  \bottomrule
+\end{tabular}
+
+% ============================================================
+% Structure Probing
+% Paper table: tab:structure_probe
+% Primary dataset: SALAMI. Secondary dataset: Harmonix.
+% ============================================================
+\begin{tabular}{llcccc}
+  \toprule
+  \textbf{Dataset} & \textbf{Probe input}
+  & HR.5F$\uparrow$
+  & HR3F$\uparrow$
+  & PWF$\uparrow$
+  & ACC$\uparrow$ \\
+  \midrule
+  SALAMI & Local sequence $z_t$ & \res & \res & \res & \res \\
+  SALAMI & $[z_t,\zC]$ & \res & \res & \res & \res \\
+  SALAMI & $[z_t,\ztau]$ & \res & \res & \res & \res \\
+  SALAMI & $[z_t,\zC,\ztau]$ & \res & \res & \res & \res \\
+  SALAMI & $[\zC,\mathrm{PE}(t)]$ & \res & \res & \res & \res \\
+  SALAMI & $[\ztau,\mathrm{PE}(t)]$ & \res & \res & \res & \res \\
+  \midrule
+  Harmonix & Local sequence $z_t$ & \res & \res & \res & \res \\
+  Harmonix & $[z_t,\zC]$ & \res & \res & \res & \res \\
+  Harmonix & $[z_t,\ztau]$ & \res & \res & \res & \res \\
+  Harmonix & $[z_t,\zC,\ztau]$ & \res & \res & \res & \res \\
+  Harmonix & $[\zC,\mathrm{PE}(t)]$ & \res & \res & \res & \res \\
+  Harmonix & $[\ztau,\mathrm{PE}(t)]$ & \res & \res & \res & \res \\
+  \bottomrule
+\end{tabular}
+
+% ============================================================
+% Content--Temporal Disentanglement
+% Paper tables: tab:order_sensitivity, tab:dependence
+% ============================================================
+\begin{tabular}{lcc}
+  \toprule
+  \textbf{Transform}
+  & $\Delta_C\downarrow$
+  & $\Delta_\tau\uparrow$ \\
+  \midrule
+  Random shuffle & \res & \res \\
+  Reverse & \res & \res \\
+  Half-swap & \res & \res \\
+  Circular shift & \res & \res \\
+  Local shuffle & \res & \res \\
+  \bottomrule
+\end{tabular}
+
+\begin{tabular}{lcc}
+  \toprule
+  \textbf{Comparison}
+  & CKA$\downarrow$
+  & CKNNA$\downarrow$ \\
+  \midrule
+  $\zC$ vs. $\zC$ & \res & \res \\
+  $\ztau$ vs. shuffled $\zC$ & \res & \res \\
+  $\ztau$ vs. $\zC$ & \res & \res \\
+  $\ztau$ vs. $\zC$, no anchor & \res & \res \\
+  $\ztau$ vs. $\zC$, VAE bottleneck & \res & \res \\
+  \bottomrule
+\end{tabular}
+
+% ============================================================
+% Generative Conditioning And Token Swapping
+% Paper table: tab:diffusion_swapping
+% ============================================================
+\begin{tabular}{lccccccc}
+  \toprule
+  \textbf{Condition}
+  & $C$ align.$\uparrow$
+  & $\tau$ align.$\uparrow$
+  & Best err.$\downarrow$
+  & Mean err.$\downarrow$
+  & Div.$\uparrow$
+  & MSPF min$\downarrow$
+  & MSPF mean$\downarrow$ \\
+  \midrule
+  $(\zC(A),\ztau(A))$ & \res & \res & \res & \res & \res & \res & \res \\
+  $(\zC(B),\ztau(B))$ & \res & \res & \res & \res & \res & \res & \res \\
+  $(\zC(A),\ztau(B))$ & \res & \res & \res & \res & \res & \res & \res \\
+  $(\zC(B),\ztau(A))$ & \res & \res & \res & \res & \res & \res & \res \\
+  \bottomrule
+\end{tabular}
+
+% ============================================================
+% Compression Summary
+% Paper table: tab:compression
+% ============================================================
+\begin{tabular}{cccccccc}
+  \toprule
+  $d$ & CR
+  & $\mathcal{E}_{\mathrm{rec}}\downarrow$
+  & MSPF $R^2\uparrow$
+  & $\rho_{\mathrm{sep}}\uparrow$
+  & CKA$(\ztau,\zC)\downarrow$
+  & Fixed upd.$\uparrow$
+  & Fixed time$\uparrow$ \\
+  \midrule
+  1 & \res & \res & \res & \res & \res & \res & \res \\
+  4 & \res & \res & \res & \res & \res & \res & \res \\
+  16 & \res & \res & \res & \res & \res & \res & \res \\
+  64 & \res & \res & \res & \res & \res & \res & \res \\
+  256 & \res & \res & \res & \res & \res & \res & \res \\
+  \bottomrule
+\end{tabular}
+
+% ============================================================
+% Encoder Receptive Field
+% Paper table: tab:encoder_rf
+% ============================================================
+\begin{tabular}{lcccc}
+  \toprule
+  \textbf{Encoder}
+  & \textbf{RF}
+  & MSPF $R^2\uparrow$
+  & $\rho_{\mathrm{sep}}\uparrow$
+  & CKA$(\ztau,\zC)\downarrow$ \\
+  \midrule
+  MuQ & $\sim$10\,s & \res & \res & \res \\
+  MERT & $\sim$10\,s & \res & \res & \res \\
+  USAD & $\sim$1\,s & \res & \res & \res \\
+  Music2Latent & var. & \res & \res & \res \\
+  MATPAC & $\sim$1\,s & \res & \res & \res \\
+  \bottomrule
+\end{tabular}

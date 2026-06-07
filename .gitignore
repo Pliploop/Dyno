@@ -4,9 +4,11 @@ __pycache__/
 *$py.class
 .claude/*
 outputs/*
+.gradio/
 
 # C extensions
 *.so
+viz
 
 # Distribution / packaging
 .Python
@@ -84,6 +86,10 @@ coverage.xml
 .hypothesis/
 .pytest_cache/
 cover/
+
+.claude
+.agents
+latex
 
 # Translations
 *.mo

@@ -1,0 +1,1616 @@
+
+\documentclass{article}
+\usepackage{spconf,amsmath,graphicx}
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{microtype}
+\usepackage{tikz}
+\usepackage{makecell}
+\usepackage{array}
+\usetikzlibrary{positioning, arrows.meta, shapes.geometric}
+
+%% ---- Notation macros ---------------------------------------
+\newcommand{\zseq}{\mathbf{z}}          % embedding sequence (bold)
+\newcommand{\zt}{z_t}                   % frame-level embedding
+\newcommand{\zC}{z_{[\mathcal{C}]}}    % content token
+\newcommand{\ztau}{z_{[\tau]}}          % compressed temporal token
+\newcommand{\htau}{h_\tau}              % pre-bottleneck temporal token
+\newcommand{\muspf}{\hat{S}}            % MSPF vector
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\enc}{\mathcal{E}}          % audio encoder
+\newcommand{\agg}{\mathcal{A}}          % temporal aggregator
+\newcommand{\pred}{\mathcal{P}}         % velocity predictor
+
+%% ---- Additional notation macros -----------------------------
+\newcommand{\dec}{\mathcal{D}}          % temporal decoder
+\newcommand{\mask}{\mathcal{M}}         % mask set
+\newcommand{\vseq}{\mathbf{v}}          % velocity sequence
+\newcommand{\rseq}{\mathbf{r}}          % residual sequence
+\newcommand{\zhat}{\hat{\mathbf{z}}}
+\newcommand{\vhat}{\hat{\mathbf{v}}}
+\newcommand{\rhat}{\hat{\mathbf{r}}}
+\newcommand{\qseq}{\mathbf{q}}          % decoder query sequence
+\newcommand{\za}{z_a}                   % anchor token
+\newcommand{\pe}{\mathrm{PE}}
+\newcommand{\adain}{\mathrm{AdaLN}}
+\newcommand{\KL}{D_{\mathrm{KL}}}
+\newcommand{\MI}{\hat{I}}
+\newcommand{\dist}{\mathrm{dist}}
+
+%% ---- Result placeholder ------------------------------------
+\newcommand{\res}{\texttt{--}}
+
+%% ---- Figure placeholder ------------------------------------
+\usepackage{tikz}
+\usetikzlibrary{positioning, arrows.meta, shapes.geometric}
+
+% ---- Figure placeholder box --------------------------------
+\newcommand{\figbox}[3]{%
+  \begin{center}
+    \begin{tikzpicture}
+      \draw[dashed, gray!55, thick, rounded corners=3pt]
+      (0,0) rectangle (#2,#3);
+      \node[
+        gray!55,
+        font=\small\itshape,
+        align=center,
+        text width=\dimexpr#2cm-0.6cm\relax
+      ] at (#2/2, #3/2) {#1};
+    \end{tikzpicture}
+  \end{center}
+}
+
+%% ============================================================
+\begin{document}
+
+\title{progAE : full-track music representation learning with latent trajectory compression}
+
+\name{Anonymous Authors}
+\address{Anonymous Affiliations\\
+\texttt{anonymous@anon.org}}
+
+\maketitle
+
+\ninept
+
+%% ============================================================
+
+\begin{abstract}
+  Music representation models operate on short audio excerpts
+  (3--30\,s), yet songs span several minutes with rich temporal
+  structure---evolving mood arcs, harmonic progressions, structural
+  builds---that average pooling of chunk embeddings discards.  We
+  present a self-supervised framework for learning a compact
+  \emph{temporal token} for full-length recordings by compressing a
+  sequence of frozen pre-trained audio embeddings through a
+  variational bottleneck.  The central hypothesis is that temporal
+  evolution can be represented by a single low-dimensional embedding
+  that is complementary to, rather than redundant with, the standard
+  mean-pooled content token.  To evaluate this hypothesis without
+  requiring dense musical annotations, we introduce the \emph{Music
+  Semantic Progress Function} (MSPF), a closed-form descriptor of the
+  cumulative rate of semantic change across a recording.  We evaluate
+  whether the temporal token reconstructs embedding trajectories,
+  responds to order-changing perturbations, exposes structure-related
+  information to lightweight probes, and remains distinct from the
+  content token.  These experiments establish the temporal token as a
+  compact representation for analysis, retrieval, and future
+  generative conditioning.
+\end{abstract}
+
+%% ============================================================
+\section{Introduction}
+\label{sec:intro}
+
+%% TODO — write in full after confirming experimental narrative.
+%% Outline:
+%%
+%% Para 1 — The long-context gap
+%%   Music models encode 3–30 s windows; songs are 3–5 minutes.
+%%   Standard practice: slide encoder over track, average-pool.
+%%   Average pooling is order-invariant — it cannot distinguish a
+%%   song that builds to a drop from one that decays from the start.
+%%
+%% Para 2 — Why this matters in practice
+%%   DJ tools, sync licensing, editorial workflows all require
+%%   temporal event queries ("find tracks that build after 90 s").
+%%   Structural segmentation, time-varying attribute tagging, and
+%%   temporal retrieval are all bottlenecked by average pooling.
+%%
+%% Para 3 — Prior work and its limits
+%%   Dyno [cite] introduced the aggregator/predictor paradigm for
+%%   temporal tokens; demonstrated improvements on structural
+%%   segmentation and temporal tagging.  Key limitation: no
+%%   principled compression, no annotation-free evaluation metric
+%%   (relied on SSMs, requiring reference reconstructions).
+%%
+%% Para 4 — The compression insight from video
+%%   Stracke et al. [cite] learn motion embeddings in video using
+%%   64× temporal compression and show quality improves with
+%%   compression depth.  We test whether this transfers to music.
+%%
+%% Para 5 — The MSPF insight from video
+%%   Metzer et al. [cite] introduce the Semantic Progress Function
+%%   (SPF), a closed-form cumulative semantic distance that provides
+%%   a model-agnostic diagnostic for temporal evolution in video.
+%%   We adapt this to music as the MSPF.
+%%
+%% Para 6 — Our contributions (numbered)
+%%   (1) Variational temporal bottleneck with compression ablation.
+%%   (2) MSPF: the first annotation-free metric for temporal music
+%%       representations.
+%%   (3) Receptive-field analysis linking encoder choice to
+%%       content-temporal entanglement.
+
+\noindent\textcolor{gray!80}{\itshape[Introduction: to be written.]}
+
+%% ============================================================
+\section{Related Work}
+\label{sec:related}
+
+%% TODO — write in full.
+%% Subsections:
+%%
+%% 2.1  Long-context music representation
+%%      — Average pooling, hierarchical encoding [cite],
+%%        attention aggregators [cite], Perceiver IO [cite].
+%%      — Dyno [cite]: aggregator+predictor paradigm, SSM loss.
+%%
+%% 2.2  Variational and bottleneck representations
+%%      — Beta-VAE [Higgins 2017, cite]: KL regularisation for
+%%        disentangled latents.
+%%      — Information bottleneck [Tishby, cite].
+%%      — VQ-VAE for audio [cite].
+%%
+%% 2.3  Temporal representations in video
+%%      — Motion embeddings [Stracke 2026, cite]: 64× compression
+%%        improves quality; flow-matching generation in motion space.
+%%      — Trajectory evaluation [Baumann 2026, cite]: Myriad /
+%%        OWM benchmark; distributional accuracy + diversity.
+%%      — Semantic Progress Function [Metzer 2026, cite]: cumulative
+%%        semantic distance; retiming for linearisation.
+%%
+%% 2.4  Cover song identification
+%%      — CQT-based [cite], learning-based [cite].
+%%      — Used here as a controlled proxy for structure-sensitive,
+%%        content-invariant temporal retrieval.
+%%
+%% 2.5  Music structure analysis
+%%      — SALAMI [cite], boundary detection pipelines.
+%%      — Novelty curves, self-similarity matrices as structure proxies.
+
+\noindent\textcolor{gray!80}{\itshape[Related Work: to be written.]}
+
+%% ============================================================
+%% ============================================================
+\section{Method}
+\label{sec:method}
+
+\subsection{Problem Formulation}
+\label{ssec:prob}
+
+Let $\enc$ be a frozen pre-trained audio representation model with
+receptive field $T_s$\,s.  Given a full-length track of duration
+$T_a$, we apply $\enc$ with stride $\Delta$ and obtain a sequence of
+local music embeddings
+%
+\begin{equation}
+  \zseq = (z_1, z_2, \ldots, z_T),
+  \qquad
+  z_t \in \R^D,
+  \qquad
+  T \approx \frac{T_a - T_s}{\Delta}.
+  \label{eq:seq}
+\end{equation}
+%
+Each $z_t$ summarizes the local musical content around time $t$,
+but the full sequence $\zseq$ contains additional information about
+how the track evolves: structural repetitions, builds, drops,
+sectional boundaries, and long-range semantic arcs.  The standard
+track-level representation is the temporal mean
+%
+\begin{equation}
+  \zC = \frac{1}{T}\sum_{t=1}^{T} z_t,
+  \qquad
+  \zC \in \R^D,
+  \label{eq:content}
+\end{equation}
+%
+which aggregates local content but is order-invariant.  Any
+permutation of $\zseq$ produces the same $\zC$, so average pooling
+cannot distinguish, for example, a track that gradually builds into
+a chorus from one with similar semantics that begins with high intensity and decays.
+
+Our goal is to learn a compact temporal token
+%
+\begin{equation}
+  \ztau \in \R^d,
+  \qquad d \ll TD,
+\end{equation}
+%
+that captures the temporal evolution of the embedding trajectory
+while remaining complementary to the content token $\zC$.  We train
+a self-supervised autoencoder over frozen embedding trajectories:
+an aggregator compresses $\zseq$ into $\ztau$, and a conditional
+Transformer decoder reconstructs the original residual or velocity
+trajectory from $\ztau$, positional decoder inputs, and an anchor
+embedding $\za$.
+
+\subsection{Content Anchor and Reconstruction Targets}
+\label{ssec:targets}
+
+To prevent the temporal token from having to encode absolute
+track-level content, the decoder is provided with an anchor
+embedding $\za$.  We consider two anchors:
+%
+\begin{equation}
+  \za = z_1
+  \quad \text{(start-frame anchor)},
+  \qquad
+  \za = \zC
+  \quad \text{(content anchor)}.
+  \label{eq:anchor}
+\end{equation}
+%
+The anchor defines the content coordinate system in which the
+temporal token describes a trajectory.
+
+We train the model to reconstruct either residuals or velocities.
+The residual target is
+%
+\begin{equation}
+  r_t = z_t - \za,
+  \qquad t=1,\ldots,T,
+  \label{eq:residual}
+\end{equation}
+%
+while the velocity target is
+%
+\begin{equation}
+  v_t = z_{t+1} - z_t,
+  \qquad t=1,\ldots,T-1.
+  \label{eq:velocity}
+\end{equation}
+%
+Residual prediction directly reconstructs the trajectory relative
+to the anchor.  Velocity prediction instead reconstructs local
+semantic displacement and recovers the sequence by integration:
+%
+\begin{equation}
+  \hat{z}_1 = \za,
+  \qquad
+  \hat{z}_{t+1} = \hat{z}_{t} + \hat{v}_{t}.
+  \label{eq:vel_integration}
+\end{equation}
+%
+
+\subsection{Temporal Aggregator}
+\label{ssec:aggregator}
+
+The temporal aggregator $\agg$ maps the full sequence of frozen
+embeddings to a pre-bottleneck temporal summary.  By default, we
+prepend a learnable CLS token $[\mathrm{CLS}] \in \R^D$ to the sequence and
+process the result with a lightweight Transformer encoder:
+%
+\begin{equation}
+  [z_{[\tau]}, h_1, \ldots, h_T]
+  =
+  \agg\!\left([\mathrm{CLS}, z_1, \ldots, z_T]\right),
+  \label{eq:agg}
+\end{equation}
+%
+The aggregator uses Pre-LayerNorm Transformer blocks, multi-head self-attention,
+GELU/SwiGLU feed-forward layers, and RoPE positional encoding.
+
+We optionally adopt a variational autoencoder formulation, where
+the temporal token is parametrized as a Gaussian posterior
+$\mathcal{N}(\mu_\tau,\operatorname{diag}(\sigma_\tau^2))$.  The
+token is sampled using the reparameterisation trick:
+%
+\begin{equation}
+  \ztau = \mu_\tau + \sigma_\tau \odot \varepsilon,
+  \qquad
+  \varepsilon \sim \mathcal{N}(0,I_d).
+  \label{eq:reparam}
+\end{equation}
+%
+At inference time, unless otherwise stated, we use the posterior
+mean $\mu_\tau$ as the deterministic temporal representation for
+retrieval, probing, and perturbation evaluation.
+
+This aggressive compression is motivated by recent work on
+long-term motion embeddings, where increasing temporal compression
+improves latent semantic structure and downstream generation
+quality~\cite{stracke2026learning}.  In our setting, we test
+whether a similar principle holds for music: strong compression
+should discard local content and noise while preserving the
+large-scale temporal arc.
+
+\subsection{RoPE Mask-Token Transformer Decoder}
+\label{ssec:decoder}
+
+The decoder reconstructs a full residual or velocity trajectory
+from a sequence of positional decoder inputs.  We initialize a
+learned mask token $m \in \R^{D_{\dec}}$ at each target timestep
+and add rotary temporal position information:
+%
+\begin{equation}
+  q_t^{(0)} = m + \pe_{\mathrm{RoPE}}(t),
+  \qquad
+  t=1,\ldots,T',
+  \label{eq:decoder_time_inputs}
+\end{equation}
+%
+where $T'=T$ for residual or frame prediction, and $T'=T-1$ for
+velocity prediction.  These positional inputs specify \emph{where}
+in the track the decoder should reconstruct.  The temporal token
+$\ztau$ specifies \emph{which} temporal trajectory should unfold.
+
+The temporal token is injected into each decoder block using
+adaptive LayerNorm conditioning.  For hidden state $x$ in a decoder
+block,
+%
+\begin{equation}
+  \adain(x;\ztau)
+  =
+  \gamma(\ztau) \odot \mathrm{LN}(x)
+  +
+  \beta(\ztau),
+  \label{eq:adaln}
+\end{equation}
+%
+where $\gamma(\cdot)$ and $\beta(\cdot)$ are learned projections
+from $\ztau$.  In the default AdaLN-Zero parameterisation, the
+modulation layers are initialized such that the decoder begins near
+an identity or weakly conditioned function, stabilising early
+training.
+
+The decoder is therefore a conditional temporal generator:
+%
+\begin{equation}
+  \hat{\vseq}
+  =
+  \dec_\theta
+  \left(
+    \{m+\pe_{\mathrm{RoPE}}(t)\}_{t=1}^{T-1};
+    \ztau,\za
+  \right),
+  \label{eq:decoder_velocity}
+\end{equation}
+%
+for velocity prediction, or
+%
+\begin{equation}
+  \hat{\rseq}
+  =
+  \dec_\theta
+  \left(
+    \{m+\pe_{\mathrm{RoPE}}(t)\}_{t=1}^{T};
+    \ztau,\za
+  \right),
+  \label{eq:decoder_residual}
+\end{equation}
+%
+for residual prediction.  The anchor $\za$ is supplied either by
+concatenating a projected anchor embedding to each positional input, by
+using a separate AdaLN modulation, or by cross-attending to an
+anchor token; we use AdaLN by default and ablate other approaches.
+
+This design differs from a standard sequence autoencoder in two
+ways.  First, the decoder never receives the original input tokens;
+it starts from position-aware mask tokens, forcing the trajectory to
+be generated from the compressed temporal token.  Second, the
+decoder reconstructs relative motion in a content coordinate system
+defined by $\za$, encouraging $\ztau$ to encode temporal evolution
+rather than static content.
+
+\subsection{Encoder-Side Corruption and Span Masking}
+\label{ssec:spanmask}
+
+Decoder mask tokens alone do not prevent the aggregator from seeing
+the full input sequence.  To further encourage global temporal
+abstraction, we optionally corrupt the encoder input with temporal
+masking:
+%
+\begin{equation}
+  \tilde{\zseq}
+  =
+  \mathrm{Mask}(\zseq;\mathcal{M}),
+  \qquad
+  \ztau = \agg(\tilde{\zseq}),
+  \label{eq:encoder_masking}
+\end{equation}
+%
+where $\mathcal{M}$ is a set of masked timesteps.  We consider two
+masking schemes.
+
+\textbf{Random timestep masking} masks isolated timesteps sampled
+uniformly across the track.  This tests robustness to missing
+local observations but may be too easy because neighbouring music
+embeddings are highly correlated.
+
+\textbf{Contiguous span masking} masks temporally contiguous spans
+of length $L_{\mathrm{span}}$.  This is the default corruption
+strategy for the masked-input ablation because it forces the
+aggregator to infer section-level evolution from incomplete
+context.  We sweep
+%
+\begin{equation}
+  p_{\mathrm{mask}} \in \{0, 0.25, 0.5, 0.75\},
+  \qquad
+  L_{\mathrm{span}} \in \{5,15,30,60\}\,\mathrm{s}.
+  \label{eq:mask_sweep}
+\end{equation}
+%
+The decoder always reconstructs the full residual or velocity
+trajectory, including masked regions.
+
+\subsection{Training Objective}
+\label{ssec:train}
+
+The default training objective combines velocity reconstruction and
+KL regularisation:
+%
+\begin{align}
+  \mathcal{L}
+  &=
+  \lambda_v
+  \underbrace{
+    \frac{1}{T-1}
+    \sum_{t=1}^{T-1}
+    \left\|
+    \hat{v}_t - (z_{t+1}-z_t)
+    \right\|_2^2
+  }_{\mathcal{L}_{\mathrm{vel}}}
+  \nonumber\\
+  &\quad
+  + \beta
+  \underbrace{
+    \KL\!\left(
+      \mathcal{N}(\mu_\tau,\sigma_\tau^2)
+      \,\|\, \mathcal{N}(0,I)
+    \right)
+  }_{\mathcal{L}_{\mathrm{KL}}}.
+  \label{eq:default_loss}
+\end{align}
+%
+When training residual-prediction models, we replace
+$\mathcal{L}_{\mathrm{vel}}$ with
+%
+\begin{equation}
+  \mathcal{L}_{\mathrm{res}}
+  =
+  \frac{1}{T}
+  \sum_{t=1}^{T}
+  \left\|
+  \hat{r}_t - (z_t-\za)
+  \right\|_2^2.
+  \label{eq:res_loss}
+\end{equation}
+%
+For direct frame prediction, we use
+%
+\begin{equation}
+  \mathcal{L}_{\mathrm{frame}}
+  =
+  \frac{1}{T}
+  \sum_{t=1}^{T}
+  \left\|
+  \hat{z}_t - z_t
+  \right\|_2^2.
+  \label{eq:frame_loss}
+\end{equation}
+%
+
+% For masked-input training, the reconstruction loss is computed over
+% all timesteps, but we additionally report masked-region error:
+% %
+% \begin{equation}
+%   \mathcal{L}_{\mathrm{mask}}
+%   =
+%   \frac{1}{|\mathcal{M}|}
+%   \sum_{t\in\mathcal{M}}
+%   \left\|
+%     \hat{z}_t - z_t
+%   \right\|_2^2.
+%   \label{eq:mask_loss}
+% \end{equation}
+% %
+% This term is used for evaluation and may optionally be added as a
+% separate weighted training loss.
+
+% Finally, for disentanglement ablations, we include an optional
+% mutual-information penalty between temporal and content tokens:
+% %
+% \begin{equation}
+%   \mathcal{L}_{\mathrm{dis}}
+%   =
+%   \MI(\ztau;\zC),
+%   \label{eq:mi_loss}
+% \end{equation}
+% %
+% estimated using MINE~\cite{belghazi2018mine} or a $k$-NN mutual
+% information estimator~\cite{kraskov2004estimating}.  The complete
+% optional objective is
+%
+% \begin{equation}
+%   \mathcal{L}
+%   =
+%   \lambda_v \mathcal{L}_{\mathrm{vel}}
+%   +
+%   \lambda_r \mathcal{L}_{\mathrm{res}}
+%   +
+%   \lambda_m \mathcal{L}_{\mathrm{mask}}
+%   +
+%   \beta \mathcal{L}_{\mathrm{KL}}
+%   +
+%   \lambda_{\mathrm{dis}}\mathcal{L}_{\mathrm{dis}}.
+%   \label{eq:full_loss}
+% \end{equation}
+%
+The default model uses velocity prediction with
+$\lambda_v=1$, $\lambda_r=\lambda_m=\lambda_{\mathrm{dis}}=0$,
+and $\beta=0.01$.
+
+\subsection{Training Details}
+\label{ssec:training_details}
+
+Unless otherwise stated, models are trained on MTG-Jamendo
+\cite{bogdanov2019mtg} using frozen MuQ embeddings
+\cite{muq2025} extracted at 1\,Hz.  We use AdamW with learning rate
+$10^{-4}$, cosine decay, 5\,000 warmup steps, batch size 64, and
+train for 100 epochs.  The default aggregator is a 4-layer
+Transformer encoder with 8 attention heads and feed-forward
+dimension 2048.  The default decoder is a RoPE-indexed Transformer
+decoder with AdaLN conditioning from $\ztau$.  Unless otherwise
+specified, $d=4$, $\beta=0.01$, $\Delta=1$\,s, and the start-frame
+anchor $\za=z_1$ are used.
+
+\begin{figure*}[t]
+  \centering
+  \includegraphics[width=0.8\textwidth]{figs/Schema.png}
+  \caption{
+    Overview of the proposed approach for learning dynamic information in a compressed representation. A pretrained audio encoder $\enc$ produces an embedding sequence $\zseq$; the temporal aggregator $\agg$ compresses this into a temporal token $\ztau$, while the content token $\zC$ is computed as a mean over time. The predictor $\pred$ reconstructs the original sequence $\hat{\zseq}$ from learned positional decoder inputs, conditioned on both $\zC$ and $\ztau$. The red arrow denotes the training objective between $\hat{\zseq}$ and $\zseq$.
+  }
+
+  \label{fig:method_overview}
+\end{figure*}
+
+%% %% ============================================================
+%% ============================================================
+\section{Experiments}
+\label{sec:experiments}
+
+We evaluate whether a compact temporal token captures the semantic
+evolution of full-length music beyond order-invariant content
+pooling.
+
+Unless otherwise stated, all models are trained on MTG-Jamendo and
+evaluated on held-out tracks.  The main experiments use frozen MuQ
+embeddings extracted at 1\,Hz.  Retrieval and distance-based
+experiments use cosine distance for the content token $\zC$ and
+Euclidean distance for the temporal token $\ztau$ after
+standardisation.
+
+The evaluation contract is fixed across the suite.  Reconstruction,
+MSPF, perturbation, retrieval, and compression results use the same
+held-out split and are reported at the track level.  Controlled
+perturbations are generated from the evaluation audio before feature
+extraction, while exact permutation tests are applied directly to the
+frozen embedding sequence.  Unless otherwise stated, MSPF metrics are
+computed in MuQ space; cross-encoder MSPF checks recompute the same
+metrics with MERT, USAD, and Music2Latent features.  Diffusion
+experiments draw $N$ samples for each conditioning pair and report
+both best-sample and distributional statistics so that stochastic
+generation is not evaluated from a single cherry-picked trajectory.
+
+\subsection{Datasets and Evaluation Settings}
+\label{ssec:exp_setup}
+
+We use MTG-Jamendo as the primary training corpus because it
+contains full-length music recordings at scale.  Held-out
+MTG-Jamendo tracks are used for trajectory reconstruction,
+MSPF-based evaluation, perturbation sensitivity, and ablations.
+For supervised validation of musical structure, we use datasets
+with functional segment annotations, such as SALAMI and Harmonix.
+These annotations provide section boundaries and function labels
+such as intro, verse, chorus, bridge, instrumental, outro, and
+silence.
+
+For structure probing, we follow the standard formulation of music
+structure analysis as two frame-level tasks: boundary detection and
+function prediction.  Boundary detection identifies section changes,
+while function prediction assigns a structural role to each frame.
+Following prior work, we report boundary F-scores at 0.5\,s and
+3\,s tolerance, denoted HR.5F and HR3F, and frame-level function
+prediction metrics, including pairwise F-score (PWF) and accuracy
+(ACC).
+
+Figure~\ref{fig:mspf_qualitative} provides the qualitative
+MSPF validation used throughout the experimental section.  It
+visualises MSPF curves alongside musical structure annotations and
+controlled temporal variants.
+
+\begin{figure}[t]
+  \centering
+  \figbox{Qualitative MSPF validation.\\
+    Placeholder: section labels, chord or structure annotations,\\
+    and MSPF curves for original, cover, shuffle, reverse,\\
+  and section-deletion variants.}{7.8}{3.0}
+  \caption{Qualitative validation of the Music Semantic Progress
+    Function (MSPF).  The figure illustrates how MSPF evolves over
+    time for an original track and controlled temporal variants.  The
+    purpose is to verify that MSPF follows large-scale musical change
+  while reacting to transformations that alter temporal order.}
+  \label{fig:mspf_qualitative}
+\end{figure}
+
+\subsection{Trajectory Reconstruction}
+\label{ssec:exp_reconstruction}
+
+The first experiment tests whether the compressed temporal token
+preserves enough information to reconstruct the trajectory of frozen
+music embeddings.  Given an input sequence $\zseq$, the model
+encodes it into $\ztau$ and reconstructs the trajectory
+$\hat{\zseq}$ using the decoder conditioned on $\ztau$ and an
+anchor $z_a$.  This evaluates whether a single low-dimensional token
+can represent the temporal evolution that is discarded by
+order-invariant pooling.
+
+We compare temporal-token models against content-only baselines.
+The content-only decoder receives the same anchor information but no
+temporal token, and therefore measures how much of the trajectory
+can be reconstructed from static content alone.  We additionally
+include a model trained to reconstruct from content-only
+conditioning, which serves as a collapse diagnostic: if temporal
+information is unavailable, the decoder should converge toward an
+average or content-dominated trajectory.
+
+We report two metrics.  First, per-frame reconstruction error
+measures fidelity to the original embedding sequence:
+%
+\begin{equation}
+  \mathcal{E}_{\mathrm{rec}}
+  =
+  \frac{1}{T}
+  \sum_{t=1}^{T}
+  \|\hat{z}_t-z_t\|_2^2.
+  \label{eq:exp_recon_mse}
+\end{equation}
+%
+Second, MSPF $R^2$ measures how much variance in semantic progress
+is preserved by the reconstructed trajectory:
+%
+\begin{equation}
+  R^2_{\mathrm{MSPF}}
+  =
+  1 -
+  \frac{
+    \sum_t (\muspf_t-\hat{\muspf}_t)^2
+  }{
+    \sum_t (\muspf_t-\bar{\muspf})^2
+  }.
+  \label{eq:exp_mspf_r2}
+\end{equation}
+%
+The combination of these metrics separates local reconstruction
+quality from preservation of the global semantic trajectory.
+Table~\ref{tab:reconstruction} reports trajectory reconstruction
+for content-only baselines and temporal-token models with different
+bottleneck dimensions.
+
+\begin{table}[t]
+  \centering
+  \setlength{\tabcolsep}{5.0pt}
+  \caption{Trajectory reconstruction on held-out tracks.  Lower
+    reconstruction error and higher MSPF $R^2$ indicate better
+    preservation of the embedding trajectory and its semantic-progress
+  profile.}
+  \label{tab:reconstruction}
+  \begin{tabular}{lcc}
+    \toprule
+    \textbf{Model}
+    & $\mathcal{E}_{\mathrm{rec}}\downarrow$
+    & MSPF $R^2\uparrow$ \\
+    \midrule
+    Content mean $\zC$ & \res & \res \\
+    Content-only trained decoder & \res & \res \\
+    \midrule
+    $\ztau$, $d=1$ & \res & \res \\
+    $\ztau$, $d=4$ & \res & \res \\
+    $\ztau$, $d=16$ & \res & \res \\
+    $\ztau$, $d=64$ & \res & \res \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection{Annotation-Free Validation of MSPF}
+\label{ssec:exp_mspf}
+
+The MSPF is intended to provide an annotation-free descriptor of
+temporal semantic progress.  Before using it as a reference signal,
+we validate its behaviour under controlled transformations.  A
+useful temporal-progress descriptor should remain similar when the
+large-scale musical arc is preserved, but should change when the
+ordering or structure of the track is disrupted.
+
+We compare the MSPF of an original track to MSPFs computed from
+several variants: cover versions, random chunk shuffles, reversals,
+and section deletions.  Covers are used as qualitative or
+case-study examples because they may preserve large-scale temporal
+form while varying timbre, production, tempo, or key.  Shuffling,
+reversal, and section deletion provide stronger controlled tests
+because they explicitly alter temporal order or remove structural
+material.
+
+We report dynamic time warping distance between MSPF curves:
+%
+\begin{equation}
+  d_{\mathrm{MSPF}}(i,j)
+  =
+  \mathrm{DTW}
+  \left(
+    \muspf(\zseq_i), \muspf(\zseq_j)
+  \right).
+  \label{eq:mspf_dtw}
+\end{equation}
+%
+DTW is used because musically corresponding events may occur at
+slightly different times, especially for covers or time-stretched
+variants.  For transformations where absolute timing is important,
+we additionally visualise the unwarped MSPF curves in
+Figure~\ref{fig:mspf_qualitative}.  Table~\ref{tab:mspf_validation}
+summarises the MSPF-DTW distances for transformations expected to
+preserve or disrupt temporal progress.
+
+\begin{table}[t]
+  \centering
+  \setlength{\tabcolsep}{5.2pt}
+  \caption{MSPF validation under controlled transformations.  DTW
+    distance measures disagreement between the MSPF of the original
+  track and the transformed version.}
+  \label{tab:mspf_validation}
+  \begin{tabular}{lc}
+    \toprule
+    \textbf{Condition}
+    & MSPF DTW$\downarrow$ \\
+    \midrule
+    Cover version & \res \\
+    Pitch shift & \res \\
+    Moderate time stretch & \res \\
+    Gain change & \res \\
+    \midrule
+    & MSPF DTW$\uparrow$ \\
+    \midrule
+    Chunk shuffle & \res \\
+    Reverse & \res \\
+    Section deletion & \res \\
+    % Hard splice & \res \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+After validating MSPF as a temporal-progress descriptor, we test
+whether the learned temporal-token geometry agrees with MSPF-based
+similarity.  We compute pairwise temporal-token distances and
+compare them to pairwise MSPF-DTW distances over held-out tracks.
+Because retrieval and neighbourhood structure depend on ranking
+rather than calibrated distances, we report Spearman correlation:
+%
+\begin{equation}
+  \rho_{\tau,\mathrm{MSPF}}
+  =
+  \mathrm{corr}_{\mathrm{rank}}
+  \left(
+    \|\ztau^{(i)}-\ztau^{(j)}\|_2,
+    d_{\mathrm{MSPF}}(i,j)
+  \right).
+  \label{eq:mspf_geometry}
+\end{equation}
+%
+This experiment asks whether tracks that are close in temporal-token
+space also have similar semantic-progress profiles.
+Table~\ref{tab:mspf_geometry} reports this agreement for the
+content token, MSPF features, the temporal token, and their
+combination.
+
+\begin{table}[t]
+  \centering
+  \setlength{\tabcolsep}{5.0pt}
+  \caption{Agreement between representation geometry and MSPF-based
+  temporal-progress distance.}
+  \label{tab:mspf_geometry}
+  \begin{tabular}{lc}
+    \toprule
+    \textbf{Representation}
+    & Spearman $\rho_{\tau,\mathrm{MSPF}}\uparrow$ \\
+    \midrule
+    Random & \res \\
+    Content token $\zC$ & \res \\
+    MSPF feature baseline & \res \\
+    Temporal token $\ztau$ & \res \\
+    $[\zC,\ztau]$ & \res \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+To reduce circularity, we repeat the MSPF validation with encoders
+that are not used to train the default temporal token.  For each
+held-out track we compute the default $\ztau$ from MuQ, then compute
+MSPF curves and MSPF-DTW distances in an independent frozen encoder
+space.  Agreement under this protocol indicates that the temporal
+token is not merely matching idiosyncrasies of the MuQ feature
+geometry.  Table~\ref{tab:mspf_cross_encoder} reports this
+cross-encoder MSPF validation.
+
+\begin{table}[t]
+  \centering
+  \setlength{\tabcolsep}{3.0pt}
+  \caption{Cross-encoder MSPF validation.  The temporal token is
+    trained from MuQ embeddings; MSPF metrics are recomputed using an
+  independent scoring encoder.}
+  \label{tab:mspf_cross_encoder}
+  \begin{tabular}{lccc}
+    \toprule
+    \textbf{MSPF encoder}
+    & MSPF $R^2\uparrow$
+    & $\rho_{\tau,\mathrm{MSPF}}\uparrow$
+    & $\rho_{\mathrm{sep}}\uparrow$ \\
+    \midrule
+    MuQ & \res & \res & \res \\
+    MERT & \res & \res & \res \\
+    USAD & \res & \res & \res \\
+    Music2Latent & \res & \res & \res \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection{Temporal Retrieval Case Studies}
+\label{ssec:exp_temporal_retrieval}
+
+We complement the quantitative MSPF-geometry test with qualitative
+nearest-neighbour retrieval.  Given a query track, we retrieve nearest
+neighbours using only $\zC$, only $\ztau$, and the concatenated
+representation $[\zC,\ztau]$.  The expected behaviour is different
+for each space: $\zC$ should favour similar timbre, genre, and
+instrumentation, while $\ztau$ should favour similar long-range
+evolution such as gradual build-up, drop-and-return form, or repeated
+verse--chorus alternation.  The concatenated representation is used
+as a practical retrieval mode when both static identity and temporal
+shape matter.
+
+Figure~\ref{fig:temporal_retrieval} visualises representative
+queries by plotting the query MSPF curve beside the nearest-neighbour
+curves returned by each representation.  Table~\ref{tab:temporal_retrieval}
+summarises the same case studies with compact musical descriptors.
+
+\begin{figure}[t]
+  \centering
+  \figbox{Temporal retrieval case studies.\\
+    Placeholder: query MSPF and nearest-neighbour MSPFs from\\
+  $\zC$, $\ztau$, and $[\zC,\ztau]$ retrieval.}{7.8}{3.0}
+  \caption{Qualitative temporal retrieval.  The comparison checks
+    whether $\ztau$ retrieves tracks with similar semantic-progress
+    curves even when content-token retrieval favours more similar
+  surface audio characteristics.}
+  \label{fig:temporal_retrieval}
+\end{figure}
+
+\begin{table}[t]
+  \centering
+  \setlength{\tabcolsep}{3.0pt}
+  \caption{Nearest-neighbour retrieval case studies.  Entries are
+    qualitative descriptors of the top retrieved track under each
+  representation.}
+  \label{tab:temporal_retrieval}
+  \begin{tabular}{llll}
+    \toprule
+    \textbf{Query} & $\zC$ NN & $\ztau$ NN & $[\zC,\ztau]$ NN \\
+    \midrule
+    Gradual build & \res & \res & \res \\
+    Verse--chorus & \res & \res & \res \\
+    Drop--return & \res & \res & \res \\
+    Sparse outro & \res & \res & \res \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection{Sensitivity to Temporal Perturbations}
+\label{ssec:exp_perturbations}
+
+A temporal representation should be stable under transformations
+that preserve musical evolution, while responding to edits that
+change temporal order or remove structural material.  We therefore
+construct two families of perturbations.  The preserving family
+includes pitch shift, moderate time stretch, gain change, and
+optional generative edits such as instrument insertion when the
+global arrangement is preserved.  The disrupting family includes
+chunk shuffle, reversal, and section deletion.
+
+For each original track $x$ and perturbed track $x'$, we measure
+normalised displacement in temporal-token space:
+%
+\begin{equation}
+  \delta_\tau(x,x')
+  =
+  \frac{
+    \|\ztau(x)-\ztau(x')\|_2
+  }{
+    \bar{d}_\tau
+  },
+  \label{eq:normalised_token_displacement}
+\end{equation}
+%
+where $\bar{d}_\tau$ is the mean pairwise temporal-token distance
+over the evaluation set.  We summarise the separation between
+disrupting and preserving perturbations as
+%
+\begin{equation}
+  \rho_{\mathrm{sep}}
+  =
+  \frac{
+    \mathbb{E}_{x,x'\in\mathcal{D}_{\mathrm{disrupt}}}
+    [\delta_\tau(x,x')]
+  }{
+    \mathbb{E}_{x,x'\in\mathcal{D}_{\mathrm{preserve}}}
+    [\delta_\tau(x,x')]
+  }.
+  \label{eq:perturbation_separation}
+\end{equation}
+%
+This ratio gives a compact measure of whether the representation
+distinguishes temporal edits from nuisance changes.
+
+For chunk shuffling, we additionally define a continuous severity
+score based on the amount of temporal displacement induced by the
+permutation $\pi$:
+%
+\begin{equation}
+  s(\pi)
+  =
+  \frac{
+    \sum_{t=1}^{T}|t-\pi(t)|
+  }{
+    \max_{\pi'}
+    \sum_{t=1}^{T}|t-\pi'(t)|
+  }.
+  \label{eq:shuffle_severity}
+\end{equation}
+%
+We then report the Spearman correlation between shuffle severity
+and temporal-token displacement.  This tests whether the token
+changes gradually with the magnitude of the temporal edit rather
+than merely detecting that a transformation has occurred.
+Figure~\ref{fig:perturbation_sensitivity} visualises this relation,
+Table~\ref{tab:perturbations} reports displacement under preserving
+and disrupting perturbations, and Table~\ref{tab:shuffle_severity}
+reports the shuffle-severity correlation.
+
+\begin{figure}[t]
+  \centering
+  \figbox{Perturbation sensitivity.\\
+    Placeholder: temporal-token displacement versus shuffle severity,\\
+  with preserving transformations shown as reference points.}{7.8}{3.0}
+  \caption{Sensitivity of the temporal token to controlled
+    perturbations.  The experiment measures whether displacement in
+    temporal-token space increases with the severity of temporal
+  reordering while remaining small for preserving transformations.}
+  \label{fig:perturbation_sensitivity}
+\end{figure}
+
+\begin{table}[t]
+  \centering
+  \setlength{\tabcolsep}{3.5pt}
+  \caption{Perturbation sensitivity.  Preserving transformations should
+    produce small displacement, while disrupting transformations should
+  produce larger displacement.}
+  \label{tab:perturbations}
+  \begin{tabular}{lccccc}
+    \toprule
+    \textbf{Rep.}
+    & Pitch$\downarrow$
+    & Stretch$\downarrow$
+    & Gain$\downarrow$
+    & Disrupt$\uparrow$
+    & $\rho_{\mathrm{sep}}\uparrow$ \\
+    \midrule
+    $\zC$ & \res & \res & \res & \res & \res \\
+    MSPF feat. & \res & \res & \res & \res & \res \\
+    $\ztau$, $d=1$ & \res & \res & \res & \res & \res \\
+    $\ztau$, $d=4$ & \res & \res & \res & \res & \res \\
+    $\ztau$, $d=16$ & \res & \res & \res & \res & \res \\
+    $\ztau$, $d=64$ & \res & \res & \res & \res & \res \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\begin{figure}[t]
+  \centering
+
+  \begin{minipage}{0.48\linewidth}
+    \centering
+    \figbox{Scatter: severity vs. displacement\\
+      $d=1$, CR=\res\\
+    $\rho_s=\res$}{3.55}{2.35}
+    \vspace{-0.5em}
+    {\scriptsize (a) Extreme compression}
+  \end{minipage}
+  \hfill
+  \begin{minipage}{0.48\linewidth}
+    \centering
+    \figbox{Scatter: severity vs. displacement\\
+      $d=4$, CR=\res\\
+    $\rho_s=\res$}{3.55}{2.35}
+    \vspace{-0.5em}
+    {\scriptsize (b) Default bottleneck}
+  \end{minipage}
+
+  \vspace{0.6em}
+
+  \begin{minipage}{0.48\linewidth}
+    \centering
+    \figbox{Scatter: severity vs. displacement\\
+      $d=16$, CR=\res\\
+    $\rho_s=\res$}{3.55}{2.35}
+    \vspace{-0.5em}
+    {\scriptsize (c) Moderate compression}
+  \end{minipage}
+  \hfill
+  \begin{minipage}{0.48\linewidth}
+    \centering
+    \figbox{Scatter: severity vs. displacement\\
+      $d=64$, CR=\res\\
+    $\rho_s=\res$}{3.55}{2.35}
+    \vspace{-0.5em}
+    {\scriptsize (d) Weak compression}
+  \end{minipage}
+
+  \caption{Relationship between temporal perturbation severity and
+    temporal-token displacement for different compression ratios.  Each
+    point corresponds to a chunk-shuffled track, with severity computed
+    from Eq.~\eqref{eq:shuffle_severity} and displacement computed from
+    Eq.~\eqref{eq:normalised_token_displacement}.  The Spearman
+    correlations shown in each panel correspond to the values reported
+  in Table~\ref{tab:shuffle_severity}.}
+  \label{fig:shuffle_severity_scatter}
+\end{figure}
+
+\begin{table}[t]
+  \centering
+  \setlength{\tabcolsep}{5.0pt}
+  \caption{Correlation between chunk-shuffle severity and
+  temporal-token displacement.}
+  \label{tab:shuffle_severity}
+  \begin{tabular}{lc}
+    \toprule
+    \textbf{Representation}
+    & Spearman $\rho(s,\delta_\tau)\uparrow$ \\
+    \midrule
+    $\zC$ & \res \\
+    MSPF feat. & \res \\
+    $\ztau$, $d=1$ & \res \\
+    $\ztau$, $d=4$ & \res \\
+    $\ztau$, $d=16$ & \res \\
+    $\ztau$, $d=64$ & \res \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection{Structure Probing}
+\label{ssec:exp_structure}
+
+We next test whether the temporal token contains information useful
+for annotated music structure analysis.  Instead of retrieving
+tracks with similar symbolic form, which can be sparse and
+ill-defined for small annotated datasets, we evaluate boundary
+detection and function prediction using lightweight probes.
+
+The probing setup is intentionally simple.  We freeze all
+representations and train a linear frame-level head.  For boundary
+detection, the head predicts whether each frame corresponds to a
+section change.  For function prediction, it predicts one of the
+structural function labels.  The probe receives local frame
+features, global tokens, or their concatenation:
+%
+\begin{align}
+  u_t \in \{&z_t,\; [z_t,\zC],\; [z_t,\ztau],
+    \nonumber\\
+    &[z_t,\zC,\ztau],\; [\ztau,\mathrm{PE}(t)],\;
+  [\zC,\mathrm{PE}(t)]\}.
+  \label{eq:probe_inputs}
+\end{align}
+%
+Including positional encoding allows global tokens to be used for
+frame-level prediction.  Comparing $[z_t,\ztau]$ to $z_t$ tests
+whether the temporal token provides global form information beyond
+local frame features.  Comparing $\ztau$ to $\zC$ tests whether the
+temporal token is more informative than order-invariant content for
+structure-related prediction.
+
+Boundary detection is evaluated with HR.5F and HR3F.  Function
+prediction is evaluated with PWF and ACC:
+%
+\begin{equation}
+  \mathcal{L}_{\mathrm{probe}}
+  =
+  \mathcal{L}_{\mathrm{BCE}}^{\mathrm{boundary}}
+  +
+  \mathcal{L}_{\mathrm{CE}}^{\mathrm{function}}.
+  \label{eq:probe_loss}
+\end{equation}
+%
+The probe is not intended to establish state-of-the-art music
+structure analysis.  Its purpose is to test whether the frozen
+representations linearly expose information about structural
+boundaries and functions.  Table~\ref{tab:structure_probe} reports
+the probing results for local features, global content and temporal
+tokens, and their concatenations.
+
+\begin{table}[t]
+  \centering
+  \setlength{\tabcolsep}{3.0pt}
+  \caption{Linear probing for music structure analysis.  Boundary
+    detection is evaluated using HR.5F and HR3F; function prediction is
+  evaluated using PWF and ACC.}
+  \label{tab:structure_probe}
+  \begin{tabular}{lcccc}
+    \toprule
+    \textbf{Probe input}
+    & HR.5F$\uparrow$
+    & HR3F$\uparrow$
+    & PWF$\uparrow$
+    & ACC$\uparrow$ \\
+    \midrule
+    Local sequence $z_t$ & \res & \res & \res & \res \\
+    $[z_t,\zC]$ & \res & \res & \res & \res \\
+    $[z_t,\ztau]$ & \res & \res & \res & \res \\
+    $[z_t,\zC,\ztau]$ & \res & \res & \res & \res \\
+    \midrule
+    $[\zC,\mathrm{PE}(t)]$ & \res & \res & \res & \res \\
+    $[\ztau,\mathrm{PE}(t)]$ & \res & \res & \res & \res \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection{Content--Temporal Disentanglement}
+\label{ssec:exp_disentanglement}
+
+We evaluate whether $\ztau$ captures temporal order information not
+available to mean pooling.  The first test uses exact sequence
+permutations.  Given an embedding sequence $\zseq$, we construct
+permuted variants $\pi(\zseq)$ using random shuffle, reversal,
+half-swap, circular shift, and local shuffle.  These transformations
+preserve the multiset of frame embeddings, and therefore leave the
+mean-pooled content token unchanged up to numerical precision:
+%
+\begin{equation}
+  \Delta_C
+  =
+  \|\zC(\zseq)-\zC(\pi(\zseq))\|_2,
+  \qquad
+  \Delta_\tau
+  =
+  \|\ztau(\zseq)-\ztau(\pi(\zseq))\|_2.
+  \label{eq:order_sensitivity}
+\end{equation}
+%
+A representation of temporal evolution should produce larger
+$\Delta_\tau$ for order-altering transformations, while $\Delta_C$
+serves as an order-invariant reference.  Table~\ref{tab:order_sensitivity}
+reports the content-token and temporal-token displacements under
+exact sequence permutations.
+
+\begin{table}[t]
+  \centering
+  \setlength{\tabcolsep}{5.0pt}
+  \caption{Order sensitivity under exact sequence permutations.  Mean
+    pooling is invariant to permutations, while a temporal token should
+  respond to order changes.}
+  \label{tab:order_sensitivity}
+  \begin{tabular}{lcc}
+    \toprule
+    \textbf{Transform}
+    & $\Delta_C\downarrow$
+    & $\Delta_\tau\uparrow$ \\
+    \midrule
+    Random shuffle & \res & \res \\
+    Reverse & \res & \res \\
+    Half-swap & \res & \res \\
+    Circular shift & \res & \res \\
+    Local shuffle & \res & \res \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+Finally, we quantify similarity between content and temporal
+representations using representation-level dependence measures.  We
+report linear CKA or CKNNA between $\ztau$ and $\zC$, together with
+two references: a same-representation upper reference and a
+shuffled-pair lower reference.  These values are used comparatively
+rather than as absolute estimates of independence.
+Table~\ref{tab:dependence} reports these dependence measures across
+reference comparisons and temporal-token variants.
+
+\begin{table}[t]
+  \centering
+  \setlength{\tabcolsep}{4.5pt}
+  \caption{Representation dependence between temporal and content
+    tokens.  Shuffled pairs provide a lower reference; identical or
+  content-like representations provide an upper reference.}
+  \label{tab:dependence}
+  \begin{tabular}{lcc}
+    \toprule
+    \textbf{Comparison}
+    & CKA$\downarrow$
+    & CKNNA$\downarrow$ \\
+    \midrule
+    $\zC$ vs. $\zC$ & \res & \res \\
+    $\ztau$ vs. shuffled $\zC$ & \res & \res \\
+    $\ztau$ vs. $\zC$ & \res & \res \\
+    $\ztau$ vs. $\zC$, no anchor & \res & \res \\
+    $\ztau$ vs. $\zC$, VAE bottleneck & \res & \res \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\subsection{Generative Conditioning and Token Swapping}
+\label{ssec:exp_diffusion_swapping}
+
+The strongest test of complementarity is generative: if $\zC$ and
+$\ztau$ separate content from temporal evolution, then a conditional
+generator should follow the content source when $\zC$ is swapped and
+the temporal source when $\ztau$ is swapped.  We therefore train a
+small diffusion model in the frozen embedding-trajectory space.  The
+model denoises a trajectory while conditioning on both global tokens:
+%
+\begin{equation}
+  \tilde{\zseq}
+  =
+  G_\phi(\epsilon;\zC,\ztau),
+  \qquad
+  \epsilon \sim \mathcal{N}(0,I).
+  \label{eq:diffusion_conditioning}
+\end{equation}
+%
+At test time, we decode matched and swapped conditions from two
+tracks $A$ and $B$:
+%
+\begin{align}
+  &(\zC(A),\ztau(A)),\quad (\zC(B),\ztau(B)),
+  \nonumber\\
+  &(\zC(A),\ztau(B)),\quad (\zC(B),\ztau(A)).
+  \label{eq:diffusion_swaps}
+\end{align}
+%
+For each condition $c$ we draw $N$ generated trajectories
+$\{\tilde{\zseq}^{(n)}_c\}_{n=1}^{N}$.  Content alignment is
+measured by comparing the mean generated embedding
+$\bar{\tilde{z}}^{(n)}_c$ to the requested content token in
+$\zC$-space.  Temporal alignment is measured by comparing the MSPF
+of each generated trajectory to the MSPF of the requested temporal
+source; an additional temporal-token alignment is computed by
+re-encoding $\tilde{\zseq}^{(n)}_c$ with $\agg$.  We report
+best-of-$N$ reconstruction error, mean reconstruction error,
+sample diversity, and minimum/mean MSPF error:
+%
+\begin{align}
+  \mathcal{E}_{\mathrm{best}}(c)
+  &=
+  \min_n \mathcal{E}_{\mathrm{rec}}
+  (\tilde{\zseq}^{(n)}_c,\zseq_{\mathrm{target}}),
+  \nonumber\\
+  \mathcal{E}_{\mathrm{div}}(c)
+  &=
+  \frac{2}{N(N-1)}
+  \sum_{i<j}
+  \dist(\tilde{\zseq}^{(i)}_c,\tilde{\zseq}^{(j)}_c).
+  \label{eq:diffusion_distribution_metrics}
+\end{align}
+%
+This experiment directly measures whether $\zC$ controls static
+musical identity while $\ztau$ controls the evolution of the
+generated track, and whether the conditional generator covers a
+distribution of plausible trajectories rather than a single averaged
+path.  Table~\ref{tab:diffusion_swapping} reports the full
+distributional swap-alignment protocol.
+
+\begin{table*}[t]
+  \centering
+  \setlength{\tabcolsep}{3.0pt}
+  \caption{Diffusion token swapping.  A successful split should make
+    generated content follow $\zC$ and generated temporal evolution
+    follow $\ztau$, including under crossed conditions.  Best and mean
+  errors are computed over $N$ samples per condition.}
+  \label{tab:diffusion_swapping}
+  \begin{tabular}{lccccccc}
+    \toprule
+    \textbf{Condition}
+    & $C$ align.$\uparrow$
+    & $\tau$ align.$\uparrow$
+    & Best err.$\downarrow$
+    & Mean err.$\downarrow$
+    & Div.$\uparrow$
+    & MSPF min$\downarrow$
+    & MSPF mean$\downarrow$ \\
+    \midrule
+    $(\zC(A),\ztau(A))$ & \res & \res & \res & \res & \res & \res & \res \\
+    $(\zC(B),\ztau(B))$ & \res & \res & \res & \res & \res & \res & \res \\
+    $(\zC(A),\ztau(B))$ & \res & \res & \res & \res & \res & \res & \res \\
+    $(\zC(B),\ztau(A))$ & \res & \res & \res & \res & \res & \res & \res \\
+    \bottomrule
+  \end{tabular}
+\end{table*}
+
+\subsection{Compression Summary}
+\label{ssec:exp_compression_summary}
+
+Compression is a central experimental axis, but the main paper uses
+it only to choose and justify a single-token operating point.  We
+sweep the temporal bottleneck dimension $d$ while keeping one
+temporal token.  The compression ratio is
+%
+\begin{equation}
+  \mathrm{CR}=\frac{TD}{d}.
+  \label{eq:compression_ratio}
+\end{equation}
+%
+Table~\ref{tab:compression} summarises the trade-off between
+trajectory fidelity, temporal utility, and content leakage.  To make
+the compression comparison independent of optimisation budget, we
+also report a compute-matched sweep in which each bottleneck is
+trained under both a fixed-update budget and a fixed wall-clock
+budget.  The training-objective, anchor/target, masking, and multi-token
+capacity ablations are reported in the appendix because they refine
+the design rather than establish the core claim that a single $\ztau$
+can encode track-level temporal evolution.
+
+\begin{table*}[t]
+  \centering
+  \setlength{\tabcolsep}{3.0pt}
+  \caption{Single-token compression sweep.  The default model uses
+    $d=4$, selected to balance temporal utility and separation from the
+    content token.  Fixed-update and fixed-time columns provide
+  compute-matched checks for the compression trend.}
+  \label{tab:compression}
+  \begin{tabular}{cccccccc}
+    \toprule
+    $d$ & CR
+    & $\mathcal{E}_{\mathrm{rec}}\downarrow$
+    & MSPF $R^2\uparrow$
+    & $\rho_{\mathrm{sep}}\uparrow$
+    & CKA$(\ztau,\zC)\downarrow$
+    & Fixed upd.$\uparrow$
+    & Fixed time$\uparrow$ \\
+    \midrule
+    1 & \res & \res & \res & \res & \res & \res & \res \\
+    4 & \res & \res & \res & \res & \res & \res & \res \\
+    16 & \res & \res & \res & \res & \res & \res & \res \\
+    64 & \res & \res & \res & \res & \res & \res & \res \\
+    256 & \res & \res & \res & \res & \res & \res & \res \\
+    \bottomrule
+  \end{tabular}
+\end{table*}
+
+\subsection{Encoder Receptive Field}
+\label{ssec:exp_receptive_field}
+
+The frozen encoder defines the local units from which the temporal
+token is built.  We therefore evaluate whether encoder receptive
+field and frame rate affect temporal-content disentanglement.  We
+train the same temporal bottleneck over multiple frozen encoders
+with different temporal resolutions and context lengths.  Shorter
+receptive fields provide more local observations, while longer
+receptive fields may already mix local content and temporal context
+before the aggregator.
+
+For each encoder, we report temporal utility and content leakage
+using the same downstream metrics as above.  This experiment tests
+whether the quality of $\ztau$ depends primarily on the bottleneck
+architecture or also on the temporal granularity of the frozen
+features.  Table~\ref{tab:encoder_rf} reports the effect of frozen
+encoder receptive field and frame rate.
+
+\begin{table}[t]
+  \centering
+  \setlength{\tabcolsep}{3.5pt}
+  \caption{Effect of frozen encoder receptive field and frame rate.
+  The same temporal-token model is trained on each encoder.}
+  \label{tab:encoder_rf}
+  \begin{tabular}{lcccc}
+    \toprule
+    \textbf{Encoder}
+    & \textbf{RF}
+    & MSPF $R^2\uparrow$
+    & $\rho_{\mathrm{sep}}\uparrow$
+    & CKA$(\ztau,\zC)\downarrow$ \\
+    \midrule
+    MuQ & $\sim$10\,s & \res & \res & \res \\
+    MERT & $\sim$10\,s & \res & \res & \res \\
+    USAD & $\sim$1\,s & \res & \res & \res \\
+    Music2Latent & var. & \res & \res & \res \\
+    MATPAC & $\sim$1\,s & \res & \res & \res \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+%% ============================================================
+\bibliographystyle{IEEEtran}
+\bibliography{refs}
+
+\clearpage
+
+% \appendix
+
+% \section{Deferred Experiment Rationale}
+% \label{app:deferred_rationale}
+
+% The main paper keeps experiments that directly support the core
+% claim: a single compact temporal token $\ztau$ captures track-level
+% evolution not contained in the content token $\zC$.  We therefore
+% keep trajectory reconstruction, MSPF validation, perturbation
+% sensitivity, shuffle-severity analysis, structure probing,
+% content--temporal dependence, diffusion-based token swapping,
+% encoder receptive-field analysis, and a single-token compression
+% sweep in the main text.  The following experiments are deferred
+% because they refine the design rather than establish the core
+% ICASSP narrative: multi-token capacity sweeps, bottleneck-objective
+% ablations, anchor/target ablations, and encoder-side masking.
+
+% \section{Additional Details on the MSPF}
+% \label{app:mspf_details}
+
+% \section{Additional Design Ablations}
+% \label{app:compression_ablations}
+
+% \subsection{Extended Compression Sweep}
+% \label{ssec:exp_ablations}
+
+% Compression is a central experimental axis.  We sweep the temporal
+% bottleneck dimension $d$ and, when applicable, the number of latent
+% tokens $K$.  The compression ratio is
+% %
+% \begin{equation}
+%   \mathrm{CR}
+%   =
+%   \frac{TD}{Kd}.
+%   \label{eq:compression_ratio_extended}
+% \end{equation}
+% %
+% This experiment tests whether temporal abstraction improves under a
+% strong bottleneck, and whether increasing capacity primarily
+% improves reconstruction or also improves semantic temporal metrics.
+
+% We report reconstruction MSE, MSPF $R^2$, perturbation separation,
+% structure probing performance, and dependence with the content
+% token.  These metrics distinguish three behaviours: faithful
+% trajectory reconstruction, useful temporal abstraction, and content
+% leakage.  Table~\ref{tab:compression_extended} reports the compression sweep
+% across bottleneck dimensions and numbers of latent tokens.
+
+% \begin{table}[t]
+%   \centering
+%   \setlength{\tabcolsep}{3.0pt}
+%   \caption{Compression sweep.  The table compares reconstruction,
+%     semantic-progress preservation, perturbation sensitivity, structure
+%   probing, and dependence with content.}
+%   \label{tab:compression_extended}
+%   \begin{tabular}{cccccc}
+%     \toprule
+%     $K$ & $d$ & CR
+%     & MSPF $R^2\uparrow$
+%     & $\rho_{\mathrm{sep}}\uparrow$
+%     & CKA$(\ztau,\zC)\downarrow$ \\
+%     \midrule
+%     1 & 1 & \res & \res & \res & \res \\
+%     1 & 4 & \res & \res & \res & \res \\
+%     1 & 16 & \res & \res & \res & \res \\
+%     1 & 64 & \res & \res & \res & \res \\
+%     1 & 256 & \res & \res & \res & \res \\
+%     2 & 4 & \res & \res & \res & \res \\
+%     4 & 4 & \res & \res & \res & \res \\
+%     8 & 4 & \res & \res & \res & \res \\
+%     \bottomrule
+%   \end{tabular}
+% \end{table}
+
+% We then isolate the effect of the bottleneck objective.  The
+% deterministic autoencoder tests compression without stochastic
+% regularisation.  Variational models with different $\beta$ values
+% test whether KL regularisation improves abstraction or merely
+% reduces capacity.  Additional noisy or dropout bottlenecks are used
+% as simple regularisation baselines.  Table~\ref{tab:bottleneck_ablation}
+% reports the bottleneck objective ablation.
+
+% \begin{table}[t]
+%   \centering
+%   \setlength{\tabcolsep}{4.0pt}
+%   \caption{Bottleneck objective ablation.  The goal is to separate the
+%     effect of compression from the effect of stochastic or variational
+%   regularisation.}
+%   \label{tab:bottleneck_ablation}
+%   \begin{tabular}{lccc}
+%     \toprule
+%     \textbf{Config.}
+%     & MSPF $R^2\uparrow$
+%     & $\rho_{\mathrm{sep}}\uparrow$
+%     & HR3F$\uparrow$ \\
+%     \midrule
+%     AE, $\beta=0$ & \res & \res & \res \\
+%     VAE, $\beta=.001$ & \res & \res & \res \\
+%     VAE, $\beta=.01$ & \res & \res & \res \\
+%     VAE, $\beta=.1$ & \res & \res & \res \\
+%     Fixed noise & \res & \res & \res \\
+%     Dropout & \res & \res & \res \\
+%     \bottomrule
+%   \end{tabular}
+% \end{table}
+
+% We also ablate reconstruction targets and anchors.  Direct frame
+% prediction asks the token to reconstruct absolute embeddings.
+% Residual prediction asks it to reconstruct deviations from an
+% anchor.  Velocity prediction asks it to reconstruct local semantic
+% motion.  Comparing these objectives tests which formulation most
+% directly encourages the token to encode temporal change rather than
+% static content.  Table~\ref{tab:target_anchor_ablation} reports the
+% target and anchor ablation.
+
+% \begin{table}[t]
+%   \centering
+%   \setlength{\tabcolsep}{3.6pt}
+%   \caption{Prediction target and anchor ablation.}
+%   \label{tab:target_anchor_ablation}
+%   \begin{tabular}{llccc}
+%     \toprule
+%     \textbf{Target} & \textbf{Anchor}
+%     & $\mathcal{E}_{\mathrm{rec}}\downarrow$
+%     & MSPF $R^2\uparrow$
+%     & CKA$(\ztau,\zC)\downarrow$ \\
+%     \midrule
+%     Frame & none & \res & \res & \res \\
+%     Frame & $z_1$ & \res & \res & \res \\
+%     Residual & $z_1$ & \res & \res & \res \\
+%     Residual & $\zC$ & \res & \res & \res \\
+%     Velocity & $z_1$ & \res & \res & \res \\
+%     Velocity & $\zC$ & \res & \res & \res \\
+%     \bottomrule
+%   \end{tabular}
+% \end{table}
+
+% Finally, we test whether encoder-side masking improves temporal
+% abstraction.  Random masking removes isolated timesteps, while span
+% masking removes contiguous regions.  The decoder always reconstructs
+% the full trajectory.  This ablation tests whether forcing the
+% aggregator to infer missing regions encourages more global temporal
+% representations.  Table~\ref{tab:masking_ablation} reports the
+% masking ablation.
+
+% \begin{table}[t]
+%   \centering
+%   \setlength{\tabcolsep}{3.4pt}
+%   \caption{Encoder-side masking ablation.  Masked-region error measures
+%   imputation quality; the remaining metrics measure temporal utility.}
+%   \label{tab:masking_ablation}
+%   \begin{tabular}{lccc}
+%     \toprule
+%     \textbf{Masking}
+%     & Mask err.$\downarrow$
+%     & MSPF $R^2\uparrow$
+%     & $\rho_{\mathrm{sep}}\uparrow$ \\
+%     \midrule
+%     None & --- & \res & \res \\
+%     Random, $p=.25$ & \res & \res & \res \\
+%     Random, $p=.50$ & \res & \res & \res \\
+%     Span, $p=.25$, 15\,s & \res & \res & \res \\
+%     Span, $p=.50$, 15\,s & \res & \res & \res \\
+%     Span, $p=.50$, 30\,s & \res & \res & \res \\
+%     Span, $p=.50$, 60\,s & \res & \res & \res \\
+%     \bottomrule
+%   \end{tabular}
+% \end{table}
+
+\end{document}
