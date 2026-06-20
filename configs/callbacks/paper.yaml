@@ -33,7 +33,7 @@ early_stopping:
 trajectory_reconstruction:
   _target_: dyno.callbacks.dyno.MSPFCallback
   n_samples: null
-  every_n_epochs: 1
+  every_n_epochs: 100
   evaluation_suite: paper.trajectory_reconstruction
   window: 4
   sigma: 10.0
@@ -51,7 +51,7 @@ trajectory_reconstruction:
 mspf:
   _target_: dyno.callbacks.dyno.MSPFCallback
   n_samples: 4
-  every_n_epochs: 5
+  every_n_epochs: 100
   evaluation_suite: paper.mspf_progress
   window: 4
   sigma: 10.0
@@ -68,12 +68,12 @@ mspf:
 ssm:
   _target_: dyno.callbacks.dyno.SSMCallback
   n_samples: 4
-  every_n_epochs: 5
+  every_n_epochs: 100
   evaluation_suite: paper.ssm_progress
 
 annotation_free_temporal:
   _target_: dyno.callbacks.annotation_free.AnnotationFreeTemporalCallback
-  every_n_epochs: 1
+  every_n_epochs: 100
   n_samples: 500
   evaluation_suite: paper
   mspf_window: 4
@@ -94,13 +94,13 @@ annotation_free_temporal:
     - local_shuffle
   random_dim: ${model.latent_dim}
   seed: ${seed}
-  estimate_mi: false
-  latent_swapping: false
+  estimate_mi: true
+  latent_swapping: true
 
 flipflop:
   _target_: dyno.callbacks.flipflop.FlipFlopCallback
   n_flips: 512
-  every_n_epochs: 5
+  every_n_epochs: 100
   evaluation_suite: paper.perturbation_sensitivity
   chunk_width_min: 1
   chunk_width_max: 4
@@ -116,7 +116,7 @@ structviz:
   feature_root: ${paths.structure_root}/features
   evaluation_suite: Structure visualization
   clean_labels: dataset
-  every_n_epochs: 20
+  every_n_epochs: 100
   test_only: false
   n_samples_per_dataset: 4
   datasets:

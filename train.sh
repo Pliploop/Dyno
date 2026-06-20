@@ -3,17 +3,17 @@
 #SBATCH --partition=andrena
 #SBATCH --account=pilot_andrena
 #SBATCH --nodes=1
-#SBATCH --ntasks=1
-#SBATCH --cpus-per-gpu=16
+#SBATCH -n 1
+#SBATCH --cpus-per-gpu=12
 #SBATCH --gres=gpu:nvidia_a100-pcie-40gb:1
-#SBATCH --mem-per-cpu=4G
+#SBATCH --mem-per-cpu=7500M
 #SBATCH --time=2-00:00:00
 #SBATCH --output=/data/home/acw749/Dyno/logs/slurm-%x-%j.out
 #SBATCH --error=/data/home/acw749/Dyno/logs/slurm-%x-%j.err
 
 set -euo pipefail
 
-EXPERIMENT="${EXPERIMENT:-paper_muq_1hz}"
+EXPERIMENT="${EXPERIMENT:-paper_muq_01hz}"
 SEED="${SEED:-0}"
 
 cd /data/home/acw749/Dyno

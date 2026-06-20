@@ -11,7 +11,7 @@ devices: auto
 strategy: ddp_find_unused_parameters_true
 
 precision: bf16-mixed
-check_val_every_n_epoch: 1
+check_val_every_n_epoch: 100
 deterministic: false
 gradient_clip_val: 1.0
 accumulate_grad_batches: 4

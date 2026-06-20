@@ -1,5 +1,10 @@
 # @package _global_
 
+# Full-dataset residual baseline for MuQ 0.1 Hz embeddings.
+# Starts from the residual overfit setup, then scales capacity and restores
+# regularization/scheduling for ~55k full tracks.
+
+
 defaults:
   - override /data: dyno
   - override /model: dyno
@@ -8,21 +13,20 @@ defaults:
   - override /logger: paper
   - override /trainer: paper
 
-task_name: paper_muq_1hz_residuals
-name: paper/muq/1hz/residuals/d=${model.latent_dim}/seed=${seed}
-tags: [paper, muq, 1hz, residuals]
+
+task_name: "train_residuals_muq_0p1hz"
+tags: ["baseline", "residuals", "muq", "0.1hz"]
 
 data:
   embedding_encoder: muq
-  embedding_rate: 1hz
-  train_csv: /gpfs/scratch/acw749/datasets/dyno/mtg-jamendo/muq/1hz/manifests/paper_artist_2000val_2000test_seed142/train.csv
-  val_csv: /gpfs/scratch/acw749/datasets/dyno/mtg-jamendo/muq/1hz/manifests/paper_artist_2000val_2000test_seed142/val.csv
-  test_csv: /gpfs/scratch/acw749/datasets/dyno/mtg-jamendo/muq/1hz/manifests/paper_artist_2000val_2000test_seed142/test.csv
-  n_frames: 300
-  batch_size: 256
+  embedding_rate: 0.1hz
+  train_csv: /gpfs/scratch/acw749/datasets/dyno/mtg-jamendo/muq/0.1hz/manifests/paper_artist_2000val_2000test_seed142/train.csv
+  val_csv: /gpfs/scratch/acw749/datasets/dyno/mtg-jamendo/muq/0.1hz/manifests/paper_artist_2000val_2000test_seed142/val.csv
+  test_csv: /gpfs/scratch/acw749/datasets/dyno/mtg-jamendo/muq/0.1hz/manifests/paper_artist_2000val_2000test_seed142/test.csv
+  n_frames: 30
+  batch_size: 512
   num_workers: 16
   random_crop: true
-
 
 model:
   embedding_dim: 512
@@ -60,3 +64,4 @@ model:
     max_steps: ${trainer.max_steps}
     base_lr: 0.0001
     final_lr: 0.00001
+

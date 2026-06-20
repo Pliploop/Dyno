@@ -20,7 +20,7 @@ class BaseCallback(Callback):
         
     def _check_epoch(self, trainer: Trainer, pl_module: LightningModule) -> bool:
         if self.every_n_epochs is not None:
-            return trainer.current_epoch % self.every_n_epochs == 0
+            return (trainer.current_epoch + 1) % self.every_n_epochs == 0
         else:
             return False
 
